@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập & Đăng Ký | Trà Đạo Thái Nguyên - Cổng Định Danh</title>
+  <meta name="description" content="Cổng đăng nhập và đăng ký thành viên Trà Đạo Thái Nguyên. Phân quyền Quản trị viên (Admin) và Khách hàng (User) thưởng trà.">
+  
+  <!-- Google Fonts: Royal Vietnamese Tea Aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body class="auth-body">
+
+  <!-- Ambient Glow & Oriental Watermarks -->
+  <div class="auth-ambient-glow" aria-hidden="true"></div>
+  <div class="auth-bg-pattern" aria-hidden="true"></div>
+
+  <div class="auth-container">
+    
+    <!-- Top Back to Store Link -->
+    <div class="back-link-wrapper">
+      <a href="index.html" class="back-home-link" id="backToHomeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Xem Trang Chủ (Chế độ Khách)</span>
+      </a>
+    </div>
+
+    <!-- Main Auth Card -->
+    <div class="auth-card">
+      
+      <!-- Brand Seal & Header -->
+      <div class="auth-header">
+        <div class="brand-seal" aria-hidden="true">
+          <svg viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="28" stroke="#dfba73" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <circle cx="30" cy="30" r="23" stroke="#c59b27" stroke-width="1"/>
+            <path d="M30 13 C 20 24, 18 38, 30 46 C 42 38, 40 24, 30 13 Z" fill="#1b4d37" stroke="#dfba73" stroke-width="1.4"/>
+            <circle cx="30" cy="24" r="3" fill="#fdf0c0"/>
+            <line x1="30" y1="27" x2="30" y2="40" stroke="#dfba73" stroke-width="1"/>
+          </svg>
+        </div>
+        <h1 class="auth-title">Trà Đạo Thái Nguyên</h1>
+        <p class="auth-subtitle">Cổng Định Danh & Quản Trị Hệ Thống</p>
+      </div>
+
+      <!-- Quick Role Switcher / Demo Presets -->
+      <div class="role-preset-box">
+        <div class="preset-label-row">
+          <span class="preset-label">Chọn nhanh tài khoản mẫu:</span>
+          <span class="preset-badge">1-Click Điền Mẫu</span>
+        </div>
+        <div class="preset-buttons">
+          <button type="button" class="btn-preset btn-preset-admin" id="presetAdminBtn" title="Đăng nhập tài khoản Quản Trị Viên">
+            <span class="preset-icon">🛡️</span>
+            <div class="preset-info">
+              <strong>Quản Trị Viên (Admin)</strong>
+              <small>Vào Admin Dashboard</small>
+            </div>
+          </button>
+          <button type="button" class="btn-preset btn-preset-user" id="presetUserBtn" title="Đăng nhập tài khoản Khách Hàng">
+            <span class="preset-icon">🍵</span>
+            <div class="preset-info">
+              <strong>Khách Hàng (User)</strong>
+              <small>Vào Mua Sắm & Thưởng Trà</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Auth Tabs Switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" data-target="formLogin">ĐĂNG NHẬP</button>
+        <button class="auth-tab" id="tabRegister" data-target="formRegister">ĐĂNG KÝ MỚI</button>
+      </div>
+
+      <!-- ==================== FORM 1: LOGIN ==================== -->
+      <form class="auth-form active" id="formLogin" novalidate>
+        
+        <!-- Role Selection Radio Group -->
+        <div class="role-selector-group">
+          <label class="role-label">Quyền hạn truy cập:</label>
+          <div class="role-options">
+            <label class="role-radio-card" id="roleCardAdmin">
+              <input type="radio" name="loginRole" value="admin" id="roleAdmin" checked>
+              <div class="role-card-content">
+                <span class="role-badge-icon">👑</span>
+                <div class="role-texts">
+                  <strong>Quản Trị Viên</strong>
+                  <small>Giao diện Quản Lý</small>
+                </div>
+              </div>
+            </label>
+
+            <label class="role-radio-card" id="roleCardUser">
+              <input type="radio" name="loginRole" value="user" id="roleUser">
+              <div class="role-card-content">
+                <span class="role-badge-icon">👤</span>
+                <div class="role-texts">
+                  <strong>Khách Hàng</strong>
+                  <small>Giao diện Trang Chủ</small>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginEmail">Email hoặc Tên đăng nhập <span class="req-star">*</span></label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input type="email" id="loginEmail" class="auth-input" placeholder="admin@tradao.vn" value="admin@tradao.vn" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="label-with-link">
+            <label for="loginPassword">Mật khẩu bảo mật <span class="req-star">*</span></label>
+            <a href="#" class="forgot-pass-link" id="forgotPassLink">Quên mật khẩu?</a>
+          </div>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input type="password" id="loginPassword" class="auth-input" placeholder="••••••••" value="admin123" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-pwd" id="toggleLoginPwd" aria-label="Hiện/ẩn mật khẩu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="pwd-eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-checkbox">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Lưu phiên đăng nhập trên thiết bị này</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="btnLoginSubmit">
+          <span class="btn-text">ĐĂNG NHẬP HỆ THỐNG</span>
+          <div class="btn-spinner" aria-hidden="true"></div>
+        </button>
+      </form>
+
+      <!-- ==================== FORM 2: REGISTER ==================== -->
+      <form class="auth-form" id="formRegister" novalidate>
+        <div class="form-group">
+          <label for="regFullName">Họ và tên của quý khách <span class="req-star">*</span></label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input type="text" id="regFullName" class="auth-input" placeholder="Ví dụ: Nguyễn Văn An" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Địa chỉ Email <span class="req-star">*</span></label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input type="email" id="regEmail" class="auth-input" placeholder="khachhang@gmail.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPhone">Số điện thoại liên hệ <span class="req-star">*</span></label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <input type="tel" id="regPhone" class="auth-input" placeholder="0903741701" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Mật khẩu khởi tạo <span class="req-star">*</span></label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input type="password" id="regPassword" class="auth-input" placeholder="Ít nhất 6 ký tự bảo mật..." required>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-checkbox">
+            <input type="checkbox" id="agreeTerms" checked required>
+            <span>Tôi đồng ý với <a href="contact.html">Điều khoản dịch vụ & Chính sách bảo mật</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="btnRegisterSubmit">
+          <span class="btn-text">ĐĂNG KÝ THÀNH VIÊN TRÀ ĐẠO</span>
+          <div class="btn-spinner" aria-hidden="true"></div>
+        </button>
+      </form>
+
+      <!-- ==================== SOCIAL LOGINS AT THE BOTTOM ==================== -->
+      <div class="social-auth-bottom" id="socialAuthSection">
+        <div class="auth-divider">
+          <span>Hoặc đăng nhập nhanh bằng</span>
+        </div>
+
+        <div class="social-buttons-grid">
+          <button type="button" class="btn-social btn-google" id="btnGoogleLogin" aria-label="Đăng nhập bằng tài khoản Google">
+            <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+              <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+              <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+              <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z"/>
+              <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+            </svg>
+            <span class="btn-text">Google</span>
+            <div class="btn-spinner" aria-hidden="true"></div>
+          </button>
+
+          <button type="button" class="btn-social btn-facebook" id="btnFacebookLogin" aria-label="Đăng nhập bằng tài khoản Facebook">
+            <svg viewBox="0 0 24 24" class="social-icon" fill="#1877F2" aria-hidden="true">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            <span class="btn-text">Facebook</span>
+            <div class="btn-spinner" aria-hidden="true"></div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Security & Trust Badge Footer -->
+    <div class="auth-security-footer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lock-icon" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span>Bảo mật chuẩn SSL 256-bit • Đảm bảo an toàn thông tin tuyệt đối</span>
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification" role="status" aria-live="polite">
+    <span class="toast-icon">✓</span>
+    <span class="toast-message" id="toastMessage">Thông báo</span>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

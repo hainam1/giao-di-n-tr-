@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Chi Tiết Sản Phẩm | Trà Đạo Thái Nguyên</title>
+  <meta name="description" content="Chi tiết sản phẩm Trà Đạo Thái Nguyên - Thông số kỹ thuật, nguồn gốc Tân Cương, nghệ thuật thưởng trà và đánh giá thực tế từ khách hàng.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="product-detail.css">
+</head>
+<body>
+
+  <!-- ==================== SYNCHRONIZED HEADER ==================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="fretwork fretwork-left" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M0 0 H120 V12 H20 V45 H55 V57 H8 V8 H0 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M20 20 H95 V30 H32 V60 H20 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="36" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+    
+    <div class="fretwork fretwork-right" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M120 0 H0 V12 H100 V45 H65 V57 H112 V8 H120 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M100 20 H25 V30 H88 V60 H100 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="68" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+
+    <div class="header-container">
+      <!-- Left 3 Buttons -->
+      <nav class="nav-group nav-left" aria-label="Menu chính bên trái">
+        <a href="index.html" class="nav-btn" id="navHome">TRANG CHỦ</a>
+        <a href="products.html" class="nav-btn" id="navProducts">SẢN PHẨM</a>
+        <a href="teaware.html" class="nav-btn" id="navTeaware">TRÀ CỤ</a>
+      </nav>
+
+      <!-- Center Brand Logo -->
+      <a href="index.html" class="brand-logo" id="brandLogo" aria-label="Trang chủ Trà Đạo Thái Nguyên">
+        <div class="logo-calligraphy">
+          <span class="calligraphy-top">Trà Đạo</span>
+          <span class="calligraphy-bottom">Thái Nguyên</span>
+        </div>
+      </a>
+
+      <!-- Right 3 Buttons -->
+      <nav class="nav-group nav-right" aria-label="Menu chính bên phải">
+        <a href="story.html" class="nav-btn" id="navStory">CÂU CHUYỆN</a>
+        <a href="contact.html" class="nav-btn" id="navContact">LIÊN HỆ</a>
+        
+        <!-- Auth / Login Button -->
+        <a href="auth.html" class="nav-btn auth-nav-btn" id="navAuth" title="Tài khoản cá nhân">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span id="navAuthText">TÀI KHOẢN</span>
+        </a>
+      </nav>
+
+      <!-- Standalone Top-Right Cart Button -->
+      <div class="cart-wrapper-standalone">
+        <button class="cart-btn" id="cartBtn" aria-label="Giỏ hàng của bạn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cart-icon">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== BREADCRUMB ==================== -->
+  <nav class="detail-breadcrumb-bar" aria-label="Đường dẫn trang">
+    <div class="breadcrumb-container">
+      <a href="index.html">Trang Chủ</a>
+      <span class="sep">/</span>
+      <a href="products.html" id="breadcrumbCategory">Sản Phẩm Trà</a>
+      <span class="sep">/</span>
+      <span class="current" id="breadcrumbCurrent">Trà Đinh Tân Cương Thượng Hạng</span>
+    </div>
+  </nav>
+
+  <!-- ==================== PRODUCT DETAIL MAIN STAGE ==================== -->
+  <main class="product-detail-main">
+    <div class="detail-container">
+      
+      <!-- Left Column: Gallery & Art View -->
+      <section class="detail-gallery-col" aria-label="Hình ảnh sản phẩm">
+        <div class="main-art-frame">
+          <div class="art-seal-badge" id="productSealBadge">
+            <span>CHÍNH HÃNG</span>
+          </div>
+          <div class="main-art-canvas" id="mainArtCanvas">
+            <!-- Dynamic SVG or Visual Item Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Interactive Thumbnails -->
+        <div class="thumbnail-gallery" id="thumbGallery">
+          <button class="thumb-card active" data-view="1" aria-label="Góc chụp 1: Tổng thể sản phẩm">
+            <span>Tổng Thể</span>
+          </button>
+          <button class="thumb-card" data-view="2" aria-label="Góc chụp 2: Cận cảnh búp trà / chất men">
+            <span>Chi Tiết</span>
+          </button>
+          <button class="thumb-card" data-view="3" aria-label="Góc chụp 3: Hộp quà biếu cao cấp">
+            <span>Hộp Quà</span>
+          </button>
+          <button class="thumb-card" data-view="4" aria-label="Góc chụp 4: Nước trà khi hãm">
+            <span>Sắc Nước</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Column: Product Intelligence & Buying Actions -->
+      <section class="detail-info-col" aria-label="Thông tin chi tiết sản phẩm">
+        <div class="product-meta-header">
+          <span class="detail-category-tag" id="detailCategory">Trà Thượng Hạng</span>
+          <div class="detail-rating-score" aria-label="Đánh giá 5 sao">
+            <span class="stars">★★★★★</span>
+            <span class="rating-text">(5.0 / 5 • Đánh giá từ nghệ nhân)</span>
+          </div>
+        </div>
+
+        <h1 class="detail-product-title" id="detailTitle">Trà Đinh Tân Cương Thượng Hạng</h1>
+
+        <div class="detail-price-box">
+          <span class="price-main" id="detailPrice">1.500.000 ₫</span>
+          <span class="price-unit-tag" id="detailUnit">/ Hộp 500g</span>
+          <span class="stock-status">✔ Còn hàng - Sẵn sàng giao</span>
+        </div>
+
+        <p class="detail-lead-desc" id="detailDesc">
+          Được mệnh danh là "Nhất phẩm trà", Trà Đinh Tân Cương được nghệ nhân tuyển chọn thu hái từ những búp trà đinh non 1 tôm sớm mai khi còn đọng sương mai tinh khiết.
+        </p>
+
+        <!-- Master Specifications Card -->
+        <div class="master-specs-card">
+          <h2 class="specs-heading">Thông Số Phẩm Trà & Nghệ Thuật Thưởng Thức</h2>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <span class="spec-label">Vùng xuất xứ:</span>
+              <strong class="spec-value" id="specOrigin">Tân Cương, Thái Nguyên</strong>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Tiêu chuẩn hái:</span>
+              <strong class="spec-value" id="specStandard">1 Tôm non sớm mai</strong>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Hương & Vị:</span>
+              <strong class="spec-value" id="specFlavor">Hương cốm non nồng nàn, tiền chát thanh dịu, hậu vị ngọt sâu</strong>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Quy cách đóng gói:</span>
+              <strong class="spec-value" id="specPackage">Hộp thiếc bát giác mạ vàng cao cấp</strong>
+            </div>
+          </div>
+
+          <!-- Brewing Master Guide -->
+          <div class="brewing-guide-box">
+            <div class="guide-title">Hướng dẫn pha chuẩn Trà Đạo:</div>
+            <div class="guide-steps">
+              <span>💧 Nước sôi: <strong>85°C - 90°C</strong></span>
+              <span>⏳ Thời gian hãm: <strong>35 - 45 giây</strong></span>
+              <span>🍵 Lượng trà: <strong>6g - 8g / 1 ấm 200ml</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantity Selector & Action Buttons -->
+        <div class="purchase-actions-area">
+          <div class="qty-control-wrapper">
+            <span class="qty-label">Số lượng:</span>
+            <div class="qty-counter">
+              <button type="button" class="qty-btn" id="qtyMinusBtn" aria-label="Giảm số lượng">-</button>
+              <input type="number" id="detailQuantity" value="1" min="1" max="99" aria-label="Số lượng sản phẩm">
+              <button type="button" class="qty-btn" id="qtyPlusBtn" aria-label="Tăng số lượng">+</button>
+            </div>
+          </div>
+
+          <div class="action-buttons-group">
+            <button type="button" class="btn-detail-cart" id="detailAddToCartBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              <span>THÊM VÀO GIỎ HÀNG</span>
+            </button>
+
+            <button type="button" class="btn-detail-buynow" id="detailBuyNowBtn">
+              <span>MUA NGAY GIAO HỎA TỐC</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Guarantees & Trust Badges -->
+        <div class="guarantees-grid">
+          <div class="guarantee-badge">
+            <span class="g-icon">🛡️</span>
+            <span>100% Chính gốc Tân Cương</span>
+          </div>
+          <div class="guarantee-badge">
+            <span class="g-icon">🚀</span>
+            <span>Giao nhanh toàn quốc</span>
+          </div>
+          <div class="guarantee-badge">
+            <span class="g-icon">🔄</span>
+            <span>Đổi trả nếu không ưng ý</span>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- ==================== DEDICATED PRODUCT FEEDBACK & REVIEW SECTION ==================== -->
+  <section class="product-feedback-section" id="productFeedbackSection">
+    <div class="feedback-container">
+      
+      <div class="feedback-header">
+        <div class="feedback-seal-icon" aria-hidden="true">🍵</div>
+        <h2 class="feedback-title">Cảm Nhận & Đánh Giá Thực Tế</h2>
+        <p class="feedback-subtitle">Những chia sẻ từ quý trà hữu và các bậc nghệ nhân thưởng trà</p>
+      </div>
+
+      <!-- Rating Overview Card -->
+      <div class="rating-overview-card">
+        <div class="score-box">
+          <span class="big-score">5.0</span>
+          <div class="score-stars">★★★★★</div>
+          <span class="score-total">Dựa trên 38 đánh giá đã xác thực</span>
+        </div>
+
+        <div class="rating-bars">
+          <div class="bar-row">
+            <span>5 Sao</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 95%;"></div></div>
+            <span>95%</span>
+          </div>
+          <div class="bar-row">
+            <span>4 Sao</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 5%;"></div></div>
+            <span>5%</span>
+          </div>
+          <div class="bar-row">
+            <span>3 Sao</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div>
+            <span>0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Review Form -->
+      <div class="feedback-form-box">
+        <h3 class="form-box-title">Gửi Đánh Giá Của Quý Khách</h3>
+        <form class="product-review-form" id="productReviewForm">
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="reviewAuthorName">Họ tên của bạn <span class="req">*</span></label>
+              <input type="text" id="reviewAuthorName" class="form-input" placeholder="Ví dụ: Bác Nguyễn Văn Cường" required>
+            </div>
+            <div class="form-group">
+              <label>Đánh giá chất lượng:</label>
+              <div class="form-rating-picker" id="detailStarPicker">
+                <span class="picker-star active" data-rating="1">★</span>
+                <span class="picker-star active" data-rating="2">★</span>
+                <span class="picker-star active" data-rating="3">★</span>
+                <span class="picker-star active" data-rating="4">★</span>
+                <span class="picker-star active" data-rating="5">★</span>
+                <span class="picker-note" id="pickerNote">Rất hài lòng (5 sao)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reviewCommentText">Cảm nhận chi tiết về hương vị, màu nước hoặc quy cách đóng gói <span class="req">*</span></label>
+            <textarea id="reviewCommentText" rows="3" class="form-input form-textarea" placeholder="Chia sẻ cảm nhận chân thực khi thưởng thức sản phẩm này..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit-feedback" id="btnSubmitFeedback">
+            <span>GỬI ĐÁNH GIÁ CHẤT LƯỢNG</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Customer Reviews List -->
+      <div class="feedback-reviews-list" id="feedbackReviewsList">
+        <!-- Review Item 1 -->
+        <article class="feedback-card">
+          <div class="reviewer-avatar">
+            <span>NC</span>
+          </div>
+          <div class="feedback-content">
+            <div class="feedback-top-row">
+              <div class="reviewer-identity">
+                <h4 class="author-name">Bác Nguyễn Văn Cường (Hà Nội)</h4>
+                <span class="verified-buyer">✔ Đã mua hàng chính hãng</span>
+              </div>
+              <div class="review-date">18/08/2026</div>
+            </div>
+            <div class="feedback-stars">★★★★★</div>
+            <p class="feedback-comment">
+              Tôi uống trà Thái Nguyên đã gần 40 năm nay, dòng Trà Đinh này của quán thực sự đạt chuẩn thượng hạng. Cánh trà nhỏ tăm tắp phủ tuyết trắng, nước trong xanh ánh vàng, hương cốm thơm lừng cả gian phòng khách. Mua biếu tặng bạn bè ai cũng khen ngợi nức nở.
+            </p>
+          </div>
+        </article>
+
+        <!-- Review Item 2 -->
+        <article class="feedback-card">
+          <div class="reviewer-avatar">
+            <span>TM</span>
+          </div>
+          <div class="feedback-content">
+            <div class="feedback-top-row">
+              <div class="reviewer-identity">
+                <h4 class="author-name">Chị Trần Thị Mai (Đà Nẵng)</h4>
+                <span class="verified-buyer">✔ Đã mua hàng chính hãng</span>
+              </div>
+              <div class="review-date">12/08/2026</div>
+            </div>
+            <div class="feedback-stars">★★★★★</div>
+            <p class="feedback-comment">
+              Hộp thiếc mạ vàng cầm rất đầm tay, lịch sự và sang trọng. Shop giao hàng hỏa tốc đóng gói cẩn thận chống sốc rất kỹ. Nước trà ngọt hậu rất lâu, uống xong súc miệng vẫn thấy ngọt dịu cổ họng.
+            </p>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer" id="footerSection">
+    <div class="footer-container">
+      <div class="footer-col footer-col-company">
+        <h3 class="footer-brand-title">Trà Ngon Thái Nguyên</h3>
+        <div class="company-details">
+          <p class="company-name">CÔNG TY TNHH TrangoThaiNguyen</p>
+          <p class="company-license">Do sở tài chính thành phố Hà Nội cấp ngày: 1/7/2019</p>
+          <p class="company-address">Địa chỉ: Hà Nội</p>
+          <p class="company-phone">Điện thoại: <strong>0903741701</strong></p>
+          <p class="company-email">Email: <strong>trangonthainguyen.vn@gmail.com</strong></p>
+        </div>
+        <div class="payment-badges">
+          <span class="badge-card">VISA</span>
+          <span class="badge-card">PayPal</span>
+          <span class="badge-card">MoMo</span>
+          <span class="badge-card">Chuyển Khoản</span>
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-commitments">
+        <div class="commitment-block">
+          <h4 class="footer-heading">Cam kết của chúng tôi</h4>
+          <ul class="footer-list commitments-list">
+            <li><span class="check-icon">✔</span> Tuyệt đối không chất bảo quản, không hương liệu nhân tạo</li>
+            <li><span class="check-icon">✔</span> Búp trà thu hái chuẩn Tân Cương 100%</li>
+            <li><span class="check-icon">✔</span> Cam kết bồi thường đổi trả nếu có lỗi vận chuyển</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-icons">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg></a>
+      </div>
+      <div class="copyright-notice">
+        <p>© Bản quyền thuộc về Trà Ngon Thái Nguyên - Tinh Hoa Trà Việt</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

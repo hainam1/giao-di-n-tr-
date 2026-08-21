@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Quản Trị Hệ Thống Trà Đạo Thái Nguyên</title>
+  <meta name="description" content="Giao diện quản trị cửa hàng Trà Đạo Thái Nguyên - Quản lý đơn hàng, sản phẩm, tồn kho, danh mục và báo cáo doanh thu.">
+  
+  <!-- Inter & Plus Jakarta Sans Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-app">
+
+  <!-- ==================== SIDEBAR NAVIGATION (260px) ==================== -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    
+    <!-- Sidebar Header / Brand -->
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <div class="brand-tea-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" fill="#059669" stroke="none"/>
+            <path d="M12 6c-3.31 0-6 2.69-6 6 0 2.22 1.21 4.15 3 5.19" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="3" fill="#D97706"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">TRÀ ĐẠO</span>
+          <span class="brand-sub">Admin Management</span>
+        </div>
+      </div>
+      <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Đóng sidebar">&times;</button>
+    </div>
+
+    <!-- Sidebar Navigation Menu -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">CHỨC NĂNG CHÍNH</div>
+      <ul class="nav-menu">
+        
+        <!-- 1. Overview -->
+        <li class="nav-item">
+          <button class="nav-link active" data-view="overview" id="navOverview">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+            </svg>
+            <span class="menu-title">Tổng Quan</span>
+          </button>
+        </li>
+
+        <!-- 2. Orders with Badge -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="orders" id="navOrders">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="menu-title">Quản Lý Đơn Hàng</span>
+            <span class="menu-badge badge-danger">8</span>
+          </button>
+        </li>
+
+        <!-- 3. Products -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="products" id="navProducts">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            <span class="menu-title">Quản Lý Sản Phẩm</span>
+          </button>
+        </li>
+
+        <!-- 4. Inventory & Stock Alerts (MỚI) -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="inventory" id="navInventory">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+            <span class="menu-title">Quản Lý Tồn Kho</span>
+            <span class="menu-badge badge-warning" id="inventoryAlertBadge">3 Cảnh báo</span>
+          </button>
+        </li>
+
+        <!-- 5. Product Analytics & Business Intelligence (MỚI - TÁCH RIÊNG) -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="analytics" id="navAnalytics">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span class="menu-title">Thống Kê Sản Phẩm</span>
+          </button>
+        </li>
+
+        <!-- 6. Review & Feedback Moderation (MỚI) -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="reviews" id="navReviews">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="menu-title">Đánh Giá & Phản Hồi</span>
+            <span class="menu-badge badge-info">3 Chờ duyệt</span>
+          </button>
+        </li>
+
+        <!-- 7. Categories -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="categories" id="navCategories">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="menu-title">Danh Mục</span>
+          </button>
+        </li>
+
+        <!-- 8. Revenue -->
+        <li class="nav-item">
+          <button class="nav-link" data-view="revenue" id="navRevenue">
+            <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            <span class="menu-title">Báo Cáo Doanh Thu</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Store Quick Link -->
+      <div class="sidebar-secondary-links">
+        <div class="nav-section-title">HỆ THỐNG</div>
+        <a href="index.html" class="nav-link store-link" target="_blank">
+          <svg viewBox="0 0 24 24" class="menu-icon" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+          <span>Xem Cửa Hàng Trà</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Sidebar Bottom: Admin Status & Logout -->
+    <div class="sidebar-footer">
+      <div class="admin-profile-pill">
+        <div class="admin-avatar">
+          <span class="avatar-letter">AD</span>
+          <span class="online-indicator" title="Admin Online"></span>
+        </div>
+        <div class="admin-details">
+          <strong class="admin-name">Quản Trị Viên</strong>
+          <span class="admin-role">Super Admin</span>
+        </div>
+      </div>
+      <button class="btn-sidebar-logout" id="btnLogout" title="Đăng xuất khỏi trang quản trị">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>Đăng xuất</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Sidebar Overlay for Mobile/Tablet -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+  <div class="admin-main-wrapper">
+    
+    <!-- Top Header -->
+    <header class="admin-top-header">
+      <div class="header-left">
+        <button class="btn-hamburger" id="btnHamburger" aria-label="Mở menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="header-title-box">
+          <h1 class="header-title" id="pageMainTitle">Tổng Quan</h1>
+          <p class="header-subtitle" id="pageSubTitle">Theo dõi và phân tích hoạt động kinh doanh cửa hàng</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Search Global -->
+        <div class="header-search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" class="header-search-input" placeholder="Tìm kiếm nhanh đơn hàng, sản phẩm..." id="globalSearchInput">
+        </div>
+
+        <!-- Notification Bell with Dropdown -->
+        <div class="notification-wrapper">
+          <button class="btn-notification" id="btnNotificationBell" aria-label="Thông báo hệ thống">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-badge">3</span>
+          </button>
+
+          <!-- Notification Dropdown Menu -->
+          <div class="notification-dropdown" id="notificationDropdown">
+            <div class="dropdown-header">
+              <h3>Thông Báo Hệ Thống</h3>
+              <span class="dropdown-badge">3 mới</span>
+            </div>
+            <div class="notification-list">
+              
+              <div class="notif-item unread">
+                <div class="notif-icon notif-order">🛒</div>
+                <div class="notif-content">
+                  <div class="notif-title">Đơn hàng mới #ORD-1024</div>
+                  <div class="notif-desc">Khách hàng Nguyễn Văn Nam vừa đặt 2 hộp Trà Nõn Tôm.</div>
+                  <div class="notif-time">2 phút trước</div>
+                </div>
+              </div>
+
+              <div class="notif-item unread">
+                <div class="notif-icon notif-warning">⚠️</div>
+                <div class="notif-content">
+                  <div class="notif-title">Cảnh báo tồn kho thấp</div>
+                  <div class="notif-desc">Trà Đinh Thượng Hạng chỉ còn 6 hộp trong kho.</div>
+                  <div class="notif-time">15 phút trước</div>
+                </div>
+              </div>
+
+              <div class="notif-item">
+                <div class="notif-icon notif-success">💰</div>
+                <div class="notif-content">
+                  <div class="notif-title">Doanh thu đạt mốc tuần</div>
+                  <div class="notif-desc">Doanh thu tuần này đã vượt 35.000.000 ₫ (+15%).</div>
+                  <div class="notif-time">2 giờ trước</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="dropdown-footer">
+              <button class="btn-mark-read" id="btnMarkAllRead">Đánh dấu tất cả đã đọc</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Header User Pill -->
+        <div class="header-user-pill">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <span class="user-name">Admin</span>
+            <span class="user-role">Quản trị viên</span>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Content Container (Switchable Views) -->
+    <main class="admin-content-area" id="adminMainContent">
+      
+      <!-- ================================================================= -->
+      <!-- VIEW 1: TỔNG QUAN (OVERVIEW)                                      -->
+      <!-- ================================================================= -->
+      <section class="admin-view active" id="viewOverview">
+        
+        <!-- 4 KPI CARDS -->
+        <div class="kpi-grid">
+          
+          <!-- KPI 1: Doanh Thu -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">TỔNG DOANH THU THÁNG</span>
+              <div class="kpi-icon-box bg-emerald">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value">128.500.000 ₫</div>
+            <div class="kpi-footer">
+              <span class="trend-indicator trend-up">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                12.5%
+              </span>
+              <span class="trend-text">so với tháng trước</span>
+            </div>
+          </div>
+
+          <!-- KPI 2: Đơn Cần Xử Lý -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">ĐƠN CẦN XỬ LÝ</span>
+              <div class="kpi-icon-box bg-amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value text-amber">18 đơn</div>
+            <div class="kpi-footer">
+              <span class="kpi-subtag badge-warning">8 chờ xác nhận</span>
+              <span class="kpi-subtag badge-info">10 đang xử lý</span>
+            </div>
+          </div>
+
+          <!-- KPI 3: Sản Phẩm Trong Kho -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">SẢN PHẨM TRONG KHO</span>
+              <div class="kpi-icon-box bg-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value">42</div>
+            <div class="kpi-footer">
+              <span class="trend-text">Tổng <strong>1.248</strong> hộp trà các loại</span>
+            </div>
+          </div>
+
+          <!-- KPI 4: Tồn Kho Thấp -->
+          <div class="kpi-card card-warning-accent">
+            <div class="kpi-header">
+              <span class="kpi-label">CẢNH BÁO TỒN KHO</span>
+              <div class="kpi-icon-box bg-red">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value text-red">5 sản phẩm</div>
+            <div class="kpi-footer">
+              <span class="badge-danger-pill">Cần nhập thêm hàng ngay</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CHARTS SECTION (65% / 35% Layout) -->
+        <div class="charts-row">
+          
+          <!-- Revenue Line / Bar Chart (65-70%) -->
+          <div class="chart-card chart-card-large">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Doanh Thu Cửa Hàng</h3>
+                <p class="card-subtitle">Biểu đồ biến động doanh thu theo thời gian</p>
+              </div>
+              <div class="chart-filters">
+                <button class="chart-filter-btn" data-range="7d">7 ngày</button>
+                <button class="chart-filter-btn active" data-range="30d">30 ngày</button>
+                <button class="chart-filter-btn" data-range="12m">12 tháng</button>
+              </div>
+            </div>
+            
+            <!-- Pure HTML/CSS Interactive Bar/Line Chart Simulation -->
+            <div class="chart-canvas-container">
+              <!-- Y Axis Scale -->
+              <div class="chart-y-axis">
+                <span>35Tr</span>
+                <span>25Tr</span>
+                <span>15Tr</span>
+                <span>5Tr</span>
+                <span>0</span>
+              </div>
+
+              <!-- Chart Bars & Grid -->
+              <div class="chart-bars-wrapper">
+                <div class="chart-grid-line line-1"></div>
+                <div class="chart-grid-line line-2"></div>
+                <div class="chart-grid-line line-3"></div>
+                <div class="chart-grid-line line-4"></div>
+
+                <div class="bars-flex">
+                  <div class="bar-col" data-label="T1" data-val="18.2Tr"><div class="bar-fill" style="height: 52%;"></div><span class="bar-label">T1</span></div>
+                  <div class="bar-col" data-label="T2" data-val="24.5Tr"><div class="bar-fill" style="height: 70%;"></div><span class="bar-label">T2</span></div>
+                  <div class="bar-col" data-label="T3" data-val="15.0Tr"><div class="bar-fill" style="height: 42%;"></div><span class="bar-label">T3</span></div>
+                  <div class="bar-col" data-label="T4" data-val="28.9Tr"><div class="bar-fill" style="height: 82%;"></div><span class="bar-label">T4</span></div>
+                  <div class="bar-col" data-label="T5" data-val="22.1Tr"><div class="bar-fill" style="height: 63%;"></div><span class="bar-label">T5</span></div>
+                  <div class="bar-col" data-label="T6" data-val="32.0Tr"><div class="bar-fill active" style="height: 92%;"></div><span class="bar-label">T6</span></div>
+                  <div class="bar-col" data-label="T7" data-val="27.4Tr"><div class="bar-fill" style="height: 78%;"></div><span class="bar-label">T7</span></div>
+                  <div class="bar-col" data-label="T8" data-val="35.5Tr"><div class="bar-fill highlight" style="height: 100%;"></div><span class="bar-label">T8</span></div>
+                  <div class="bar-col" data-label="T9" data-val="21.0Tr"><div class="bar-fill" style="height: 60%;"></div><span class="bar-label">T9</span></div>
+                  <div class="bar-col" data-label="T10" data-val="26.3Tr"><div class="bar-fill" style="height: 75%;"></div><span class="bar-label">T10</span></div>
+                  <div class="bar-col" data-label="T11" data-val="30.2Tr"><div class="bar-fill" style="height: 86%;"></div><span class="bar-label">T11</span></div>
+                  <div class="bar-col" data-label="T12" data-val="34.1Tr"><div class="bar-fill" style="height: 96%;"></div><span class="bar-label">T12</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Breakdown Donut / Progress Chart (30-35%) -->
+          <div class="chart-card chart-card-small">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Tỷ Trọng Danh Mục</h3>
+                <p class="card-subtitle">Cơ cấu doanh số theo dòng sản phẩm</p>
+              </div>
+            </div>
+
+            <!-- Donut Simulation / Progress Breakdown -->
+            <div class="category-breakdown-box">
+              <div class="donut-chart-mock">
+                <svg viewBox="0 0 36 36" class="donut-svg">
+                  <path class="donut-ring" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E5E7EB" stroke-width="3.8"/>
+                  <!-- Segment 1: Nõn Tôm 35% (Emerald) -->
+                  <path class="donut-segment" stroke="#059669" stroke-dasharray="35 65" stroke-dashoffset="25" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="4.2"/>
+                  <!-- Segment 2: Móc Câu 28% (Gold) -->
+                  <path class="donut-segment" stroke="#D97706" stroke-dasharray="28 72" stroke-dashoffset="90" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="4.2"/>
+                  <!-- Segment 3: Trà Đinh 20% (Blue) -->
+                  <path class="donut-segment" stroke="#2563EB" stroke-dasharray="20 80" stroke-dashoffset="62" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="4.2"/>
+                  <!-- Segment 4: Quà Biếu 12% (Purple) -->
+                  <path class="donut-segment" stroke="#7C3AED" stroke-dasharray="12 88" stroke-dashoffset="42" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="4.2"/>
+                </svg>
+                <div class="donut-center-text">
+                  <strong>100%</strong>
+                  <span>TỔNG THỂ</span>
+                </div>
+              </div>
+
+              <!-- Legend List -->
+              <div class="category-legend-list">
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #059669;"></span>
+                  <span class="legend-name">Trà Nõn Tôm</span>
+                  <span class="legend-percent">35%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #D97706;"></span>
+                  <span class="legend-name">Trà Móc Câu</span>
+                  <span class="legend-percent">28%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #2563EB;"></span>
+                  <span class="legend-name">Trà Đinh Thượng Hạng</span>
+                  <span class="legend-percent">20%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #7C3AED;"></span>
+                  <span class="legend-name">Hộp Quà Biếu Cao Cấp</span>
+                  <span class="legend-percent">12%</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color" style="background-color: #9CA3AF;"></span>
+                  <span class="legend-name">Trà Cụ & Khác</span>
+                  <span class="legend-percent">5%</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RECENT ORDERS SECTION -->
+        <div class="admin-card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Đơn Hàng Gần Đây</h3>
+              <p class="card-subtitle">Các giao dịch mua trà mới phát sinh trong ngày</p>
+            </div>
+            <button class="btn-link-action" id="btnViewAllOrders">Xem tất cả đơn hàng &rarr;</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Mã đơn</th>
+                  <th>Khách hàng</th>
+                  <th>Sản phẩm</th>
+                  <th class="text-right">Tổng tiền</th>
+                  <th>Phương thức</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày đặt</th>
+                  <th class="text-center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="order-code">#ORD-1024</strong></td>
+                  <td>
+                    <div class="customer-cell">
+                      <strong>Nguyễn Văn Nam</strong>
+                      <small>0912 345 678</small>
+                    </div>
+                  </td>
+                  <td>Trà Nõn Tôm &times; 2</td>
+                  <td class="text-right font-bold">1.280.000 ₫</td>
+                  <td><span class="badge-payment">VietQR</span></td>
+                  <td><span class="badge-status badge-pending">Chờ xác nhận</span></td>
+                  <td>20/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1024')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><strong class="order-code">#ORD-1023</strong></td>
+                  <td>
+                    <div class="customer-cell">
+                      <strong>Trần Thị Mai</strong>
+                      <small>0988 765 432</small>
+                    </div>
+                  </td>
+                  <td>Trà Đinh Thượng Hạng &times; 1, Ấm Tử Sa &times; 1</td>
+                  <td class="text-right font-bold">3.350.000 ₫</td>
+                  <td><span class="badge-payment">COD</span></td>
+                  <td><span class="badge-status badge-processing">Đang xử lý</span></td>
+                  <td>20/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1023')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><strong class="order-code">#ORD-1022</strong></td>
+                  <td>
+                    <div class="customer-cell">
+                      <strong>Lê Hoàng Long</strong>
+                      <small>0903 112 233</small>
+                    </div>
+                  </td>
+                  <td>Trà Móc Câu Hảo Hạng &times; 3</td>
+                  <td class="text-right font-bold">1.440.000 ₫</td>
+                  <td><span class="badge-payment">VietQR</span></td>
+                  <td><span class="badge-status badge-shipped">Đang giao</span></td>
+                  <td>19/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1022')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><strong class="order-code">#ORD-1021</strong></td>
+                  <td>
+                    <div class="customer-cell">
+                      <strong>Phạm Thu Hà</strong>
+                      <small>0977 445 566</small>
+                    </div>
+                  </td>
+                  <td>Bộ 6 Chén Sứ Bạch Ngọc &times; 1</td>
+                  <td class="text-right font-bold">650.000 ₫</td>
+                  <td><span class="badge-payment">MoMo</span></td>
+                  <td><span class="badge-status badge-completed">Hoàn tất</span></td>
+                  <td>19/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1021')">Xem chi tiết</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 2: QUẢN LÝ ĐƠN HÀNG (ORDERS)                                 -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewOrders">
+        
+        <div class="admin-card">
+          <!-- Toolbar -->
+          <div class="toolbar-header">
+            <div class="toolbar-left">
+              <div class="search-input-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="input-search-table" placeholder="Tìm theo mã đơn, tên hoặc SĐT..." id="orderSearchInput">
+              </div>
+
+              <select class="select-filter" id="orderStatusFilter">
+                <option value="all">Tất cả trạng thái</option>
+                <option value="pending">Chờ xác nhận</option>
+                <option value="processing">Đang xử lý</option>
+                <option value="shipped">Đang giao</option>
+                <option value="completed">Hoàn tất</option>
+                <option value="cancelled">Đã hủy</option>
+              </select>
+
+              <select class="select-filter" id="orderDateFilter">
+                <option value="30d">30 ngày gần nhất</option>
+                <option value="7d">7 ngày qua</option>
+                <option value="today">Hôm nay</option>
+              </select>
+            </div>
+
+            <div class="toolbar-right">
+              <button class="btn-secondary" onclick="showAdminToast('Đang xuất danh sách đơn hàng ra file Excel / CSV...')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Xuất CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Order Table -->
+          <div class="table-responsive">
+            <table class="admin-table" id="ordersDataTable">
+              <thead>
+                <tr>
+                  <th width="40"><input type="checkbox" id="selectAllOrders" aria-label="Chọn tất cả"></th>
+                  <th>Mã đơn</th>
+                  <th>Khách hàng</th>
+                  <th>Số điện thoại</th>
+                  <th>Sản phẩm</th>
+                  <th class="text-right">Tổng tiền</th>
+                  <th>Thanh toán</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày đặt</th>
+                  <th class="text-center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-status="pending">
+                  <td><input type="checkbox" class="order-check"></td>
+                  <td><strong class="order-code">#ORD-1024</strong></td>
+                  <td><strong>Nguyễn Văn Nam</strong></td>
+                  <td>0912 345 678</td>
+                  <td>Trà Nõn Tôm &times; 2</td>
+                  <td class="text-right font-bold">1.280.000 ₫</td>
+                  <td><span class="badge-payment">VietQR</span></td>
+                  <td><span class="badge-status badge-pending">Chờ xác nhận</span></td>
+                  <td>20/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1024')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr data-status="processing">
+                  <td><input type="checkbox" class="order-check"></td>
+                  <td><strong class="order-code">#ORD-1023</strong></td>
+                  <td><strong>Trần Thị Mai</strong></td>
+                  <td>0988 765 432</td>
+                  <td>Trà Đinh &times; 1, Ấm Tử Sa &times; 1</td>
+                  <td class="text-right font-bold">3.350.000 ₫</td>
+                  <td><span class="badge-payment">COD</span></td>
+                  <td><span class="badge-status badge-processing">Đang xử lý</span></td>
+                  <td>20/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1023')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr data-status="shipped">
+                  <td><input type="checkbox" class="order-check"></td>
+                  <td><strong class="order-code">#ORD-1022</strong></td>
+                  <td><strong>Lê Hoàng Long</strong></td>
+                  <td>0903 112 233</td>
+                  <td>Trà Móc Câu &times; 3</td>
+                  <td class="text-right font-bold">1.440.000 ₫</td>
+                  <td><span class="badge-payment">VietQR</span></td>
+                  <td><span class="badge-status badge-shipped">Đang giao</span></td>
+                  <td>19/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1022')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr data-status="completed">
+                  <td><input type="checkbox" class="order-check"></td>
+                  <td><strong class="order-code">#ORD-1021</strong></td>
+                  <td><strong>Phạm Thu Hà</strong></td>
+                  <td>0977 445 566</td>
+                  <td>Bộ 6 Chén Sứ Bạch Ngọc &times; 1</td>
+                  <td class="text-right font-bold">650.000 ₫</td>
+                  <td><span class="badge-payment">MoMo</span></td>
+                  <td><span class="badge-status badge-completed">Hoàn tất</span></td>
+                  <td>19/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1021')">Xem chi tiết</button>
+                  </td>
+                </tr>
+
+                <tr data-status="cancelled">
+                  <td><input type="checkbox" class="order-check"></td>
+                  <td><strong class="order-code">#ORD-1020</strong></td>
+                  <td><strong>Hoàng Tuấn Vũ</strong></td>
+                  <td>0934 998 877</td>
+                  <td>Trà Shan Tuyết Cổ Thụ &times; 1</td>
+                  <td class="text-right font-bold">1.200.000 ₫</td>
+                  <td><span class="badge-payment">COD</span></td>
+                  <td><span class="badge-status badge-cancelled">Đã hủy</span></td>
+                  <td>18/08/2026</td>
+                  <td class="text-center">
+                    <button class="btn-action-sm btn-action-view" onclick="openOrderDetail('ORD-1020')">Xem chi tiết</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 3: QUẢN LÝ SẢN PHẨM (PRODUCTS)                              -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewProducts">
+        
+        <div class="admin-card">
+          <div class="toolbar-header">
+            <div class="toolbar-left">
+              <div class="search-input-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="input-search-table" placeholder="Tìm kiếm tên sản phẩm, SKU..." id="productSearchTableInput">
+              </div>
+
+              <select class="select-filter" id="productCategoryFilter">
+                <option value="all">Tất cả danh mục</option>
+                <option value="tradinh">Trà Đinh</option>
+                <option value="nontom">Trà Nõn Tôm</option>
+                <option value="moccau">Trà Móc Câu</option>
+                <option value="teaware">Trà Cụ Tử Sa</option>
+              </select>
+            </div>
+
+            <div class="toolbar-right">
+              <button class="btn-primary" id="btnOpenAddProduct">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Thêm sản phẩm</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ảnh</th>
+                  <th>Tên sản phẩm</th>
+                  <th>SKU</th>
+                  <th>Danh mục</th>
+                  <th class="text-right">Giá bán</th>
+                  <th>Tồn kho</th>
+                  <th>Trạng thái</th>
+                  <th class="text-center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="table-thumb-tea thumb-gold">
+                      <span>TRÀ</span>
+                    </div>
+                  </td>
+                  <td>
+                    <strong>Trà Đinh Tân Cương Thượng Hạng</strong>
+                    <small class="product-sub">Hộp 500g mạ vàng</small>
+                  </td>
+                  <td><code>TD-DINH-500</code></td>
+                  <td>Trà Thượng Hạng</td>
+                  <td class="text-right font-bold">1.500.000 ₫</td>
+                  <td><span class="badge-stock badge-stock-danger">⚠️ Sắp hết hàng (6 hộp)</span></td>
+                  <td><span class="badge-pill-status active">Đang bán</span></td>
+                  <td class="text-center">
+                    <button class="btn-icon-action btn-edit" title="Chỉnh sửa" onclick="openEditProduct('Trà Đinh Tân Cương Thượng Hạng', 'TD-DINH-500', '1500000', '6')">✏️</button>
+                    <button class="btn-icon-action btn-delete" title="Xóa" onclick="confirmDeleteProduct('Trà Đinh Tân Cương Thượng Hạng')">🗑️</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-thumb-tea thumb-green">
+                      <span>NÕN</span>
+                    </div>
+                  </td>
+                  <td>
+                    <strong>Trà Nõn Tôm Thái Nguyên</strong>
+                    <small class="product-sub">Hộp 500g</small>
+                  </td>
+                  <td><code>TD-NON-500</code></td>
+                  <td>Trà Đặc Sản</td>
+                  <td class="text-right font-bold">850.000 ₫</td>
+                  <td><span class="badge-stock badge-stock-success">● Còn hàng (45 hộp)</span></td>
+                  <td><span class="badge-pill-status active">Đang bán</span></td>
+                  <td class="text-center">
+                    <button class="btn-icon-action btn-edit" title="Chỉnh sửa" onclick="openEditProduct('Trà Nõn Tôm Thái Nguyên', 'TD-NON-500', '850000', '45')">✏️</button>
+                    <button class="btn-icon-action btn-delete" title="Xóa" onclick="confirmDeleteProduct('Trà Nõn Tôm Thái Nguyên')">🗑️</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-thumb-tea thumb-brown">
+                      <span>MÓC</span>
+                    </div>
+                  </td>
+                  <td>
+                    <strong>Trà Móc Câu Hảo Hạng</strong>
+                    <small class="product-sub">Hộp 500g</small>
+                  </td>
+                  <td><code>TD-MOC-500</code></td>
+                  <td>Trà Cổ Truyền</td>
+                  <td class="text-right font-bold">480.000 ₫</td>
+                  <td><span class="badge-stock badge-stock-warning">⚠️ Sắp hết (15 hộp)</span></td>
+                  <td><span class="badge-pill-status active">Đang bán</span></td>
+                  <td class="text-center">
+                    <button class="btn-icon-action btn-edit" title="Chỉnh sửa" onclick="openEditProduct('Trà Móc Câu Hảo Hạng', 'TD-MOC-500', '480000', '15')">✏️</button>
+                    <button class="btn-icon-action btn-delete" title="Xóa" onclick="confirmDeleteProduct('Trà Móc Câu Hảo Hạng')">🗑️</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-thumb-tea thumb-pot">
+                      <span>ẤM</span>
+                    </div>
+                  </td>
+                  <td>
+                    <strong>Ấm Tử Sa Thạch Biều</strong>
+                    <small class="product-sub">Dung tích 220ml</small>
+                  </td>
+                  <td><code>TC-AM-220</code></td>
+                  <td>Trà Cụ Nghệ Nhân</td>
+                  <td class="text-right font-bold">1.850.000 ₫</td>
+                  <td><span class="badge-stock badge-stock-danger">⚠️ Sắp hết hàng (3 bộ)</span></td>
+                  <td><span class="badge-pill-status active">Đang bán</span></td>
+                  <td class="text-center">
+                    <button class="btn-icon-action btn-edit" title="Chỉnh sửa" onclick="openEditProduct('Ấm Tử Sa Thạch Biều', 'TC-AM-220', '1850000', '3')">✏️</button>
+                    <button class="btn-icon-action btn-delete" title="Xóa" onclick="confirmDeleteProduct('Ấm Tử Sa Thạch Biều')">🗑️</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 4: QUẢN LÝ TỒN KHO & CẢNH BÁO SẮP HẾT HÀNG (INVENTORY)        -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewInventory">
+        
+        <div class="toolbar-header">
+          <div>
+            <h3 class="card-title">Quản Lý Kho Hàng & Cảnh Báo Tồn Kho</h3>
+            <p class="card-subtitle">Theo dõi số lượng thực tế từng quy cách (100g, 200g, 500g), cảnh báo thiếu hàng và ghi nhận mẻ sao</p>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-secondary" onclick="openAdminModal('modalBatchEntry')">
+              <span>🪵 + Ghi Nhận Mẻ Sao Củi Mới</span>
+            </button>
+            <button class="btn-primary" onclick="showAdminToast('Đang đồng bộ và xuất báo cáo Tồn kho (Excel)...')">
+              <span>📥 Xuất Báo Cáo Kho</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Inventory KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">TỔNG LƯỢNG TỒN KHO</span>
+            <div class="kpi-value text-emerald">486 Hộp/Bộ</div>
+            <span class="trend-text">Đầy đủ 12 dòng sản phẩm</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">CẢNH BÁO SẮP HẾT HÀNG (&lt; 5)</span>
+            <div class="kpi-value text-danger">3 Sản Phẩm</div>
+            <span class="trend-indicator trend-down">⚠️ Cần sao củi gấp</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">MẺ SAO GẦN NHẤT</span>
+            <div class="kpi-value">40 kg (Mẻ #08)</div>
+            <span class="trend-text">Nghệ nhân Đào Văn Thịnh</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">GIÁ TRỊ TỒN KHO ƯỚC TÍNH</span>
+            <div class="kpi-value">386.400.000 ₫</div>
+            <span class="trend-text">Tính theo giá niêm yết</span>
+          </div>
+        </div>
+
+        <!-- Inventory Real-Time Table -->
+        <div class="admin-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <h3 class="card-title">Chi Tiết Tồn Kho Từng Sản Phẩm & Quy Cách</h3>
+            <div class="filter-group">
+              <input type="text" class="table-search-input" placeholder="Tìm theo tên trà, mã SKU..." oninput="filterInventoryTable(this.value)">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table" id="inventoryTable">
+              <thead>
+                <tr>
+                  <th>Sản phẩm</th>
+                  <th>Mã SKU</th>
+                  <th>Quy cách / Khối lượng</th>
+                  <th class="text-right">Giá bán</th>
+                  <th class="text-center">Số lượng tồn</th>
+                  <th>Trạng thái tồn kho</th>
+                  <th class="text-center">Điều chỉnh nhanh</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Trà Đinh Tân Cương Thượng Hạng</strong>
+                    <small class="product-sub">Búp 1 tôm sớm mai</small>
+                  </td>
+                  <td><code>TD-DINH-500</code></td>
+                  <td>Hộp thiếc mạ vàng 500g</td>
+                  <td class="text-right font-bold">1.500.000 ₫</td>
+                  <td class="text-center font-bold">18 hộp</td>
+                  <td><span class="badge-stock badge-stock-success">🟢 Đủ hàng (An toàn)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Trà Đinh 500g', 5)">+5</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Trà Đinh 500g', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Trà Đinh Tân Cương (Hộp Nhỏ)</strong>
+                    <small class="product-sub">Búp 1 tôm sớm mai</small>
+                  </td>
+                  <td><code>TD-DINH-200</code></td>
+                  <td>Hộp thiếc 200g</td>
+                  <td class="text-right font-bold">650.000 ₫</td>
+                  <td class="text-center font-bold">35 hộp</td>
+                  <td><span class="badge-stock badge-stock-success">🟢 Đủ hàng (An toàn)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Trà Đinh 200g', 5)">+5</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Trà Đinh 200g', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Trà Nõn Tôm Thượng Hạng</strong>
+                    <small class="product-sub">1 tôm 1 lá non</small>
+                  </td>
+                  <td><code>TD-NON-500</code></td>
+                  <td>Gói hút chân không 500g</td>
+                  <td class="text-right font-bold">850.000 ₫</td>
+                  <td class="text-center font-bold">42 hộp</td>
+                  <td><span class="badge-stock badge-stock-success">🟢 Đủ hàng (An toàn)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Trà Nõn Tôm 500g', 10)">+10</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Trà Nõn Tôm 500g', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Trà Móc Câu Tân Cương</strong>
+                    <small class="product-sub">Truyền thống xứ Bắc</small>
+                  </td>
+                  <td><code>TD-MOC-500</code></td>
+                  <td>Gói hút chân không 500g</td>
+                  <td class="text-right font-bold">480.000 ₫</td>
+                  <td class="text-center font-bold">28 gói</td>
+                  <td><span class="badge-stock badge-stock-success">🟢 Đủ hàng (An toàn)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Trà Móc Câu 500g', 10)">+10</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Trà Móc Câu 500g', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr class="row-warning-stock">
+                  <td>
+                    <strong>Trà Shan Tuyết Cổ Thụ Hà Giang</strong>
+                    <small class="product-sub">Đỉnh Tây Côn Lĩnh 1800m</small>
+                  </td>
+                  <td><code>TD-SHAN-300</code></td>
+                  <td>Hộp gỗ cao cấp 300g</td>
+                  <td class="text-right font-bold">1.200.000 ₫</td>
+                  <td class="text-center font-bold text-danger">4 hộp</td>
+                  <td><span class="badge-stock badge-stock-danger">🔴 CẢNH BÁO: Còn 4 hộp (Sắp hết)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Trà Shan Tuyết', 10)">+10</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Trà Shan Tuyết', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr class="row-warning-stock">
+                  <td>
+                    <strong>Ấm Tử Sa Thạch Biều Nghệ Nhân</strong>
+                    <small class="product-sub">Đất khoáng Nguyên Khoáng Tử Nê</small>
+                  </td>
+                  <td><code>TC-AM-220</code></td>
+                  <td>Dung tích 220ml</td>
+                  <td class="text-right font-bold">1.850.000 ₫</td>
+                  <td class="text-center font-bold text-danger">2 bộ</td>
+                  <td><span class="badge-stock badge-stock-danger">🔴 CẢNH BÁO: Còn 2 bộ (Khẩn cấp)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Ấm Thạch Biều', 5)">+5</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Ấm Thạch Biều', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Bộ 6 Chén Trà Sứ Ngọc Bích Viền Vàng</strong>
+                    <small class="product-sub">Sứ ngọc cao cấp men rạn</small>
+                  </td>
+                  <td><code>TC-CHEN-6</code></td>
+                  <td>Hộp lót lụa 6 chén</td>
+                  <td class="text-right font-bold">680.000 ₫</td>
+                  <td class="text-center font-bold text-warning">7 bộ</td>
+                  <td><span class="badge-stock badge-stock-warning">🟡 Tồn kho ít (7 bộ)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Bộ 6 Chén Sứ', 5)">+5</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Bộ 6 Chén Sứ', -1)">-1</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Khay Trà Gỗ Hương Đỏ Chạm Khắc Sen</strong>
+                    <small class="product-sub">Gỗ quý nguyên khối</small>
+                  </td>
+                  <td><code>TC-KHAY-SEN</code></td>
+                  <td>Kích thước 48x28cm</td>
+                  <td class="text-right font-bold">1.450.000 ₫</td>
+                  <td class="text-center font-bold">14 chiếc</td>
+                  <td><span class="badge-stock badge-stock-success">🟢 Đủ hàng (An toàn)</span></td>
+                  <td class="text-center">
+                    <button class="btn-stock-quick" onclick="adjustStock('Khay Trà Gỗ', 5)">+5</button>
+                    <button class="btn-stock-quick btn-stock-sub" onclick="adjustStock('Khay Trà Gỗ', -1)">-1</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Lịch Sử Mẻ Sao Củi Nghệ Nhân (Batch Log) -->
+        <div class="admin-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Nhật Ký Nhập Kho Theo Mẻ Sao Củi Nghệ Nhân</h3>
+              <p class="card-subtitle">Theo dõi nguồn gốc xuất xứ, nghệ nhân sao củi và kiểm định chất lượng từng đợt hàng</p>
+            </div>
+            <button class="btn-secondary" onclick="openAdminModal('modalBatchEntry')">+ Thêm Nhật Ký Mẻ Sao</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Mã mẻ sao</th>
+                  <th>Nghệ nhân thực hiện</th>
+                  <th>Dòng chè & Vùng thu hái</th>
+                  <th>Ngày sao củi</th>
+                  <th class="text-right">Khối lượng nhập</th>
+                  <th>Chất lượng kiểm định</th>
+                  <th>Ghi chú nghệ nhân</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>#MSC-2026-08</code></td>
+                  <td><strong>Nghệ nhân Đào Văn Thịnh</strong></td>
+                  <td>Trà Đinh • Đồi chè Tân Cương 1</td>
+                  <td>18/08/2026</td>
+                  <td class="text-right font-bold text-emerald">25 kg</td>
+                  <td><span class="badge-pill-status active">⭐ Xuất Sắc (9.8/10)</span></td>
+                  <td>Hương cốm ngào ngạt, cánh xoăn nhỏ tăm tắp phủ tuyết</td>
+                </tr>
+                <tr>
+                  <td><code>#MSC-2026-07</code></td>
+                  <td><strong>Nghệ nhân Hoàng Đức Thuận</strong></td>
+                  <td>Trà Nõn Tôm • Sườn đồi Khe Cốc</td>
+                  <td>15/08/2026</td>
+                  <td class="text-right font-bold text-emerald">40 kg</td>
+                  <td><span class="badge-pill-status active">⭐ Đạt Chuẩn (9.5/10)</span></td>
+                  <td>Lửa sấy vừa độ, tiền chát thanh dịu, hậu ngọt đậm</td>
+                </tr>
+                <tr>
+                  <td><code>#MSC-2026-06</code></td>
+                  <td><strong>Nghệ nhân Nguyễn Văn Bảy</strong></td>
+                  <td>Trà Móc Câu • Thung lũng sông Công</td>
+                  <td>10/08/2026</td>
+                  <td class="text-right font-bold text-emerald">50 kg</td>
+                  <td><span class="badge-pill-status active">⭐ Đạt Chuẩn (9.2/10)</span></td>
+                  <td>Cánh trà cong móc câu chuẩn lối cổ, nước xanh óng</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 5: THỐNG KÊ SẢN PHẨM & PHÂN TÍCH RA QUYẾT ĐỊNH (ANALYTICS)     -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewAnalytics">
+        
+        <div class="toolbar-header">
+          <div>
+            <h3 class="card-title">Thống Kê Hiệu Suất Sản Phẩm & Phân Tích Chiến Lược</h3>
+            <p class="card-subtitle">Báo cáo phân tích theo chu kỳ giúp chủ doanh nghiệp kiểm soát và ra quyết định thúc đẩy hay cắt giảm sản phẩm</p>
+          </div>
+          <div class="toolbar-right">
+            <div class="time-filter-pills" id="analyticsTimeFilters">
+              <button class="pill-btn" data-days="1" onclick="filterAnalyticsPeriod(1, this)">Hôm nay (1 Ngày)</button>
+              <button class="pill-btn" data-days="7" onclick="filterAnalyticsPeriod(7, this)">7 Ngày Qua</button>
+              <button class="pill-btn active" data-days="30" onclick="filterAnalyticsPeriod(30, this)">30 Ngày Qua</button>
+              <button class="pill-btn" data-days="90" onclick="filterAnalyticsPeriod(90, this)">Quý Này (90 Ngày)</button>
+            </div>
+            <button class="btn-primary" onclick="showAdminToast('Đang xuất báo cáo phân tích hiệu suất sản phẩm (PDF/Excel)...')">
+              <span>📊 Xuất Phân Tích</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Strategic Executive KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card card-kpi-highlight">
+            <span class="kpi-label">SẢN PHẨM BÁN CHẠY NHẤT (STAR)</span>
+            <div class="kpi-value text-emerald" id="statStarProduct">Trà Đinh Tân Cương</div>
+            <span class="trend-indicator trend-up" id="statStarRevenue">Doanh thu: 48.000.000 ₫ (32 hộp)</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">TỶ LỆ CHUYỂN ĐỔI CAO NHẤT</span>
+            <div class="kpi-value text-gold" id="statConversion">14.8% (Trà Nõn Tôm)</div>
+            <span class="trend-text">Khách xem sản phẩm là mua hàng</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">TĂNG TRƯỞNG NHANH NHẤT</span>
+            <div class="kpi-value" id="statFastestGrowth">Ấm Tử Sa Thạch Biều</div>
+            <span class="trend-indicator trend-up" id="statGrowthRate">↑ 42.5% so với kỳ trước</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">SẢN PHẨM TỒN ĐỌNG / BÁN CHẬM</span>
+            <div class="kpi-value text-danger" id="statSlowMoving">Trà Ướp Sen Phổ Thông</div>
+            <span class="trend-indicator trend-down">⚠️ Tốc độ tiêu thụ &lt; 2 hộp/tuần</span>
+          </div>
+        </div>
+
+        <!-- ==================== HỆ THỐNG BIỂU ĐỒ TRỰC QUAN HÀNG 1 ==================== -->
+        <div class="analytics-charts-grid" style="margin-top: 24px;">
+          
+          <!-- BIỂU ĐỒ 1: CỘT NGANG SO SÁNH DOANH THU & TỶ TRỌNG TỪNG SẢN PHẨM -->
+          <div class="admin-card chart-card-large">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📊 Xếp Hạng Doanh Thu & Thị Phần Đóng Góp Từng Sản Phẩm</h3>
+                <p class="card-subtitle">So sánh trực quan mức doanh thu và tỷ trọng % trên tổng doanh số cửa hàng</p>
+              </div>
+              <span class="badge-pill-status active" id="totalRevBadge">Tổng: 128.540.000 ₫</span>
+            </div>
+
+            <div class="horizontal-bar-chart" id="prodRevenueBarChart">
+              <!-- Item 1: Trà Đinh -->
+              <div class="hbar-item">
+                <div class="hbar-header">
+                  <span class="hbar-name">👑 1. Trà Đinh Tân Cương Thượng Hạng</span>
+                  <div class="hbar-values">
+                    <strong class="hbar-money">48.000.000 ₫</strong>
+                    <span class="hbar-percent text-emerald font-bold">37.4%</span>
+                  </div>
+                </div>
+                <div class="hbar-track">
+                  <div class="hbar-fill fill-emerald" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <!-- Item 2: Trà Nõn Tôm -->
+              <div class="hbar-item">
+                <div class="hbar-header">
+                  <span class="hbar-name">🌿 2. Trà Nõn Tôm Thượng Hạng</span>
+                  <div class="hbar-values">
+                    <strong class="hbar-money">40.800.000 ₫</strong>
+                    <span class="hbar-percent text-teal font-bold">31.7%</span>
+                  </div>
+                </div>
+                <div class="hbar-track">
+                  <div class="hbar-fill fill-teal" style="width: 85%;"></div>
+                </div>
+              </div>
+
+              <!-- Item 3: Trà Móc Câu -->
+              <div class="hbar-item">
+                <div class="hbar-header">
+                  <span class="hbar-name">🍵 3. Trà Móc Câu Tân Cương</span>
+                  <div class="hbar-values">
+                    <strong class="hbar-money">18.240.000 ₫</strong>
+                    <span class="hbar-percent text-gold font-bold">14.2%</span>
+                  </div>
+                </div>
+                <div class="hbar-track">
+                  <div class="hbar-fill fill-gold" style="width: 38%;"></div>
+                </div>
+              </div>
+
+              <!-- Item 4: Ấm Tử Sa -->
+              <div class="hbar-item">
+                <div class="hbar-header">
+                  <span class="hbar-name">🫖 4. Ấm Tử Sa Thạch Biều Nghệ Nhân</span>
+                  <div class="hbar-values">
+                    <strong class="hbar-money">14.800.000 ₫</strong>
+                    <span class="hbar-percent text-blue font-bold">11.5%</span>
+                  </div>
+                </div>
+                <div class="hbar-track">
+                  <div class="hbar-fill fill-blue" style="width: 30.8%;"></div>
+                </div>
+              </div>
+
+              <!-- Item 5: Trà Shan Tuyết -->
+              <div class="hbar-item">
+                <div class="hbar-header">
+                  <span class="hbar-name">🏔️ 5. Trà Shan Tuyết Cổ Thụ Hà Giang</span>
+                  <div class="hbar-values">
+                    <strong class="hbar-money">7.200.000 ₫</strong>
+                    <span class="hbar-percent text-purple font-bold">5.6%</span>
+                  </div>
+                </div>
+                <div class="hbar-track">
+                  <div class="hbar-fill fill-purple" style="width: 15%;"></div>
+                </div>
+              </div>
+
+              <!-- Item 6: Trà Ướp Sen -->
+              <div class="hbar-item">
+                <div class="hbar-header">
+                  <span class="hbar-name">🪷 6. Trà Ướp Sen Phổ Thông (Bán Chậm)</span>
+                  <div class="hbar-values">
+                    <strong class="hbar-money">700.000 ₫</strong>
+                    <span class="hbar-percent text-danger font-bold">0.5%</span>
+                  </div>
+                </div>
+                <div class="hbar-track">
+                  <div class="hbar-fill fill-danger" style="width: 3%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BIỂU ĐỒ 2: DONUT CHART CƠ CẤU SẢN LƯỢNG TIÊU THỤ THEO NHÓM SẢN PHẨM -->
+          <div class="admin-card chart-card-medium">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🍩 Cơ Cấu Sản Lượng Theo Danh Mục</h3>
+                <p class="card-subtitle">Tỷ lệ hộp/bộ tiêu thụ thực tế</p>
+              </div>
+            </div>
+
+            <div class="donut-chart-wrapper">
+              <div class="donut-visual-container">
+                <svg viewBox="0 0 160 160" class="donut-svg-chart" id="categoryDonutSvg">
+                  <circle cx="80" cy="80" r="58" class="donut-bg-ring"/>
+                  <!-- Segment 1: Trà Thượng Hạng (38%) -->
+                  <circle cx="80" cy="80" r="58" class="donut-slice slice-emerald" stroke-dasharray="138 226" stroke-dashoffset="0"/>
+                  <!-- Segment 2: Trà Đặc Sản (32%) -->
+                  <circle cx="80" cy="80" r="58" class="donut-slice slice-teal" stroke-dasharray="116 248" stroke-dashoffset="-138"/>
+                  <!-- Segment 3: Trà Truyền Thống (18%) -->
+                  <circle cx="80" cy="80" r="58" class="donut-slice slice-gold" stroke-dasharray="65 299" stroke-dashoffset="-254"/>
+                  <!-- Segment 4: Trà Cụ Tử Sa (12%) -->
+                  <circle cx="80" cy="80" r="58" class="donut-slice slice-blue" stroke-dasharray="45 319" stroke-dashoffset="-319"/>
+                </svg>
+                <div class="donut-center-stat">
+                  <strong id="donutTotalCount">724</strong>
+                  <span>HỘP / BỘ</span>
+                </div>
+              </div>
+
+              <!-- Detailed Legend -->
+              <div class="donut-legend-detailed">
+                <div class="legend-row">
+                  <div class="legend-badge-name">
+                    <span class="color-dot bg-emerald"></span>
+                    <span>Trà Thượng Hạng</span>
+                  </div>
+                  <div class="legend-badge-values">
+                    <strong>275 hộp</strong>
+                    <span class="text-emerald">38.0%</span>
+                  </div>
+                </div>
+
+                <div class="legend-row">
+                  <div class="legend-badge-name">
+                    <span class="color-dot bg-teal"></span>
+                    <span>Trà Đặc Sản</span>
+                  </div>
+                  <div class="legend-badge-values">
+                    <strong>232 hộp</strong>
+                    <span class="text-teal">32.0%</span>
+                  </div>
+                </div>
+
+                <div class="legend-row">
+                  <div class="legend-badge-name">
+                    <span class="color-dot bg-gold"></span>
+                    <span>Trà Truyền Thống</span>
+                  </div>
+                  <div class="legend-badge-values">
+                    <strong>130 hộp</strong>
+                    <span class="text-gold">18.0%</span>
+                  </div>
+                </div>
+
+                <div class="legend-row">
+                  <div class="legend-badge-name">
+                    <span class="color-dot bg-blue"></span>
+                    <span>Trà Cụ & Quà Biếu</span>
+                  </div>
+                  <div class="legend-badge-values">
+                    <strong>87 bộ</strong>
+                    <span class="text-blue">12.0%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================== HỆ THỐNG BIỂU ĐỒ TRỰC QUAN HÀNG 2 ==================== -->
+        <div class="analytics-charts-grid" style="margin-top: 24px;">
+          
+          <!-- BIỂU ĐỒ 3: SO SÁNH LƯỢT XEM (TRAFFIC) VS SỐ ĐƠN MUA THỰC TẾ (CHUYỂN ĐỔI) -->
+          <div class="admin-card chart-card-half">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📈 Phân Tích Phễu Chuyển Đổi: Lượt Xem vs Đơn Mua</h3>
+                <p class="card-subtitle">Phát hiện sản phẩm nào có lượt quan tâm lớn nhưng tỷ lệ mua hàng cần cải thiện</p>
+              </div>
+              <div class="chart-legend-simple">
+                <span class="legend-pill"><span class="dot bg-blue"></span> Lượt Xem Trang</span>
+                <span class="legend-pill"><span class="dot bg-emerald"></span> Số Đơn Mua</span>
+              </div>
+            </div>
+
+            <div class="funnel-conversion-bars" id="conversionFunnelBars">
+              
+              <!-- Product 1 -->
+              <div class="conversion-item">
+                <div class="conv-prod-title">
+                  <strong>Trà Nõn Tôm</strong>
+                  <span class="badge-conv-rate high">14.8% Chốt Đơn (Cao Nhất)</span>
+                </div>
+                <div class="dual-bar-container">
+                  <div class="bar-traffic" style="width: 95%;" title="Lượt xem: 2.180"><span>2.180 views</span></div>
+                  <div class="bar-orders" style="width: 48%;" title="Đã bán: 48 hộp"><span>48 đơn</span></div>
+                </div>
+              </div>
+
+              <!-- Product 2 -->
+              <div class="conversion-item">
+                <div class="conv-prod-title">
+                  <strong>Trà Đinh Tân Cương</strong>
+                  <span class="badge-conv-rate high">12.5% Chốt Đơn (Rất Tốt)</span>
+                </div>
+                <div class="dual-bar-container">
+                  <div class="bar-traffic" style="width: 75%;" title="Lượt xem: 1.420"><span>1.420 views</span></div>
+                  <div class="bar-orders" style="width: 32%;" title="Đã bán: 32 hộp"><span>32 đơn</span></div>
+                </div>
+              </div>
+
+              <!-- Product 3 -->
+              <div class="conversion-item">
+                <div class="conv-prod-title">
+                  <strong>Ấm Tử Sa Thạch Biều</strong>
+                  <span class="badge-conv-rate med">10.4% Chốt Đơn (Tăng Trưởng)</span>
+                </div>
+                <div class="dual-bar-container">
+                  <div class="bar-traffic" style="width: 48%;" title="Lượt xem: 860"><span>860 views</span></div>
+                  <div class="bar-orders" style="width: 16%;" title="Đã bán: 8 bộ"><span>8 đơn</span></div>
+                </div>
+              </div>
+
+              <!-- Product 4 -->
+              <div class="conversion-item">
+                <div class="conv-prod-title">
+                  <strong>Trà Móc Câu</strong>
+                  <span class="badge-conv-rate med">9.2% Chốt Đơn (Ổn Định)</span>
+                </div>
+                <div class="dual-bar-container">
+                  <div class="bar-traffic" style="width: 62%;" title="Lượt xem: 1.150"><span>1.150 views</span></div>
+                  <div class="bar-orders" style="width: 38%;" title="Đã bán: 38 gói"><span>38 đơn</span></div>
+                </div>
+              </div>
+
+              <!-- Product 5 (Low Conversion Alert) -->
+              <div class="conversion-item alert-low-conv">
+                <div class="conv-prod-title">
+                  <strong>Trà Ướp Sen Phổ Thông</strong>
+                  <span class="badge-conv-rate low">⚠️ 2.1% Chốt Đơn (Cực Thấp)</span>
+                </div>
+                <div class="dual-bar-container">
+                  <div class="bar-traffic" style="width: 25%;" title="Lượt xem: 240"><span>240 views</span></div>
+                  <div class="bar-orders" style="width: 4%;" title="Đã bán: 2 hộp"><span>2 đơn</span></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- BIỂU ĐỒ 4: BIỂU ĐỒ CỘT XU HƯỚNG TỐC ĐỘ BÁN HÀNG THEO MỐC THỜI GIAN -->
+          <div class="admin-card chart-card-half">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📊 Xu Hướng Tốc Độ Bán Hàng & Doanh Thu</h3>
+                <p class="card-subtitle">Diễn biến sản lượng bán ra theo từng mốc thời gian</p>
+              </div>
+              <span class="text-emerald font-bold" id="salesVelocityLabel">Trung bình: 12-16 hộp/ngày</span>
+            </div>
+
+            <div class="trend-bar-chart-container">
+              <div class="trend-bars-wrapper" id="trendBarsTimeline">
+                <div class="trend-column"><div class="trend-bar-fill" style="height: 65%;"></div><span class="trend-date-label">T2</span></div>
+                <div class="trend-column"><div class="trend-bar-fill" style="height: 82%;"></div><span class="trend-date-label">T3</span></div>
+                <div class="trend-column"><div class="trend-bar-fill" style="height: 55%;"></div><span class="trend-date-label">T4</span></div>
+                <div class="trend-column"><div class="trend-bar-fill" style="height: 90%;"></div><span class="trend-date-label">T5</span></div>
+                <div class="trend-column"><div class="trend-bar-fill" style="height: 75%;"></div><span class="trend-date-label">T6</span></div>
+                <div class="trend-column"><div class="trend-bar-fill fill-peak" style="height: 100%;"></div><span class="trend-date-label font-bold text-emerald">T7</span></div>
+                <div class="trend-column"><div class="trend-bar-fill fill-peak" style="height: 94%;"></div><span class="trend-date-label font-bold text-emerald">CN</span></div>
+              </div>
+              <div class="trend-chart-footer">
+                <span class="footer-hint">💡 <strong>Nhận định:</strong> Doanh số thưởng trà và mua quà biếu đạt đỉnh cao nhất vào <strong>Thứ 7 & Chủ Nhật</strong> (Tăng 38% so với ngày thường).</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================== MA TRẬN PHÂN LOẠI CHIẾN LƯỢC TRỰC QUAN ==================== -->
+        <div class="admin-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">🧭 Ma Trận Phân Loại Sản Phẩm & Quyết Định Chiến Lược Cho Ban Quản Trị</h3>
+              <p class="card-subtitle">Hệ thống phân tích tự động giúp chủ doanh nghiệp ra quyết định: Thúc đẩy - Kích cầu - Duy trì - Cắt giảm</p>
+            </div>
+          </div>
+
+          <div class="decision-matrix-grid">
+            
+            <!-- Nhóm 1: Ngôi Sao (Bán Chạy Nhất) -->
+            <div class="matrix-card card-star">
+              <div class="matrix-head">
+                <span class="matrix-badge badge-star">🌟 NHÓM NGÔI SAO (BÁN CHẠY NHẤT)</span>
+                <span class="matrix-share">Đóng góp 62% Doanh Thu</span>
+              </div>
+              <h4 class="matrix-prod-names">1. Trà Đinh Tân Cương • 2. Trà Nõn Tôm</h4>
+              <div class="matrix-action-box">
+                <strong>👉 KHUYẾN NGHỊ CHIẾN LƯỢC:</strong>
+                <p><strong>ƯU TIÊN THÚC ĐẨY:</strong> Tăng 20% ngân sách quảng cáo, ưu tiên tuyển chọn nguyên liệu búp chè sớm mai tốt nhất cho nghệ nhân sao củi, đẩy mạnh set quà biếu VIP cho doanh nghiệp.</p>
+              </div>
+            </div>
+
+            <!-- Nhóm 2: Tiềm Năng (High Growth) -->
+            <div class="matrix-card card-growth">
+              <div class="matrix-head">
+                <span class="matrix-badge badge-growth">📈 NHÓM TIỀM NĂNG TĂNG TRƯỞNG</span>
+                <span class="matrix-share">Tăng trưởng +42%</span>
+              </div>
+              <h4 class="matrix-prod-names">1. Ấm Tử Sa Thạch Biều • 2. Bộ Chén Sứ Ngọc Bích</h4>
+              <div class="matrix-action-box">
+                <strong>👉 KHUYẾN NGHỊ CHIẾN LƯỢC:</strong>
+                <p><strong>KÍCH CẦU CHUYỂN ĐỔI:</strong> Tạo Combo ưu đãi "Mua Ấm Tặng Gói Trà Nõn Tôm Dùng Thử", tăng cường video trải nghiệm rót trà thực tế để đẩy nhanh tỷ lệ chốt đơn.</p>
+              </div>
+            </div>
+
+            <!-- Nhóm 3: Ổn Định (Bò Sữa) -->
+            <div class="matrix-card card-stable">
+              <div class="matrix-head">
+                <span class="matrix-badge badge-stable">🛡️ NHÓM DOANH SỐ ỔN ĐỊNH</span>
+                <span class="matrix-share">Doanh số đều đặn</span>
+              </div>
+              <h4 class="matrix-prod-names">1. Trà Móc Câu Tân Cương • 2. Khay Trà Gỗ Hương</h4>
+              <div class="matrix-action-box">
+                <strong>👉 KHUYẾN NGHỊ CHIẾN LƯỢC:</strong>
+                <p><strong>DUY TRÌ TỒN KHO:</strong> Duy trì mức tồn kho an toàn từ 30-50 hộp, sản phẩm giữ chân khách hàng uống trà hàng ngày, tối ưu chi phí bao bì.</p>
+              </div>
+            </div>
+
+            <!-- Nhóm 4: Bán Chậm (Cắt Giảm / Xả Tồn) -->
+            <div class="matrix-card card-slow">
+              <div class="matrix-head">
+                <span class="matrix-badge badge-slow">⚠️ NHÓM BÁN CHẬM / RỦI RO Ứ ĐỌNG</span>
+                <span class="matrix-share">Tồn kho &gt; 45 ngày</span>
+              </div>
+              <h4 class="matrix-prod-names">1. Trà Ướp Sen Phổ Thông • 2. Dụng Cụ Tre Đơn Giản</h4>
+              <div class="matrix-action-box">
+                <strong>👉 KHUYẾN NGHỊ CHIẾN LƯỢC:</strong>
+                <p><strong>CẮT GIẢM & XẢ TỒN:</strong> Tạm dừng sao mẻ lớn dòng này, tạo mã Voucher xả kho 15-20% hoặc tặng kèm quà tri ân đơn hàng lớn để thu hồi vốn lưu động nhanh chóng.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BẢNG THỐNG KÊ CHI TIẾT HIỆU SUẤT TỪNG SẢN PHẨM -->
+        <div class="admin-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <h3 class="card-title">Bảng Chi Tiết Chỉ Số & Hiệu Suất Từng Sản Phẩm (<span id="periodTextLabel">30 Ngày Qua</span>)</h3>
+            <div class="toolbar-right">
+              <input type="text" class="table-search-input" placeholder="Tìm nhanh sản phẩm..." oninput="filterAnalyticsTable(this.value)">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table" id="analyticsTable">
+              <thead>
+                <tr>
+                  <th>Sản phẩm</th>
+                  <th>Danh mục</th>
+                  <th class="text-right">Lượt xem</th>
+                  <th class="text-right">Đã bán</th>
+                  <th class="text-right">Doanh thu</th>
+                  <th class="text-center">Tỷ lệ chuyển đổi</th>
+                  <th class="text-center">Đánh giá</th>
+                  <th>Hành động chiến lược đề xuất</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-star-product">
+                  <td>
+                    <strong>Trà Đinh Tân Cương Thượng Hạng</strong>
+                    <small class="product-sub">Top 1 Doanh Thu</small>
+                  </td>
+                  <td>Trà Thượng Hạng</td>
+                  <td class="text-right">1.420</td>
+                  <td class="text-right font-bold text-emerald">32 hộp</td>
+                  <td class="text-right font-bold text-emerald">48.000.000 ₫</td>
+                  <td class="text-center"><span class="badge-pill-status active">12.5% (Rất Tốt)</span></td>
+                  <td class="text-center font-bold text-gold">5.0 ⭐ (18)</td>
+                  <td><span class="action-tag tag-promote">🌟 Ưu tiên đẩy mạnh Marketing & Quà biếu</span></td>
+                </tr>
+
+                <tr class="row-star-product">
+                  <td>
+                    <strong>Trà Nõn Tôm Thượng Hạng</strong>
+                    <small class="product-sub">Sản lượng bán nhiều nhất</small>
+                  </td>
+                  <td>Trà Đặc Sản</td>
+                  <td class="text-right">2.180</td>
+                  <td class="text-right font-bold text-emerald">48 hộp</td>
+                  <td class="text-right font-bold text-emerald">40.800.000 ₫</td>
+                  <td class="text-center"><span class="badge-pill-status active">14.8% (Cao Nhất)</span></td>
+                  <td class="text-center font-bold text-gold">4.9 ⭐ (36)</td>
+                  <td><span class="action-tag tag-promote">🌟 Nhập thêm nguyên liệu, giữ vị trí Top đầu</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Trà Móc Câu Tân Cương</strong>
+                    <small class="product-sub">Dòng trà truyền thống</small>
+                  </td>
+                  <td>Trà Truyền Thống</td>
+                  <td class="text-right">1.150</td>
+                  <td class="text-right font-bold">38 gói</td>
+                  <td class="text-right font-bold text-emerald">18.240.000 ₫</td>
+                  <td class="text-center"><span class="badge-pill-status">9.2% (Ổn Định)</span></td>
+                  <td class="text-center font-bold text-gold">4.8 ⭐ (14)</td>
+                  <td><span class="action-tag tag-maintain">🛡️ Duy trì tồn kho đều đặn hàng tuần</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Ấm Tử Sa Thạch Biều Nghệ Nhân</strong>
+                    <small class="product-sub">Tăng trưởng +42%</small>
+                  </td>
+                  <td>Trà Cụ Nghệ Nhân</td>
+                  <td class="text-right">860</td>
+                  <td class="text-right font-bold text-emerald">8 bộ</td>
+                  <td class="text-right font-bold text-emerald">14.800.000 ₫</td>
+                  <td class="text-center"><span class="badge-pill-status active">10.4% (Tăng Trưởng)</span></td>
+                  <td class="text-center font-bold text-gold">5.0 ⭐ (8)</td>
+                  <td><span class="action-tag tag-combo">📈 Làm Combo kèm trà & Tặng mẫu thử</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <strong>Trà Shan Tuyết Cổ Thụ Hà Giang</strong>
+                    <small class="product-sub">Đặc sản đỉnh cao 1800m</small>
+                  </td>
+                  <td>Trà Cổ Thụ</td>
+                  <td class="text-right">720</td>
+                  <td class="text-right font-bold">6 hộp</td>
+                  <td class="text-right font-bold text-emerald">7.200.000 ₫</td>
+                  <td class="text-center"><span class="badge-pill-status">7.1% (Vừa Phải)</span></td>
+                  <td class="text-center font-bold text-gold">4.9 ⭐ (5)</td>
+                  <td><span class="action-tag tag-maintain">🛡️ Nhập số lượng vừa phải theo mùa tuyết</span></td>
+                </tr>
+
+                <tr class="row-slow-product">
+                  <td>
+                    <strong>Trà Ướp Sen Phổ Thông</strong>
+                    <small class="product-sub">Bán chậm & Lượng xem ít</small>
+                  </td>
+                  <td>Trà Hương Hoa</td>
+                  <td class="text-right">240</td>
+                  <td class="text-right font-bold text-danger">2 hộp</td>
+                  <td class="text-right font-bold">700.000 ₫</td>
+                  <td class="text-center"><span class="badge-pill-status badge-danger">2.1% (Thấp)</span></td>
+                  <td class="text-center font-bold text-gold">4.2 ⭐ (2)</td>
+                  <td><span class="action-tag tag-cut">⚠️ CẮT GIẢM / Áp dụng Voucher Xả Tồn 20%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 6: QUẢN LÝ ĐÁNH GIÁ & KIỂM DUYỆT PHẢN HỒI (REVIEWS)           -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewReviews">
+        
+        <div class="toolbar-header">
+          <div>
+            <h3 class="card-title">Quản Lý Đánh Giá & Kiểm Duyệt Phản Hồi</h3>
+            <p class="card-subtitle">Kiểm duyệt cảm nhận thưởng trà của khách hàng, ghim lên trang chủ hoặc trả lời phản hồi trực tiếp</p>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-primary" onclick="showAdminToast('Đang cập nhật trạng thái toàn bộ đánh giá...')">
+              <span>🔄 Làm mới danh sách</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Reviews KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">ĐIỂM ĐÁNH GIÁ TRUNG BÌNH</span>
+            <div class="kpi-value text-gold">4.9 / 5.0 ⭐</div>
+            <span class="trend-indicator trend-up">98.2% Khách hàng hài lòng</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">TỔNG ĐÁNH GIÁ ĐÃ NHẬN</span>
+            <div class="kpi-value">128 Lượt</div>
+            <span class="trend-text">Từ website và fanpage</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">ĐANG CHỜ KIỂM DUYỆT</span>
+            <div class="kpi-value text-danger" id="reviewsPendingCount">3 Mới</div>
+            <span class="trend-indicator trend-down">Cần Admin xét duyệt</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">ĐÃ GHIM LÊN TRANG CHỦ</span>
+            <div class="kpi-value text-emerald">3 Đánh Giá</div>
+            <span class="trend-text">Hiển thị mục "Chia sẻ chân thành"</span>
+          </div>
+        </div>
+
+        <!-- Reviews Filter Tabs -->
+        <div class="review-tabs-bar" style="margin-top: 24px;">
+          <button class="review-tab-btn active" data-filter="all" onclick="filterReviewCards('all', this)">Tất cả (6)</button>
+          <button class="review-tab-btn" data-filter="pending" onclick="filterReviewCards('pending', this)">⏳ Chờ duyệt (2)</button>
+          <button class="review-tab-btn" data-filter="pinned" onclick="filterReviewCards('pinned', this)">📌 Đã ghim Trang Chủ (3)</button>
+          <button class="review-tab-btn" data-filter="approved" onclick="filterReviewCards('approved', this)">✓ Đã duyệt (4)</button>
+          <button class="review-tab-btn" data-filter="hidden" onclick="filterReviewCards('hidden', this)">🚫 Đã ẩn (0)</button>
+        </div>
+
+        <!-- Reviews List Moderation Cards -->
+        <div class="reviews-moderation-list" id="reviewsModList" style="margin-top: 20px;">
+          
+          <!-- Review Card 1 (Pinned) -->
+          <article class="mod-review-card pinned" data-status="pinned">
+            <div class="mod-review-header">
+              <div class="mod-author-info">
+                <div class="mod-author-avatar">NC</div>
+                <div>
+                  <h4 class="mod-author-name">Bác Nguyễn Văn Cường <span class="badge-loc">Ba Đình, Hà Nội</span></h4>
+                  <div class="mod-stars">⭐⭐⭐⭐⭐ • <span class="mod-product-target">Sản phẩm: Trà Đinh Tân Cương Thượng Hạng</span></div>
+                </div>
+              </div>
+              <div class="mod-status-right">
+                <span class="badge-review-status pinned">📌 Đang Ghim Trang Chủ</span>
+                <span class="mod-date">18/08/2026</span>
+              </div>
+            </div>
+
+            <p class="mod-review-content">
+              “Tôi uống trà Thái Nguyên đã gần 40 năm nay, dòng Trà Đinh này của quán thực sự đạt chuẩn thượng hạng. Cánh trà nhỏ tăm tắp phủ tuyết trắng, nước trong xanh ánh vàng, hương cốm thơm lừng cả gian phòng khách. Mua biếu tặng bạn bè ai cũng khen ngợi nức nở.”
+            </p>
+
+            <!-- Admin Reply Box -->
+            <div class="admin-reply-box">
+              <div class="reply-header">
+                <strong>👑 Phản hồi từ Trà Đạo Thái Nguyên:</strong>
+                <small>18/08/2026</small>
+              </div>
+              <p class="reply-text">Dạ kính chào bác Cường, Trà Đạo Thái Nguyên vô cùng cảm kích trước tình cảm và sự gắn bó của bác. Chúng con kính chúc bác luôn dồi dào sức khỏe và luôn tìm thấy niềm an lạc bên chén trà mỗi ngày ạ!</p>
+            </div>
+
+            <div class="mod-actions-footer">
+              <button class="btn-mod-action btn-unpin" onclick="togglePinReview(this)">Gỡ khỏi Trang Chủ</button>
+              <button class="btn-mod-action btn-reply" onclick="openReplyModal('Bác Nguyễn Văn Cường')">Sửa phản hồi</button>
+              <button class="btn-mod-action btn-hide" onclick="hideReview(this)">Ẩn đánh giá</button>
+            </div>
+          </article>
+
+          <!-- Review Card 2 (Pinned) -->
+          <article class="mod-review-card pinned" data-status="pinned">
+            <div class="mod-review-header">
+              <div class="mod-author-info">
+                <div class="mod-author-avatar">HT</div>
+                <div>
+                  <h4 class="mod-author-name">Bác Hoàng Minh Tuấn <span class="badge-loc">Lê Chân, Hải Phòng</span></h4>
+                  <div class="mod-stars">⭐⭐⭐⭐⭐ • <span class="mod-product-target">Sản phẩm: Ấm Tử Sa Thạch Biều & Trà Nõn Tôm</span></div>
+                </div>
+              </div>
+              <div class="mod-status-right">
+                <span class="badge-review-status pinned">📌 Đang Ghim Trang Chủ</span>
+                <span class="mod-date">15/08/2026</span>
+              </div>
+            </div>
+
+            <p class="mod-review-content">
+              “Ấm Tử Sa Thạch Biều và Trà Nõn Tôm kết hợp rất tuyệt vời. Uống ngụm trà vào thấy nhẹ lòng, vị ngọt hậu lưu giữ rất lâu trong cổ họng. Bao bì đóng gói cẩn thận, giao hàng hỏa tốc.”
+            </p>
+
+            <div class="mod-actions-footer">
+              <button class="btn-mod-action btn-unpin" onclick="togglePinReview(this)">Gỡ khỏi Trang Chủ</button>
+              <button class="btn-mod-action btn-reply" onclick="openReplyModal('Bác Hoàng Minh Tuấn')">💬 Viết phản hồi</button>
+              <button class="btn-mod-action btn-hide" onclick="hideReview(this)">Ẩn đánh giá</button>
+            </div>
+          </article>
+
+          <!-- Review Card 3 (Pinned) -->
+          <article class="mod-review-card pinned" data-status="pinned">
+            <div class="mod-review-header">
+              <div class="mod-author-info">
+                <div class="mod-author-avatar">TM</div>
+                <div>
+                  <h4 class="mod-author-name">Chị Trần Thị Mai <span class="badge-loc">Hải Châu, Đà Nẵng</span></h4>
+                  <div class="mod-stars">⭐⭐⭐⭐⭐ • <span class="mod-product-target">Sản phẩm: Hộp Quà Biếu Trà Đinh Lót Lụa</span></div>
+                </div>
+              </div>
+              <div class="mod-status-right">
+                <span class="badge-review-status pinned">📌 Đang Ghim Trang Chủ</span>
+                <span class="mod-date">12/08/2026</span>
+              </div>
+            </div>
+
+            <p class="mod-review-content">
+              “Hộp thiếc mạ vàng và lụa vàng lót bên trong rất sang trọng. Tôi đặt làm quà biếu đối tác doanh nghiệp dịp tết vừa rồi, ai nhận được cũng tấm tắc khen vị trà đậm đà thanh khiết.”
+            </p>
+
+            <div class="mod-actions-footer">
+              <button class="btn-mod-action btn-unpin" onclick="togglePinReview(this)">Gỡ khỏi Trang Chủ</button>
+              <button class="btn-mod-action btn-reply" onclick="openReplyModal('Chị Trần Thị Mai')">💬 Viết phản hồi</button>
+              <button class="btn-mod-action btn-hide" onclick="hideReview(this)">Ẩn đánh giá</button>
+            </div>
+          </article>
+
+          <!-- Review Card 4 (Pending Moderation) -->
+          <article class="mod-review-card pending" data-status="pending">
+            <div class="mod-review-header">
+              <div class="mod-author-info">
+                <div class="mod-author-avatar">ĐB</div>
+                <div>
+                  <h4 class="mod-author-name">Anh Đặng Quốc Bảo <span class="badge-loc">Quận 1, TP. Hồ Chí Minh</span></h4>
+                  <div class="mod-stars">⭐⭐⭐⭐⭐ • <span class="mod-product-target">Sản phẩm: Trà Shan Tuyết Cổ Thụ Hà Giang</span></div>
+                </div>
+              </div>
+              <div class="mod-status-right">
+                <span class="badge-review-status pending">⏳ Đang Chờ Duyệt</span>
+                <span class="mod-date">Hôm nay - 09:15</span>
+              </div>
+            </div>
+
+            <p class="mod-review-content">
+              “Lần đầu tiên thưởng thức trà Shan Tuyết cổ thụ trên núi cao, vị ngọt đọng sâu như mật ong rừng, nước trà sánh vàng rất cuốn hút. Shop gói hàng rất kỹ lưỡng, giao vào Sài Gòn chỉ 2 ngày.”
+            </p>
+
+            <div class="mod-actions-footer">
+              <button class="btn-mod-action btn-approve" onclick="approveReview(this)">✅ Duyệt Hiển Thị</button>
+              <button class="btn-mod-action btn-pin" onclick="pinReview(this)">📌 Duyệt & Ghim Trang Chủ</button>
+              <button class="btn-mod-action btn-reply" onclick="openReplyModal('Anh Đặng Quốc Bảo')">💬 Viết phản hồi</button>
+              <button class="btn-mod-action btn-hide" onclick="hideReview(this)">Ẩn đánh giá</button>
+            </div>
+          </article>
+
+          <!-- Review Card 5 (Pending Moderation) -->
+          <article class="mod-review-card pending" data-status="pending">
+            <div class="mod-review-header">
+              <div class="mod-author-info">
+                <div class="mod-author-avatar">PV</div>
+                <div>
+                  <h4 class="mod-author-name">Bác Phạm Văn Đức <span class="badge-loc">Cầu Giấy, Hà Nội</span></h4>
+                  <div class="mod-stars">⭐⭐⭐⭐ • <span class="mod-product-target">Sản phẩm: Trà Móc Câu Tân Cương</span></div>
+                </div>
+              </div>
+              <div class="mod-status-right">
+                <span class="badge-review-status pending">⏳ Đang Chờ Duyệt</span>
+                <span class="mod-date">Hôm qua - 16:40</span>
+              </div>
+            </div>
+
+            <p class="mod-review-content">
+              “Vị chát dịu, hậu ngọt rất đượm đúng chất trà Thái Nguyên truyền thống. Chỉ có điều đơn vị giao hàng giao muộn hơn hẹn 2 tiếng vì trời mưa lớn. Tuy nhiên trà rất ngon.”
+            </p>
+
+            <div class="mod-actions-footer">
+              <button class="btn-mod-action btn-approve" onclick="approveReview(this)">✅ Duyệt Hiển Thị</button>
+              <button class="btn-mod-action btn-reply" onclick="openReplyModal('Bác Phạm Văn Đức')">💬 Viết phản hồi giải thích</button>
+              <button class="btn-mod-action btn-hide" onclick="hideReview(this)">Ẩn đánh giá</button>
+            </div>
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 7: QUẢN LÝ DANH MỤC (CATEGORIES)                             -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewCategories">
+        
+        <div class="admin-card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Danh Mục Sản Phẩm</h3>
+              <p class="card-subtitle">Quản lý các nhóm sản phẩm và danh mục phân loại</p>
+            </div>
+            <button class="btn-primary" id="btnOpenAddCategory">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>+ Thêm danh mục</span>
+            </button>
+          </div>
+
+          <div class="category-grid">
+            
+            <div class="category-card">
+              <div class="cat-header">
+                <span class="cat-icon">🌿</span>
+                <div class="cat-actions">
+                  <button class="btn-cat-edit" onclick="showAdminToast('Mở chỉnh sửa danh mục Trà Nõn Tôm')">Sửa</button>
+                  <button class="btn-cat-delete" onclick="confirmDeleteCategory('Trà Nõn Tôm')">Xóa</button>
+                </div>
+              </div>
+              <h4 class="cat-name">Trà Nõn Tôm</h4>
+              <code class="cat-slug">tra-non-tom</code>
+              <div class="cat-footer">
+                <span class="cat-count">12 sản phẩm</span>
+              </div>
+            </div>
+
+            <div class="category-card">
+              <div class="cat-header">
+                <span class="cat-icon">🍵</span>
+                <div class="cat-actions">
+                  <button class="btn-cat-edit" onclick="showAdminToast('Mở chỉnh sửa danh mục Trà Móc Câu')">Sửa</button>
+                  <button class="btn-cat-delete" onclick="confirmDeleteCategory('Trà Móc Câu')">Xóa</button>
+                </div>
+              </div>
+              <h4 class="cat-name">Trà Móc Câu</h4>
+              <code class="cat-slug">tra-moc-cau</code>
+              <div class="cat-footer">
+                <span class="cat-count">8 sản phẩm</span>
+              </div>
+            </div>
+
+            <div class="category-card">
+              <div class="cat-header">
+                <span class="cat-icon">👑</span>
+                <div class="cat-actions">
+                  <button class="btn-cat-edit" onclick="showAdminToast('Mở chỉnh sửa danh mục Trà Đinh')">Sửa</button>
+                  <button class="btn-cat-delete" onclick="confirmDeleteCategory('Trà Đinh')">Xóa</button>
+                </div>
+              </div>
+              <h4 class="cat-name">Trà Đinh Thượng Hạng</h4>
+              <code class="cat-slug">tra-dinh</code>
+              <div class="cat-footer">
+                <span class="cat-count">5 sản phẩm</span>
+              </div>
+            </div>
+
+            <div class="category-card">
+              <div class="cat-header">
+                <span class="cat-icon">🫖</span>
+                <div class="cat-actions">
+                  <button class="btn-cat-edit" onclick="showAdminToast('Mở chỉnh sửa danh mục Trà Cụ Tử Sa')">Sửa</button>
+                  <button class="btn-cat-delete" onclick="confirmDeleteCategory('Trà Cụ Tử Sa')">Xóa</button>
+                </div>
+              </div>
+              <h4 class="cat-name">Trà Cụ Tử Sa</h4>
+              <code class="cat-slug">tra-cu-tu-sa</code>
+              <div class="cat-footer">
+                <span class="cat-count">4 sản phẩm</span>
+              </div>
+            </div>
+
+            <div class="category-card">
+              <div class="cat-header">
+                <span class="cat-icon">🎁</span>
+                <div class="cat-actions">
+                  <button class="btn-cat-edit" onclick="showAdminToast('Mở chỉnh sửa danh mục Quà Biếu Cao Cấp')">Sửa</button>
+                  <button class="btn-cat-delete" onclick="confirmDeleteCategory('Quà Biếu Cao Cấp')">Xóa</button>
+                </div>
+              </div>
+              <h4 class="cat-name">Quà Biếu Cao Cấp</h4>
+              <code class="cat-slug">qua-bieu-cao-cap</code>
+              <div class="cat-footer">
+                <span class="cat-count">9 sản phẩm</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 5: BÁO CÁO DOANH THU (REVENUE)                               -->
+      <!-- ================================================================= -->
+      <section class="admin-view" id="viewRevenue">
+        
+        <div class="toolbar-header" style="margin-bottom: 20px;">
+          <div>
+            <h3 class="card-title">Báo Cáo Hiệu Quả Kinh Doanh</h3>
+            <p class="card-subtitle">Thống kê chi tiết doanh thu, số đơn và sản lượng bán ra</p>
+          </div>
+          <div class="toolbar-right">
+            <div class="chart-filters">
+              <button class="chart-filter-btn">Hôm nay</button>
+              <button class="chart-filter-btn">7 ngày</button>
+              <button class="chart-filter-btn active">30 ngày</button>
+              <button class="chart-filter-btn">Tháng này</button>
+              <button class="chart-filter-btn">Năm nay</button>
+            </div>
+            <button class="btn-primary" onclick="showAdminToast('Đang tạo và tải về tệp Báo cáo Doanh thu (CSV)...')">
+              <span>📥 Xuất CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Revenue Metrics -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">DOANH THU TỔNG</span>
+            <div class="kpi-value text-emerald">128.500.000 ₫</div>
+            <span class="trend-indicator trend-up">↑ 12.5%</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">SỐ ĐƠN HOÀN THÀNH</span>
+            <div class="kpi-value">328 đơn</div>
+            <span class="trend-indicator trend-up">↑ 8.2%</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">GIÁ TRỊ ĐƠN TRUNG BÌNH</span>
+            <div class="kpi-value">391.768 ₫</div>
+            <span class="trend-text">Trung bình mỗi đơn</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">SẢN PHẨM ĐÃ BÁN</span>
+            <div class="kpi-value">724 hộp</div>
+            <span class="trend-text">Đóng gói và giao đi</span>
+          </div>
+        </div>
+
+        <!-- Revenue Breakdown Table -->
+        <div class="admin-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <h3 class="card-title">Chi Tiết Doanh Thu Theo Tuần</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th class="text-right">Số đơn</th>
+                  <th class="text-right">Sản phẩm bán</th>
+                  <th class="text-right">Doanh thu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Tuần 4 (15/08 - 20/08)</strong></td>
+                  <td class="text-right">92 đơn</td>
+                  <td class="text-right">198 hộp</td>
+                  <td class="text-right font-bold text-emerald">36.500.000 ₫</td>
+                </tr>
+                <tr>
+                  <td><strong>Tuần 3 (08/08 - 14/08)</strong></td>
+                  <td class="text-right">84 đơn</td>
+                  <td class="text-right">180 hộp</td>
+                  <td class="text-right font-bold text-emerald">32.800.000 ₫</td>
+                </tr>
+                <tr>
+                  <td><strong>Tuần 2 (01/08 - 07/08)</strong></td>
+                  <td class="text-right">76 đơn</td>
+                  <td class="text-right">165 hộp</td>
+                  <td class="text-right font-bold text-emerald">29.400.000 ₫</td>
+                </tr>
+                <tr>
+                  <td><strong>Tuần 1 (25/07 - 31/07)</strong></td>
+                  <td class="text-right">76 đơn</td>
+                  <td class="text-right">181 hộp</td>
+                  <td class="text-right font-bold text-emerald">29.800.000 ₫</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODAL 1: ORDER DETAIL (#ORD-1024) ==================== -->
+  <div class="admin-modal-backdrop" id="modalOrderDetail" aria-hidden="true" role="dialog">
+    <div class="admin-modal-box modal-lg">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-heading">Chi Tiết Đơn Hàng <span id="modalOrderCode">#ORD-1024</span></h2>
+          <p class="modal-subheading">Thời gian đặt: 10:30 - 20/08/2026</p>
+        </div>
+        <button class="modal-close" onclick="closeAdminModal('modalOrderDetail')">&times;</button>
+      </div>
+
+      <div class="modal-body-content">
+        <!-- 2 Columns in Modal -->
+        <div class="order-detail-grid">
+          
+          <!-- Left: Customer & Products -->
+          <div class="order-left-pane">
+            
+            <div class="detail-section">
+              <h4 class="section-badge-title">THÔNG TIN KHÁCH HÀNG</h4>
+              <div class="info-data-grid">
+                <div><span class="label">Họ tên:</span> <strong>Nguyễn Văn Nam</strong></div>
+                <div><span class="label">Số điện thoại:</span> <strong>0912 345 678</strong></div>
+                <div><span class="label">Địa chỉ:</span> <span>Số 45 Tràng Tiền, Hoàn Kiếm, Hà Nội</span></div>
+                <div><span class="label">Ghi chú:</span> <em>"Giao giờ hành chính, gọi trước khi đến 15 phút."</em></div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h4 class="section-badge-title">DANH SÁCH SẢN PHẨM</h4>
+              <div class="order-items-list">
+                <div class="order-item-row">
+                  <div class="item-pic">NÕN</div>
+                  <div class="item-name-box">
+                    <strong>Trà Nõn Tôm Thái Nguyên</strong>
+                    <small>Hộp 500g cao cấp</small>
+                  </div>
+                  <div class="item-qty">&times; 2</div>
+                  <div class="item-price">640.000 ₫</div>
+                  <div class="item-subtotal">1.280.000 ₫</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h4 class="section-badge-title">TỔNG KẾT THANH TOÁN</h4>
+              <div class="pricing-summary-box">
+                <div class="calc-row"><span>Tạm tính:</span> <span>1.280.000 ₫</span></div>
+                <div class="calc-row"><span>Phí vận chuyển:</span> <span>Miễn phí</span></div>
+                <div class="calc-row"><span>Giảm giá khuyến mãi:</span> <span>0 ₫</span></div>
+                <div class="calc-row calc-total"><span>Tổng cộng:</span> <strong>1.280.000 ₫</strong></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Payment, Status & Timeline -->
+          <div class="order-right-pane">
+            
+            <div class="detail-section">
+              <h4 class="section-badge-title">TRẠNG THÁI & THANH TOÁN</h4>
+              <div class="status-manage-box">
+                <label for="modalStatusSelect" class="status-label">Cập nhật trạng thái:</label>
+                <select id="modalStatusSelect" class="status-dropdown-select">
+                  <option value="pending" selected>Chờ xác nhận</option>
+                  <option value="processing">Đang xử lý</option>
+                  <option value="shipped">Đang giao</option>
+                  <option value="completed">Hoàn tất</option>
+                  <option value="cancelled">Đã hủy</option>
+                </select>
+
+                <div class="payment-detail-pill">
+                  <span>Phương thức: <strong>VietQR (Đã thanh toán)</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="detail-section">
+              <h4 class="section-badge-title">LỊCH SỬ ĐƠN HÀNG</h4>
+              <div class="timeline-container">
+                <div class="timeline-step done">
+                  <span class="timeline-dot"></span>
+                  <div class="timeline-info">
+                    <strong>Đơn hàng được tạo thành công</strong>
+                    <small>10:30 - 20/08/2026</small>
+                  </div>
+                </div>
+
+                <div class="timeline-step done">
+                  <span class="timeline-dot"></span>
+                  <div class="timeline-info">
+                    <strong>Đã nhận thanh toán qua VietQR</strong>
+                    <small>10:32 - 20/08/2026</small>
+                  </div>
+                </div>
+
+                <div class="timeline-step current">
+                  <span class="timeline-dot"></span>
+                  <div class="timeline-info">
+                    <strong>Chờ xác nhận đóng gói hàng</strong>
+                    <small>10:35 - 20/08/2026</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer-actions">
+        <button class="btn-secondary" onclick="closeAdminModal('modalOrderDetail')">Đóng</button>
+        <button class="btn-secondary" onclick="showAdminToast('🖨 Đang kết nối máy in hóa đơn VAT cho đơn hàng...')">🖨 In hóa đơn</button>
+        <button class="btn-primary" onclick="updateOrderStatus()">Cập nhật trạng thái</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: ADD / EDIT PRODUCT ==================== -->
+  <div class="admin-modal-backdrop" id="modalProductForm" aria-hidden="true" role="dialog">
+    <div class="admin-modal-box modal-md">
+      <div class="modal-head">
+        <h2 class="modal-heading" id="productModalTitle">Thêm Sản Phẩm Mới</h2>
+        <button class="modal-close" onclick="closeAdminModal('modalProductForm')">&times;</button>
+      </div>
+
+      <form id="formProductAdmin" onsubmit="handleProductSubmit(event)">
+        <div class="modal-form-body">
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="prodName">Tên sản phẩm *</label>
+              <input type="text" id="prodName" class="form-control" placeholder="Ví dụ: Trà Đinh Tân Cương Thượng Hạng" required>
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="prodSKU">Mã SKU</label>
+              <input type="text" id="prodSKU" class="form-control" placeholder="TD-DINH-500">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="prodCategory">Danh mục *</label>
+              <select id="prodCategory" class="form-control" required>
+                <option value="Trà Thượng Hạng">Trà Thượng Hạng</option>
+                <option value="Trà Đặc Sản">Trà Đặc Sản</option>
+                <option value="Trà Cổ Truyền">Trà Cổ Truyền</option>
+                <option value="Trà Cụ Tử Sa">Trà Cụ Tử Sa</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="prodStock">Số lượng tồn kho *</label>
+              <input type="number" id="prodStock" class="form-control" placeholder="50" min="0" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="prodPrice">Giá bán (₫) *</label>
+              <input type="number" id="prodPrice" class="form-control" placeholder="1500000" required>
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="prodOldPrice">Giá gốc niêm yết (₫)</label>
+              <input type="number" id="prodOldPrice" class="form-control" placeholder="1800000">
+            </div>
+          </div>
+
+          <div class="form-group-full">
+            <label class="form-label" for="prodDesc">Mô tả sản phẩm</label>
+            <textarea id="prodDesc" class="form-control" rows="3" placeholder="Nhập mô tả hương vị, xuất xứ và quy cách đóng gói..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-secondary" onclick="closeAdminModal('modalProductForm')">Hủy</button>
+          <button type="submit" class="btn-primary">Lưu sản phẩm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: ADD CATEGORY ==================== -->
+  <div class="admin-modal-backdrop" id="modalCategoryForm" aria-hidden="true" role="dialog">
+    <div class="admin-modal-box modal-sm">
+      <div class="modal-head">
+        <h2 class="modal-heading">Thêm Danh Mục Mới</h2>
+        <button class="modal-close" onclick="closeAdminModal('modalCategoryForm')">&times;</button>
+      </div>
+
+      <form id="formCategoryAdmin" onsubmit="handleCategorySubmit(event)">
+        <div class="modal-form-body">
+          <div class="form-group-full">
+            <label class="form-label" for="catNameInput">Tên danh mục *</label>
+            <input type="text" id="catNameInput" class="form-control" placeholder="Ví dụ: Trà Shan Tuyết Cổ Thụ" required>
+          </div>
+          <div class="form-group-full">
+            <label class="form-label" for="catSlugInput">Đường dẫn Slug *</label>
+            <input type="text" id="catSlugInput" class="form-control" placeholder="tra-shan-tuyet-co-thu" required>
+          </div>
+        </div>
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-secondary" onclick="closeAdminModal('modalCategoryForm')">Hủy</button>
+          <button type="submit" class="btn-primary">Tạo danh mục</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 4: CONFIRMATION DELETE DIALOG ==================== -->
+  <div class="admin-modal-backdrop" id="modalConfirmDelete" aria-hidden="true" role="dialog">
+    <div class="admin-modal-box modal-sm">
+      <div class="delete-dialog-content">
+        <div class="delete-icon-box">🗑️</div>
+        <h3 class="delete-title">Xác Nhận Xóa?</h3>
+        <p class="delete-desc" id="deleteTargetText">Bạn có chắc chắn muốn xóa mục này khỏi hệ thống? Hành động này không thể hoàn tác.</p>
+        
+        <div class="delete-actions">
+          <button class="btn-secondary" onclick="closeAdminModal('modalConfirmDelete')">Hủy bỏ</button>
+          <button class="btn-danger" id="btnConfirmDeleteAction">Xóa vĩnh viễn</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 5: GHI NHẬN MẺ SAO CỦI NGHỆ NHÂN ==================== -->
+  <div class="admin-modal-backdrop" id="modalBatchEntry" aria-hidden="true" role="dialog">
+    <div class="admin-modal-box modal-md">
+      <div class="modal-head">
+        <h2 class="modal-heading">🪵 Ghi Nhận Mẻ Sao Củi Mới Của Nghệ Nhân</h2>
+        <button class="modal-close" onclick="closeAdminModal('modalBatchEntry')">&times;</button>
+      </div>
+
+      <form id="formBatchEntry" onsubmit="handleBatchSubmit(event)">
+        <div class="modal-form-body">
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="batchCode">Mã mẻ sao *</label>
+              <input type="text" id="batchCode" class="form-control" value="#MSC-2026-09" required>
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="batchDate">Ngày sao củi *</label>
+              <input type="date" id="batchDate" class="form-control" value="2026-08-21" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="artisanName">Nghệ nhân phụ trách *</label>
+              <select id="artisanName" class="form-control" required>
+                <option value="Nghệ nhân Đào Văn Thịnh">Nghệ nhân Đào Văn Thịnh (40 năm kinh nghiệm)</option>
+                <option value="Nghệ nhân Hoàng Đức Thuận">Nghệ nhân Hoàng Đức Thuận (35 năm kinh nghiệm)</option>
+                <option value="Nghệ nhân Nguyễn Văn Bảy">Nghệ nhân Nguyễn Văn Bảy (30 năm kinh nghiệm)</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="batchTeaType">Dòng chè thu hái *</label>
+              <select id="batchTeaType" class="form-control" required>
+                <option value="Trà Đinh Tân Cương">Trà Đinh Tân Cương (1 Tôm)</option>
+                <option value="Trà Nõn Tôm">Trà Nõn Tôm (1 Tôm 1 Lá)</option>
+                <option value="Trà Móc Câu">Trà Móc Câu Truyền Thống</option>
+                <option value="Trà Shan Tuyết Cổ Thụ">Trà Shan Tuyết Cổ Thụ</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="batchWeight">Khối lượng nhập kho (Kg) *</label>
+              <input type="number" id="batchWeight" class="form-control" placeholder="Ví dụ: 30" min="1" step="0.5" required>
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="batchScore">Điểm thẩm định chất lượng (1-10)</label>
+              <input type="number" id="batchScore" class="form-control" value="9.8" min="1" max="10" step="0.1">
+            </div>
+          </div>
+
+          <div class="form-group-full">
+            <label class="form-label" for="batchNotes">Đặc trưng hương vị & Ghi chú mẻ sấy</label>
+            <textarea id="batchNotes" class="form-control" rows="2" placeholder="Ví dụ: Lửa củi nhãn vừa độ, hương cốm thơm đượm, cánh trà xoăn nhỏ đều..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-secondary" onclick="closeAdminModal('modalBatchEntry')">Hủy</button>
+          <button type="submit" class="btn-primary">Nhập Kho Mẻ Sao</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 6: PHẢN HỒI ĐÁNH GIÁ KHÁCH HÀNG ==================== -->
+  <div class="admin-modal-backdrop" id="modalReplyReview" aria-hidden="true" role="dialog">
+    <div class="admin-modal-box modal-md">
+      <div class="modal-head">
+        <h2 class="modal-heading">💬 Phản Hồi Đánh Giá Khách Hàng</h2>
+        <button class="modal-close" onclick="closeAdminModal('modalReplyReview')">&times;</button>
+      </div>
+
+      <form id="formReplyReview" onsubmit="handleReviewReplySubmit(event)">
+        <div class="modal-form-body">
+          <div class="form-group-full">
+            <label class="form-label">Phản hồi cho khách hàng:</label>
+            <strong id="replyTargetAuthor" class="text-emerald" style="display: block; margin-bottom: 8px; font-size: 1.05rem;">Bác Nguyễn Văn Cường</strong>
+          </div>
+
+          <div class="form-group-full">
+            <label class="form-label" for="replyReviewInput">Nội dung phản hồi từ Quản Trị Viên (Shop) *</label>
+            <textarea id="replyReviewInput" class="form-control" rows="4" placeholder="Nhập lời cảm ơn hoặc giải đáp thắc mắc của khách hàng..." required></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-secondary" onclick="closeAdminModal('modalReplyReview')">Hủy</button>
+          <button type="submit" class="btn-primary">Gửi Phản Hồi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Alert -->
+  <div class="admin-toast" id="adminToast" role="status" aria-live="polite">
+    <span class="toast-dot"></span>
+    <span class="toast-text" id="adminToastText">Thông báo hệ thống</span>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

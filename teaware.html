@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trà Cụ Nghệ Nhân | Trà Đạo Thái Nguyên - Dụng Cụ Pha Trà Thượng Hạng</title>
+  <meta name="description" content="Tuyển tập trà cụ nghệ nhân: Ấm Tử Sa Nghi Hưng, Ấm Sứ Cảnh Đức Trấn, Bộ Chén Bạch Ngọc, Men Rạn Bát Tràng, Khay Trà Gỗ Quý và Dụng Cụ Thưởng Trà.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="teaware.css">
+</head>
+<body>
+
+  <!-- ==================== SYNCHRONIZED HEADER (6 BUTTONS + CENTER LOGO + ISOLATED RIGHT CART) ==================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="fretwork fretwork-left" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M0 0 H120 V12 H20 V45 H55 V57 H8 V8 H0 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M20 20 H95 V30 H32 V60 H20 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="36" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+    
+    <div class="fretwork fretwork-right" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M120 0 H0 V12 H100 V45 H65 V57 H112 V8 H120 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M100 20 H25 V30 H88 V60 H100 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="68" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+
+    <div class="header-container">
+      <!-- Left 3 Buttons -->
+      <nav class="nav-group nav-left" aria-label="Menu chính bên trái">
+        <a href="index.html" class="nav-btn" id="navHome">TRANG CHỦ</a>
+        <a href="products.html" class="nav-btn" id="navProducts">SẢN PHẨM</a>
+        <a href="teaware.html" class="nav-btn active" id="navTeaware">TRÀ CỤ</a>
+      </nav>
+
+      <!-- Center Brand Logo -->
+      <a href="index.html" class="brand-logo" id="brandLogo" aria-label="Trang chủ Trà Đạo Thái Nguyên">
+        <div class="logo-calligraphy">
+          <span class="calligraphy-top">Trà Đạo</span>
+          <span class="calligraphy-bottom">Thái Nguyên</span>
+        </div>
+      </a>
+
+      <!-- Right 3 Buttons -->
+      <nav class="nav-group nav-right" aria-label="Menu chính bên phải">
+        <a href="story.html" class="nav-btn" id="navStory">CÂU CHUYỆN</a>
+        <a href="contact.html" class="nav-btn" id="navContact">LIÊN HỆ</a>
+        
+        <!-- Auth / Login Button -->
+        <a href="auth.html" class="nav-btn auth-nav-btn" id="navAuth" title="Tài khoản">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span id="navAuthText">TÀI KHOẢN</span>
+        </a>
+      </nav>
+
+      <!-- Standalone Top-Right Cart Button -->
+      <div class="cart-wrapper-standalone">
+        <button class="cart-btn" id="cartBtn" aria-label="Giỏ hàng của bạn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cart-icon">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO BANNER ==================== -->
+  <section class="teaware-hero">
+    <div class="teaware-hero-content">
+      <span class="hero-tag">Trà Đạo & Nghệ Thuật</span>
+      <h1 class="teaware-hero-title">Bộ Sưu Tập Trà Cụ Nghệ Nhân</h1>
+      <p class="teaware-hero-subtitle">"Nhất Thủy - Nhì Trà - Tam Bôi - Tứ Bình - Ngũ Quần Anh"</p>
+    </div>
+  </section>
+
+  <!-- ==================== CATALOG WITH EXPANDED CATEGORIES ==================== -->
+  <section class="teaware-catalog">
+    <div class="teaware-container">
+      
+      <!-- 5 Filter Tabs -->
+      <div class="teaware-filters">
+        <button class="teaware-filter-tab active" data-filter="all">Tất Cả Trà Cụ (12)</button>
+        <button class="teaware-filter-tab" data-filter="zisha">Ấm Tử Sa & Ấm Sứ (4)</button>
+        <button class="teaware-filter-tab" data-filter="cups">Bộ Chén Trà (3)</button>
+        <button class="teaware-filter-tab" data-filter="tray">Khay Trà Gỗ Quý (3)</button>
+        <button class="teaware-filter-tab" data-filter="tools">Dụng Cụ Thưởng Trà (2)</button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="teaware-grid" id="teawareCatalogGrid">
+        
+        <!-- 1. Ấm Tử Sa Thạch Biều -->
+        <article class="teaware-card" data-category="zisha" data-id="tw-1">
+          <div class="card-visual">
+            <div class="card-tag">ĐẤT TỬ NÊ</div>
+            <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?auto=format&fit=crop&w=600&q=80" alt="Ấm Tử Sa Thạch Biều" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Ấm Tử Sa Nghệ Nhân</span>
+            <h3 class="card-title">Ấm Tử Sa Thạch Biều Đất Tử Nê</h3>
+            <p class="card-desc">Thế ấm tam giác vững chãi, dòng nước suôn mượt ngắt dòng dứt khoát, lưu giữ trọn vẹn hương trà.</p>
+            <div class="card-pricing">
+              <span class="price-val">1.850.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-1" class="btn-teaware-detail" data-target="tw-1">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. Ấm Tử Sa Tây Thi -->
+        <article class="teaware-card" data-category="zisha" data-id="tw-2">
+          <div class="card-visual">
+            <div class="card-tag">ĐẤT CHU NÊ</div>
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80" alt="Ấm Tử Sa Tây Thi" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Ấm Tử Sa Nghệ Nhân</span>
+            <h3 class="card-title">Ấm Tử Sa Tây Thi Đất Chu Nê</h3>
+            <p class="card-desc">Dáng ấm tròn đầy mềm mại, đất Chu Nê đỏ son ấm áp, pha trà Nõn Tôm tôn dậy vị cốm non tuyệt hảo.</p>
+            <div class="card-pricing">
+              <span class="price-val">1.650.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-2" class="btn-teaware-detail" data-target="tw-2">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. Ấm Tử Sa Đức Chung -->
+        <article class="teaware-card" data-category="zisha" data-id="tw-3">
+          <div class="card-visual">
+            <div class="card-tag">ĐẠI HỒNG BÀO</div>
+            <img src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?auto=format&fit=crop&w=600&q=80" alt="Ấm Tử Sa Đức Chung" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Ấm Tử Sa Quý Hiếm</span>
+            <h3 class="card-title">Ấm Tử Sa Đức Chung Đại Hồng Bào</h3>
+            <p class="card-desc">Khí chất uy nghi, đĩnh đạc, nắp ấm mút chặt kín hơi, giữ nhiệt hoàn hảo cho các tuần trà sâu.</p>
+            <div class="card-pricing">
+              <span class="price-val">2.200.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-3" class="btn-teaware-detail" data-target="tw-3">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. Ấm Sứ Men Lam -->
+        <article class="teaware-card" data-category="zisha" data-id="tw-4">
+          <div class="card-visual">
+            <div class="card-tag">SỨ CẢNH ĐỨC</div>
+            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80" alt="Ấm Sứ Men Lam Cảnh Đức Trấn" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Ấm Sứ Vẽ Tay</span>
+            <h3 class="card-title">Ấm Sứ Men Lam Cảnh Đức Trấn</h3>
+            <p class="card-desc">Sứ thấu quang trắng ngà, họa tiết tranh thủy mặc vẽ tay tinh xảo, giữ trọn vị thanh tao của trà.</p>
+            <div class="card-pricing">
+              <span class="price-val">1.350.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-4" class="btn-teaware-detail" data-target="tw-4">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. Bộ 6 Chén Sứ Bạch Ngọc -->
+        <article class="teaware-card" data-category="cups" data-id="tw-5">
+          <div class="card-visual">
+            <div class="card-tag">CHỈ VÀNG 24K</div>
+            <img src="https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&w=600&q=80" alt="Bộ 6 Chén Sứ Bạch Ngọc Viền Vàng" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Bộ Chén Cao Cấp</span>
+            <h3 class="card-title">Bộ 6 Chén Sứ Bạch Ngọc Viền Vàng</h3>
+            <p class="card-desc">Sứ thấu quang mỏng tang, lòng chén trắng ngọc soi bóng nước trà Tân Cương xanh biếc rạng rỡ.</p>
+            <div class="card-pricing">
+              <span class="price-val">650.000 ₫</span>
+              <span class="price-unit">/ Bộ 6 Chén</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-5" class="btn-teaware-detail" data-target="tw-5">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. Bộ 6 Chén Men Rạn Bát Tràng -->
+        <article class="teaware-card" data-category="cups" data-id="tw-6">
+          <div class="card-visual">
+            <div class="card-tag">BÁT TRÀNG CỔ</div>
+            <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80" alt="Bộ 6 Chén Men Rạn Cổ Bát Tràng" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Bộ Chén Truyền Thống</span>
+            <h3 class="card-title">Bộ 6 Chén Men Rạn Cổ Bát Tràng</h3>
+            <p class="card-desc">Đường vân rạn tự nhiên mang hồn cốt gốm cổ nghìn năm, đầm ấm và hoài niệm khi thưởng trà.</p>
+            <div class="card-pricing">
+              <span class="price-val">580.000 ₫</span>
+              <span class="price-unit">/ Bộ 6 Chén</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-6" class="btn-teaware-detail" data-target="tw-6">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. Bộ 6 Chén Men Hỏa Biến -->
+        <article class="teaware-card" data-category="cups" data-id="tw-7">
+          <div class="card-visual">
+            <div class="card-tag">HỎA BIẾN THIÊN MỤC</div>
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="Bộ 6 Chén Men Hỏa Biến Thiên Mục" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Độc Bản Lửa Thiêng</span>
+            <h3 class="card-title">Bộ 6 Chén Men Hỏa Biến Thiên Mục</h3>
+            <p class="card-desc">Sắc xanh ngọc bích biến ảo lấp lánh như bầu trời đêm, mỗi chiếc chén là một tác phẩm độc nhất vô nhị.</p>
+            <div class="card-pricing">
+              <span class="price-val">720.000 ₫</span>
+              <span class="price-unit">/ Bộ 6 Chén</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-7" class="btn-teaware-detail" data-target="tw-7">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. Khay Trà Gỗ Gụ Khắc Mây -->
+        <article class="teaware-card" data-category="tray" data-id="tw-8">
+          <div class="card-visual">
+            <div class="card-tag">GỖ GỤ NGUYÊN KHỐI</div>
+            <img src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=600&q=80" alt="Khay Trà Gỗ Gụ Khắc Mây" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Khay Trà Gỗ Quý</span>
+            <h3 class="card-title">Khay Trà Gỗ Gụ Khắc Họa Tiết Mây</h3>
+            <p class="card-desc">Chạm khắc mây trôi cung đình tỉ mỉ, gỗ gụ ta đầm chắc chống nước, kèm khay inox thoát nước tiện lợi.</p>
+            <div class="card-pricing">
+              <span class="price-val">1.250.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-8" class="btn-teaware-detail" data-target="tw-8">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. Khay Trà Gỗ Mun Đen -->
+        <article class="teaware-card" data-category="tray" data-id="tw-9">
+          <div class="card-visual">
+            <div class="card-tag">GỖ MUN SỪNG</div>
+            <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=600&q=80" alt="Khay Trà Gỗ Mun Hoa Đen" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Khay Trà Vương Giả</span>
+            <h3 class="card-title">Khay Trà Gỗ Mun Đen Nguyên Khối</h3>
+            <p class="card-desc">Gỗ mun đen bóng quý hiếm, đầm nặng 4.5kg, bền bỉ vĩnh cửu tạo vẻ sang trọng tột bậc cho phòng khách.</p>
+            <div class="card-pricing">
+              <span class="price-val">2.450.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-9" class="btn-teaware-detail" data-target="tw-9">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 10. Khay Trà Tre Tự Nhiên -->
+        <article class="teaware-card" data-category="tray" data-id="tw-10">
+          <div class="card-visual">
+            <div class="card-tag">TRE ZEN THIỀN</div>
+            <img src="https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=600&q=80" alt="Khay Trà Tre Tự Nhiên" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Khay Trà Tinh Giản</span>
+            <h3 class="card-title">Khay Trà Tre Tự Nhiên Chống Ẩm</h3>
+            <p class="card-desc">Chất liệu tre già xử lý hấp sấy hiện đại, nhẹ nhàng thanh tao, phù hợp phòng thiền và bàn trà thư phòng.</p>
+            <div class="card-pricing">
+              <span class="price-val">450.000 ₫</span>
+              <span class="price-unit">/ Chiếc</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-10" class="btn-teaware-detail" data-target="tw-10">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 11. Bộ Dụng Cụ Gắp Trà 6 Món -->
+        <article class="teaware-card" data-category="tools" data-id="tw-11">
+          <div class="card-visual">
+            <div class="card-tag">GỖ MUN 6 MÓN</div>
+            <img src="https://images.unsplash.com/photo-1608755728617-aefab37d2edd?auto=format&fit=crop&w=600&q=80" alt="Bộ Dụng Cụ Gắp Trà 6 Món Gỗ Mun" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Trà Đạo Lục Đạo</span>
+            <h3 class="card-title">Bộ Dụng Cụ Gắp Trà 6 Món Gỗ Mun</h3>
+            <p class="card-desc">Gồm ống đựng, kẹp gắp chén, thìa trà, que thông vòi, phễu rót và cọ dưỡng ấm chế tác nhẵn mịn.</p>
+            <div class="card-pricing">
+              <span class="price-val">380.000 ₫</span>
+              <span class="price-unit">/ Bộ 6 Món</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-11" class="btn-teaware-detail" data-target="tw-11">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 12. Bộ Lọc Trà & Thuyền Trà Đồng -->
+        <article class="teaware-card" data-category="tools" data-id="tw-12">
+          <div class="card-visual">
+            <div class="card-tag">ĐỒNG ĐỎ GÒ TAY</div>
+            <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=600&q=80" alt="Bộ Lọc Trà & Thuyền Trà Đồng" class="card-img">
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Dụng Cụ Lọc Trà</span>
+            <h3 class="card-title">Bộ Lọc Trà & Thuyền Trà Đồng</h3>
+            <p class="card-desc">Hoa văn sen cổ truyền, lưới lọc 200 mesh siêu mịn giúp nước trà trong vắt tuyệt đối không còn cặn bã.</p>
+            <div class="card-pricing">
+              <span class="price-val">320.000 ₫</span>
+              <span class="price-unit">/ Bộ 2 Món</span>
+            </div>
+            <div class="card-actions">
+              <a href="product-detail.html?id=tw-12" class="btn-teaware-detail" data-target="tw-12">XEM CHI TIẾT</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer" id="footerSection">
+    <div class="footer-container">
+      <div class="footer-col footer-col-company">
+        <h3 class="footer-brand-title">Trà Ngon Thái Nguyên</h3>
+        <div class="company-details">
+          <p class="company-name">CÔNG TY TNHH TrangoThaiNguyen</p>
+          <p class="company-license">Do sở tài chính thành phố Hà Nội cấp ngày: 1/7/2019</p>
+          <p class="company-address">Địa chỉ: Hà Nội</p>
+          <p class="company-phone">Điện thoại: <strong>0903741701</strong></p>
+          <p class="company-email">Email: <strong>trangonthainguyen.vn@gmail.com</strong></p>
+        </div>
+        <div class="payment-badges">
+          <span class="badge-card">VISA</span>
+          <span class="badge-card">PayPal</span>
+          <span class="badge-card">MoMo</span>
+          <span class="badge-card">Chuyển Khoản</span>
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-commitments">
+        <div class="commitment-block">
+          <h4 class="footer-heading">Cam kết của chúng tôi</h4>
+          <ul class="footer-list commitments-list">
+            <li><span class="check-icon">✔</span> 100% Đất Tử Sa nguyên khoáng và sứ cao cấp tuyển chọn</li>
+            <li><span class="check-icon">✔</span> Độ kín khít nắp ấm tuyệt đối, ngắt dòng nước chuẩn xác</li>
+            <li><span class="check-icon">✔</span> Đóng gói chống sốc đa lớp, bảo hiểm gãy vỡ 100% khi vận chuyển</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-icons">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg></a>
+      </div>
+      <div class="copyright-notice">
+        <p>© Bản quyền thuộc về Trà Ngon Thái Nguyên - Tinh Hoa Trà Việt</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

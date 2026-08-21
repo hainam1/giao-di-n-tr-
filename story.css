@@ -1,0 +1,859 @@
+/* ==========================================================================
+   TRÀ ĐẠO THÁI NGUYÊN - CÂU CHUYỆN THƯƠNG HIỆU (STORY PAGE)
+   Design System: Luxury Editorial Oriental Aesthetics, Full-Width Fit, Gold & Emerald
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01. STORY HERO SHOWCASE BANNER
+   -------------------------------------------------------------------------- */
+.story-hero-section {
+  position: relative;
+  background: radial-gradient(ellipse 90% 80% at 50% 45%, #15452f 0%, #0d2c1f 45%, #05160d 100%);
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 75px clamp(20px, 3.5vw, 56px);
+  overflow: hidden;
+  border-bottom: 2px solid #dfba73;
+  width: 100%;
+  text-align: center;
+}
+
+.story-hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(223, 186, 115, 0.09) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.story-hero-container {
+  position: relative;
+  width: min(94vw, 1680px);
+  margin: 0 auto;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+}
+
+.story-hero-content {
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.story-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #dfba73;
+  background: rgba(10, 32, 22, 0.85);
+  border: 1.5px solid #dfba73;
+  padding: 6px 20px;
+  border-radius: 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.story-hero-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+}
+
+.story-hero-heading .heading-gold {
+  background: linear-gradient(135deg, #ffffff 0%, #fbe8b5 35%, #dfba73 70%, #b88a32 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.story-hero-desc {
+  font-size: clamp(1.02rem, 1.2vw, 1.15rem);
+  line-height: 1.85;
+  color: #e4eee7;
+  max-width: 820px;
+  margin: 0 auto 40px auto;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* 4 Key Highlight Stats Cards */
+.story-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.story-stat-card {
+  background: rgba(10, 32, 22, 0.7);
+  border: 1.5px solid rgba(223, 186, 115, 0.4);
+  border-radius: 10px;
+  padding: 20px 16px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: var(--transition-smooth);
+}
+
+.story-stat-card:hover {
+  border-color: #dfba73;
+  background: rgba(18, 56, 38, 0.85);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(223, 186, 115, 0.25);
+}
+
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #dfba73;
+}
+
+.stat-label {
+  font-size: 0.84rem;
+  color: #d2ded7;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   02. CHAPTERS COMMON STYLES
+   -------------------------------------------------------------------------- */
+.story-section {
+  padding: 95px clamp(20px, 3.5vw, 56px);
+  width: 100%;
+  border-bottom: 1.5px solid #ded5c2;
+  position: relative;
+}
+
+.section-origin {
+  background: #fbf8f2;
+}
+
+.section-harvest {
+  background: #ffffff;
+}
+
+.section-process {
+  background: #f7f2e4;
+}
+
+.section-philosophy {
+  background: #ffffff;
+}
+
+.section-timeline {
+  background: #fbf8f2;
+}
+
+.story-container {
+  width: min(94vw, 1680px);
+  margin: 0 auto;
+}
+
+.chapter-header-block {
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto 50px auto;
+}
+
+.chapter-eyebrow {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #123826;
+  text-transform: uppercase;
+  background: #eef5f1;
+  border: 1px solid #c2d8cc;
+  padding: 4px 16px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.chapter-main-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  font-weight: 800;
+  color: #123826;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+
+.chapter-symbol-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 0 auto 16px auto;
+  max-width: 320px;
+}
+
+.chapter-symbol-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c59b27, transparent);
+}
+
+.chapter-symbol-divider .symbol-leaf {
+  font-size: 1.25rem;
+}
+
+.chapter-sub-lead {
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  color: #574b3d;
+  line-height: 1.75;
+  max-width: 820px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   03. ASYMMETRICAL 2-COLUMN STORY CARDS
+   -------------------------------------------------------------------------- */
+.story-grid-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  gap: 36px;
+  align-items: stretch;
+}
+
+.story-grid-two.reverse-grid {
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+}
+
+/* Text Card */
+.story-text-card {
+  background: #ffffff;
+  border: 1.5px solid #dfd4bf;
+  border-radius: 12px;
+  padding: 42px clamp(24px, 3vw, 48px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.section-harvest .story-text-card {
+  background: #fbf8f2;
+}
+
+.card-story-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+  font-weight: 800;
+  color: #123826;
+  margin-bottom: 18px;
+}
+
+.story-paragraph {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: #4a3d31;
+  margin-bottom: 18px;
+}
+
+.story-paragraph.lead-p {
+  font-family: var(--font-serif);
+  font-size: 1.14rem;
+  font-weight: 600;
+  color: #271a0e;
+  line-height: 1.85;
+}
+
+/* 3 Feature Pillars */
+.pillars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 18px;
+  border-top: 1px solid #eadecb;
+  padding-top: 22px;
+}
+
+.pillar-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #fbf9f4;
+  border: 1px solid #e8decb;
+  border-radius: 8px;
+  padding: 14px 18px;
+  transition: var(--transition-smooth);
+}
+
+.pillar-item:hover {
+  background: #ffffff;
+  border-color: #c59b27;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(197, 155, 39, 0.1);
+}
+
+.pillar-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.pillar-title {
+  font-family: var(--font-serif);
+  font-size: 1.04rem;
+  font-weight: 800;
+  color: #123826;
+  margin-bottom: 3px;
+}
+
+.pillar-desc {
+  font-size: 0.88rem;
+  color: #635748;
+  line-height: 1.55;
+}
+
+/* 3 Harvest Rules Tags */
+.harvest-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+  border-top: 1px solid #eadecb;
+  padding-top: 22px;
+}
+
+.rule-box {
+  background: #ffffff;
+  border: 1px solid #e2d7c5;
+  border-radius: 8px;
+  padding: 16px 14px;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.rule-box:hover {
+  border-color: #c59b27;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(197, 155, 39, 0.12);
+}
+
+.rule-tag {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #c59b27;
+  margin-bottom: 4px;
+}
+
+.rule-title {
+  font-family: var(--font-serif);
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #123826;
+  margin-bottom: 4px;
+}
+
+.rule-desc {
+  font-size: 0.8rem;
+  color: #6a5e50;
+  line-height: 1.45;
+}
+
+/* Visual Card */
+.story-visual-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.visual-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #dfba73;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  background: #0d281e;
+}
+
+.story-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.visual-frame:hover .story-img {
+  transform: scale(1.04);
+}
+
+.visual-floating-badge {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  background: rgba(10, 32, 22, 0.92);
+  border: 1.5px solid #dfba73;
+  color: #fff6de;
+  font-family: var(--font-serif);
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.visual-floating-badge .badge-star {
+  color: #dfba73;
+  font-size: 1rem;
+}
+
+.visual-quote-bottom {
+  background: #f5eedb;
+  border: 1px dashed #c59b27;
+  border-radius: 8px;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.visual-quote-bottom p {
+  font-family: var(--font-serif);
+  font-size: 0.96rem;
+  font-style: italic;
+  color: #382c1e;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   04. CHƯƠNG III: 5 BƯỚC SAO CỦI GRID
+   -------------------------------------------------------------------------- */
+.process-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.process-step-card {
+  background: #ffffff;
+  border: 1.5px solid #dfd4bf;
+  border-radius: 12px;
+  padding: 36px 18px 24px 18px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.process-step-card:hover {
+  border-color: #c59b27;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(197, 155, 39, 0.18);
+}
+
+.step-badge-number {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #184833 0%, #0d2c1f 100%);
+  border: 1.5px solid #dfba73;
+  color: #fff6de;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
+  font-weight: 800;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.step-icon-wrap {
+  font-size: 2.2rem;
+  margin-bottom: 14px;
+}
+
+.step-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #123826;
+  margin-bottom: 10px;
+}
+
+.step-card-desc {
+  font-size: 0.88rem;
+  color: #55483b;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   05. CHƯƠNG IV: 4 TRIẾT LÝ TRÀ ĐẠO GRID
+   -------------------------------------------------------------------------- */
+.philosophy-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.philo-box {
+  background: #fbf8f2;
+  border: 1.5px solid #dfd4bf;
+  border-radius: 12px;
+  padding: 38px 24px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.philo-box:hover {
+  border-color: #8c261a;
+  background: #ffffff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(140, 38, 26, 0.12);
+}
+
+.philo-seal-badge {
+  width: 58px;
+  height: 58px;
+  border: 2px solid #8c261a;
+  color: #8c261a;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(140, 38, 26, 0.06);
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+
+.philo-box-title {
+  font-family: var(--font-serif);
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: #123826;
+  margin-bottom: 10px;
+}
+
+.philo-box-desc {
+  font-size: 0.92rem;
+  color: #55483b;
+  line-height: 1.65;
+}
+
+/* --------------------------------------------------------------------------
+   06. CHƯƠNG V: 20 NĂM HÀNH TRÌNH TIMELINE
+   -------------------------------------------------------------------------- */
+.timeline-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  position: relative;
+}
+
+.timeline-cards-grid::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(90deg, #c59b27 0%, #dfba73 50%, #c59b27 100%);
+  z-index: 1;
+}
+
+.timeline-item {
+  background: #ffffff;
+  border: 1.5px solid #dfd4bf;
+  border-radius: 12px;
+  padding: 28px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.timeline-item:hover {
+  border-color: #c59b27;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(197, 155, 39, 0.15);
+}
+
+.timeline-year {
+  background: linear-gradient(180deg, #184833 0%, #0d2c1f 100%);
+  border: 1.5px solid #dfba73;
+  color: #fff6de;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 6px 20px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #123826;
+  margin-bottom: 8px;
+}
+
+.timeline-desc {
+  font-size: 0.88rem;
+  color: #55483b;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   07. STORY CALL TO ACTION
+   -------------------------------------------------------------------------- */
+.story-cta-section {
+  background: #fbf8f2;
+  padding: 90px clamp(20px, 3.5vw, 56px);
+  width: 100%;
+}
+
+.story-cta-container {
+  width: min(94vw, 1200px);
+  margin: 0 auto;
+}
+
+.story-cta-box {
+  background: radial-gradient(ellipse 90% 80% at 50% 45%, #15452f 0%, #0d2c1f 50%, #061910 100%);
+  border: 2px solid #dfba73;
+  border-radius: 16px;
+  padding: 56px clamp(24px, 4vw, 64px);
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+}
+
+.cta-eyebrow {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #dfba73;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.cta-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #fbe8b5 35%, #dfba73 70%, #b88a32 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+
+.cta-desc {
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  color: #d7e4dc;
+  max-width: 740px;
+  margin: 0 auto 30px auto;
+  line-height: 1.75;
+}
+
+.cta-badges-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.cta-badge {
+  background: rgba(223, 186, 115, 0.12);
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  color: #fff6de;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 6px 18px;
+  border-radius: 20px;
+}
+
+.cta-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.btn-story-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 34px;
+  background: linear-gradient(180deg, #dfba73 0%, #c59b27 100%);
+  border: 1px solid #7c5b16;
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #241602;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.btn-story-primary:hover {
+  background: linear-gradient(180deg, #fbe3a0 0%, #dfba73 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--color-gold-glow);
+}
+
+.btn-story-primary .arrow,
+.btn-story-secondary .arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.btn-story-primary:hover .arrow,
+.btn-story-secondary:hover .arrow {
+  transform: translateX(4px);
+}
+
+.btn-story-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  background: rgba(13, 40, 30, 0.65);
+  border: 1.5px solid #dfba73;
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff5cf;
+  backdrop-filter: blur(8px);
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.btn-story-secondary:hover {
+  background: rgba(30, 80, 58, 0.9);
+  border-color: #ffffff;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   08. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .process-steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .story-grid-two,
+  .story-grid-two.reverse-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .story-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .philosophy-pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timeline-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timeline-cards-grid::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .story-hero-section {
+    padding: 55px 16px;
+  }
+
+  .story-section {
+    padding: 60px 16px;
+  }
+
+  .story-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process-steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .philosophy-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .harvest-rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .story-text-card {
+    padding: 28px 20px;
+  }
+
+  .visual-frame {
+    min-height: 260px;
+  }
+}

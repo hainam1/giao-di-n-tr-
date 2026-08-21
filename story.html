@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Câu Chuyện Thương Hiệu | Trà Đạo Thái Nguyên - Tinh Hoa Nghệ Nhân</title>
+  <meta name="description" content="Khám phá câu chuyện hơn 20 năm gìn giữ hồn trà Tân Cương Thái Nguyên, bí quyết sao củi thủ công gia truyền và triết lý trà đạo Việt.">
+  
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="story.css">
+</head>
+<body>
+
+  <!-- ==================== 01. SYNCHRONIZED TOPBAR HEADER ==================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="fretwork fretwork-left" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M0 0 H120 V12 H20 V45 H55 V57 H8 V8 H0 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M20 20 H95 V30 H32 V60 H20 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="36" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+    
+    <div class="fretwork fretwork-right" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M120 0 H0 V12 H100 V45 H65 V57 H112 V8 H120 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M100 20 H25 V30 H88 V60 H100 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="68" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+
+    <div class="header-container">
+      <!-- Left Navigation -->
+      <nav class="nav-group nav-left" aria-label="Menu chính bên trái">
+        <a href="index.html" class="nav-btn" id="navHome">TRANG CHỦ</a>
+        <a href="products.html" class="nav-btn" id="navProducts">SẢN PHẨM</a>
+        <a href="teaware.html" class="nav-btn" id="navTeaware">TRÀ CỤ</a>
+      </nav>
+
+      <!-- Center Brand Logo -->
+      <a href="index.html" class="brand-logo" id="brandLogo" aria-label="Trang chủ Trà Đạo Thái Nguyên">
+        <div class="logo-calligraphy">
+          <span class="calligraphy-top">Trà Đạo</span>
+          <span class="calligraphy-bottom">Thái Nguyên</span>
+        </div>
+      </a>
+
+      <!-- Right Navigation -->
+      <nav class="nav-group nav-right" aria-label="Menu chính bên phải">
+        <a href="story.html" class="nav-btn active" id="navStory">CÂU CHUYỆN</a>
+        <a href="contact.html" class="nav-btn" id="navContact">LIÊN HỆ</a>
+        
+        <!-- Auth / Login Button -->
+        <a href="auth.html" class="nav-btn auth-nav-btn" id="navAuth" title="Tài khoản">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span id="navAuthText">TÀI KHOẢN</span>
+        </a>
+      </nav>
+
+      <!-- Standalone Cart Button -->
+      <div class="cart-wrapper-standalone">
+        <button class="cart-btn" id="cartBtn" aria-label="Giỏ hàng của bạn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cart-icon">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 02. STORY HERO SHOWCASE BANNER ==================== -->
+  <section class="story-hero-section" id="storyHero">
+    <div class="story-hero-bg-overlay"></div>
+    <div class="story-hero-container">
+      <div class="story-hero-content">
+        <div class="story-hero-badge">
+          <span class="badge-leaf">🍃</span>
+          <span>DI SẢN TRÀ VIỆT • TÂN CƯƠNG THÁI NGUYÊN</span>
+        </div>
+        <h1 class="story-hero-heading">
+          Hành Trình Gìn Giữ <br>
+          <span class="heading-gold">Hồn Trà Cổ Truyền Xứ Thái</span>
+        </h1>
+        <p class="story-hero-desc">
+          Hơn hai thập kỷ chắt lọc sương mai đất trời, người nghệ nhân gìn giữ bí quyết sao củi thủ công để mang đến hương thơm cốm non thanh tao và hậu vị ngọt sâu lắng đọng trong từng chén trà tri kỷ.
+        </p>
+
+        <!-- 4 Key Highlights Stats -->
+        <div class="story-stats-grid">
+          <div class="story-stat-card">
+            <span class="stat-number">20+</span>
+            <span class="stat-label">Năm Gìn Giữ Nghề Gia Truyền</span>
+          </div>
+          <div class="story-stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Búp Chè Tân Cương Chuẩn Gốc</span>
+          </div>
+          <div class="story-stat-card">
+            <span class="stat-number">Sao Củi</span>
+            <span class="stat-label">Thủ Công Theo Phương Pháp Cổ</span>
+          </div>
+          <div class="story-stat-card">
+            <span class="stat-number">Top 1</span>
+            <span class="stat-label">Đệ Nhất Danh Trà Xứ Bắc</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03. CHƯƠNG I: ĐẤT MẸ TÂN CƯƠNG ==================== -->
+  <section class="story-section section-origin" id="chapterOrigin">
+    <div class="story-container">
+      
+      <div class="chapter-header-block">
+        <span class="chapter-eyebrow">CHƯƠNG I</span>
+        <h2 class="chapter-main-title">Khởi Nguồn Từ Đất Mẹ Tân Cương</h2>
+        <div class="chapter-symbol-divider">
+          <span class="divider-line"></span>
+          <span class="symbol-leaf">🍃</span>
+          <span class="divider-line"></span>
+        </div>
+        <p class="chapter-sub-lead">
+          Nơi hội tụ linh khí của mây mù Tam Đảo, dòng nước sông Công trong lành và lớp đất phù sa sỏi son cổ màu mỡ.
+        </p>
+      </div>
+
+      <!-- Asymmetrical 2-Column Content Box -->
+      <div class="story-grid-two">
+        
+        <!-- Left: Text & Features Box -->
+        <div class="story-text-card">
+          <h3 class="card-story-title">Địa Linh Sinh Danh Trà</h3>
+          <p class="story-paragraph lead-p">
+            Vùng đất Tân Cương nép mình dưới chân dãy núi Tam Đảo hùng vĩ, được che chắn bởi gió bão và đón trọn nguồn sương mù bảng lảng sớm mai. Thiên nhiên hào phóng ban tặng cho nơi đây dải thổ nhưỡng feralit đỏ vàng trên đá phiến sét – loại đất giữ trọn khoáng chất quý cho cây trà.
+          </p>
+          <p class="story-paragraph">
+            Dòng sông Công hiền hòa mang dòng nước ngầm tinh khiết tưới mát cho những sườn đồi thoai thoải. Nhờ biên độ nhiệt ngày đêm chênh lệch rõ rệt, búp chè Tân Cương sinh trưởng chậm rãi, cô đọng hàm lượng axit amin và tanin quý giá tạo nên hương vị “tiền chát hậu ngọt” độc nhất vô nhị.
+          </p>
+
+          <!-- 3 Feature Pillars -->
+          <div class="pillars-list">
+            <div class="pillar-item">
+              <div class="pillar-icon">🏔️</div>
+              <div class="pillar-info">
+                <h4 class="pillar-title">Khí Hậu Sương Mù</h4>
+                <p class="pillar-desc">Nắng sớm chan hòa, sương mù che phủ giúp búp chè tích tụ trọn vẹn hương cốm non.</p>
+              </div>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-icon">🌊</div>
+              <div class="pillar-info">
+                <h4 class="pillar-title">Nguồn Nước Tinh Khiết</h4>
+                <p class="pillar-desc">Được nuôi dưỡng bởi mạch nước ngầm thanh ngọt chảy từ rặng núi Tam Đảo.</p>
+              </div>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-icon">🌱</div>
+              <div class="pillar-info">
+                <h4 class="pillar-title">Thổ Nhưỡng Sỏi Son Cổ</h4>
+                <p class="pillar-desc">Đất phù sa cổ tơi xốp, giàu vi lượng giúp vị trà đượm bùi sâu lắng.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: HD Photo Showcase Box -->
+        <div class="story-visual-card">
+          <div class="visual-frame">
+            <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=1000&q=85" alt="Đồi chè Tân Cương Thái Nguyên trong sớm mai" class="story-img">
+            <div class="visual-floating-badge">
+              <span class="badge-star">★</span>
+              <span>Đồi Chè Tân Cương • Độ Cao 450m</span>
+            </div>
+          </div>
+          <div class="visual-quote-bottom">
+            <p>“Trà ngon bởi đất, vị ngọt bởi sương, phẩm cách bởi bàn tay người làm trà.”</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 04. CHƯƠNG II: NGHỆ THUẬT THU HÁI ==================== -->
+  <section class="story-section section-harvest" id="chapterHarvest">
+    <div class="story-container">
+      
+      <div class="chapter-header-block">
+        <span class="chapter-eyebrow">CHƯƠNG II</span>
+        <h2 class="chapter-main-title">Chắt Lọc Từng Búp Sương Mai</h2>
+        <div class="chapter-symbol-divider">
+          <span class="divider-line"></span>
+          <span class="symbol-leaf">🍃</span>
+          <span class="divider-line"></span>
+        </div>
+        <p class="chapter-sub-lead">
+          Nghi thức thu hoạch trà bắt đầu từ 4 giờ sáng, khi từng giọt sương đêm còn đọng trên ngọn búp non tinh khôi.
+        </p>
+      </div>
+
+      <!-- Asymmetrical 2-Column Reverse Box -->
+      <div class="story-grid-two reverse-grid">
+        
+        <!-- Left: HD Photo Box -->
+        <div class="story-visual-card">
+          <div class="visual-frame">
+            <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=1000&q=85" alt="Nghệ nhân thu hoạch búp trà non sớm mai" class="story-img">
+            <div class="visual-floating-badge">
+              <span class="badge-star">★</span>
+              <span>Thời Khắc Thu Hái: 04:30 - 06:30</span>
+            </div>
+          </div>
+          <div class="visual-quote-bottom">
+            <p>“Một tôm hai lá, ngậm sương đón nắng – Tinh hoa của đất trời cô đọng trên đầu ngón tay.”</p>
+          </div>
+        </div>
+
+        <!-- Right: Text & Standards Box -->
+        <div class="story-text-card">
+          <h3 class="card-story-title">Quy Tắc Thu Hái Khắt Khe</h3>
+          <p class="story-paragraph lead-p">
+            Để tạo nên phẩm Trà Đinh hay Trà Nõn Tôm thượng hạng, người thợ hái trà phải tuân thủ nghiêm ngặt những nguyên tắc truyền đời: Chỉ hái vào thời khắc sáng sớm trước khi ánh nắng mặt trời gay gắt làm bay mất tinh dầu và hương thơm dịu mát của búp chè.
+          </p>
+          <p class="story-paragraph">
+            Từng ngón tay nhẹ nhàng ngắt lấy phần đinh ngọc hoặc 1 tôm 1 lá non tơ, không bóp nát, không làm dập gãy cánh trà. Trà hái về lập tức được rải đều trên nong tre nơi thoáng gió để tránh hiện tượng ủ nhiệt làm đỏ búp.
+          </p>
+
+          <!-- 3 Golden Rules Tags -->
+          <div class="harvest-rules-grid">
+            <div class="rule-box">
+              <span class="rule-tag">01</span>
+              <h4 class="rule-title">Chuẩn 1 Đinh 1 Lá</h4>
+              <p class="rule-desc">Chỉ tuyển chọn búp chè nguyên vẹn, ngậm no sương sớm mai.</p>
+            </div>
+            <div class="rule-box">
+              <span class="rule-tag">02</span>
+              <h4 class="rule-title">Hái Thủ Công 100%</h4>
+              <p class="rule-desc">Tuyệt đối không dùng máy cắt để giữ vẹn nguyên cánh trà.</p>
+            </div>
+            <div class="rule-box">
+              <span class="rule-tag">03</span>
+              <h4 class="rule-title">Bảo Quản Nong Tre</h4>
+              <p class="rule-desc">Tránh dập nát, giữ búp trà luôn tươi mát trước khi vào lò sao.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 05. CHƯƠNG III: 5 BƯỚC SAO CỦI BÍ TRUYỀN ==================== -->
+  <section class="story-section section-process" id="chapterProcess">
+    <div class="story-container">
+      
+      <div class="chapter-header-block">
+        <span class="chapter-eyebrow">CHƯƠNG III</span>
+        <h2 class="chapter-main-title">Bí Quyết Sao Củi Thủ Công Gia Truyền</h2>
+        <div class="chapter-symbol-divider">
+          <span class="divider-line"></span>
+          <span class="symbol-leaf">🍃</span>
+          <span class="divider-line"></span>
+        </div>
+        <p class="chapter-sub-lead">
+          Nghệ thuật điều chỉnh ngọn lửa củi và cảm nhận nhiệt độ bằng đôi bàn tay qua 5 công đoạn nghiêm ngặt.
+        </p>
+      </div>
+
+      <!-- 5-Step Cards Grid -->
+      <div class="process-steps-grid">
+        
+        <!-- Step 1 -->
+        <article class="process-step-card">
+          <div class="step-badge-number">01</div>
+          <div class="step-icon-wrap">🍃</div>
+          <h3 class="step-card-title">Héo Búp Tự Nhiên</h3>
+          <p class="step-card-desc">
+            Rải đều búp chè trên nong tre ở nơi râm mát, thoáng khí trong 2-3 giờ để búp chè thoát bớt nước thừa và mềm dẻo tự nhiên.
+          </p>
+        </article>
+
+        <!-- Step 2 -->
+        <article class="process-step-card">
+          <div class="step-badge-number">02</div>
+          <div class="step-icon-wrap">🔥</div>
+          <h3 class="step-card-title">Diệt Men Chảo Gang</h3>
+          <p class="step-card-desc">
+            Sao trên chảo gang đỏ lửa củi với nhiệt độ cao để đình chỉ quá trình lên men, giữ màu xanh lục bảo tươi mát và hương cốm ngào ngạt.
+          </p>
+        </article>
+
+        <!-- Step 3 -->
+        <article class="process-step-card">
+          <div class="step-badge-number">03</div>
+          <div class="step-icon-wrap">🖐️</div>
+          <h3 class="step-card-title">Vò Chè Cánh Xoăn</h3>
+          <p class="step-card-desc">
+            Vò nhẹ nhàng bằng tay theo chuyển động tròn đều giúp cánh trà xoăn tít như móc câu, ép dịch trà bám đều lên bề mặt cánh.
+          </p>
+        </article>
+
+        <!-- Step 4 -->
+        <article class="process-step-card">
+          <div class="step-badge-number">04</div>
+          <div class="step-icon-wrap">🪵</div>
+          <h3 class="step-card-title">Sao Khô Củi Gỗ</h3>
+          <p class="step-card-desc">
+            Đảo đều trên lửa than củi liu riu cho đến khi độ ẩm cánh trà chỉ còn dưới 5%, cánh trà giòn rụm và phủ tuyết trắng tinh tế.
+          </p>
+        </article>
+
+        <!-- Step 5 -->
+        <article class="process-step-card">
+          <div class="step-badge-number">05</div>
+          <div class="step-icon-wrap">✨</div>
+          <h3 class="step-card-title">Lên Hương Gia Truyền</h3>
+          <p class="step-card-desc">
+            Bí quyết gia truyền quyết định linh hồn trà: Đảo đượm nhiệt để đánh thức trọn vẹn hương thơm cốm non thanh thuần nồng nàn.
+          </p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 06. CHƯƠNG IV: TRIẾT LÝ TRÀ ĐẠO ==================== -->
+  <section class="story-section section-philosophy" id="chapterPhilosophy">
+    <div class="story-container">
+      
+      <div class="chapter-header-block">
+        <span class="chapter-eyebrow">CHƯƠNG IV</span>
+        <h2 class="chapter-main-title">Tứ Đại Triết Lý Trà Đạo Việt</h2>
+        <div class="chapter-symbol-divider">
+          <span class="divider-line"></span>
+          <span class="symbol-leaf">🍃</span>
+          <span class="divider-line"></span>
+        </div>
+        <p class="chapter-sub-lead">
+          Trà không chỉ là một thức uống thanh tao, mà là chiếc cầu nối gắn kết tâm hồn, hướng con người về sự thuần khiết.
+        </p>
+      </div>
+
+      <!-- 4 Philosophy Pillars Grid -->
+      <div class="philosophy-pillars-grid">
+        
+        <div class="philo-box">
+          <div class="philo-seal-badge">HÒA</div>
+          <h3 class="philo-box-title">Giao Hòa Trời Đất</h3>
+          <p class="philo-box-desc">
+            Sự kết hợp hoàn hảo giữa thiên nhiên, thổ nhưỡng, thời tiết và tấm lòng nâng niu của người nghệ nhân làm trà.
+          </p>
+        </div>
+
+        <div class="philo-box">
+          <div class="philo-seal-badge">KÍNH</div>
+          <h3 class="philo-box-title">Kính Trọng Tri Kỷ</h3>
+          <p class="philo-box-desc">
+            Cung kính dâng chén trà thơm thết đãi bạn hiền, trân trọng từng phút giây hạnh ngộ tao nhã bên bàn trà.
+          </p>
+        </div>
+
+        <div class="philo-box">
+          <div class="philo-seal-badge">THANH</div>
+          <h3 class="philo-box-title">Thân Tâm Thanh Tịnh</h3>
+          <p class="philo-box-desc">
+            Sắc nước trong xanh ánh vàng, vị chát thanh thoát giúp xua tan muộn phiền, gột rửa tâm hồn trong trẻo.
+          </p>
+        </div>
+
+        <div class="philo-box">
+          <div class="philo-seal-badge">TỊCH</div>
+          <h3 class="philo-box-title">An Nhiên Lắng Đọng</h3>
+          <p class="philo-box-desc">
+            Lắng nghe tiếng nước sôi reo nhẹ, tận hưởng hậu vị ngọt sâu lan tỏa và tìm lại an yên giữa cuộc sống bộn bề.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 07. CHƯƠNG V: CỘT MỐC HÀNH TRÌNH 20 NĂM ==================== -->
+  <section class="story-section section-timeline" id="chapterTimeline">
+    <div class="story-container">
+      
+      <div class="chapter-header-block">
+        <span class="chapter-eyebrow">CHƯƠNG V</span>
+        <h2 class="chapter-main-title">20 Năm Hành Trình Gìn Giữ & Phát Triển</h2>
+        <div class="chapter-symbol-divider">
+          <span class="divider-line"></span>
+          <span class="symbol-leaf">🍃</span>
+          <span class="divider-line"></span>
+        </div>
+        <p class="chapter-sub-lead">
+          Từ vườn chè gia đình nép mình bên sườn đồi Tân Cương đến thương hiệu trà đạo cao cấp được tin yêu khắp cả nước.
+        </p>
+      </div>
+
+      <!-- Editorial Timeline Row -->
+      <div class="timeline-cards-grid">
+        
+        <article class="timeline-item">
+          <div class="timeline-year">2004</div>
+          <h3 class="timeline-title">Khởi Dựng Đồi Trà</h3>
+          <p class="timeline-desc">
+            Khai phá đồi chè cổ Tân Cương với những gốc chè giống quý, kiên định canh tác hữu cơ tự nhiên không hóa chất.
+          </p>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-year">2012</div>
+          <h3 class="timeline-title">Chứng Nhận Chuẩn Gốc</h3>
+          <p class="timeline-desc">
+            Được cấp chỉ dẫn địa lý Tân Cương và chứng nhận quy trình sao trà thủ công truyền thống đạt tiêu chuẩn vàng.
+          </p>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-year">2018</div>
+          <h3 class="timeline-title">Ra Mắt Phẩm Trà Đinh</h3>
+          <p class="timeline-desc">
+            Hoàn thiện quy trình tuyển chọn Trà Đinh và dòng Hộp Quà Biếu Doanh Nghiệp lót lụa mạ vàng thượng lưu.
+          </p>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-year">2024</div>
+          <h3 class="timeline-title">Vươn Tầm Thương Hiệu</h3>
+          <p class="timeline-desc">
+            Trở thành địa chỉ uy tín phục vụ hơn 50.000 khách hàng yêu trà và các đối tác doanh nghiệp lớn trên toàn quốc.
+          </p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 08. CTA & CAM KẾT CHẤT LƯỢNG ==================== -->
+  <section class="story-cta-section" id="storyCta">
+    <div class="story-cta-container">
+      <div class="story-cta-box">
+        <span class="cta-eyebrow">CAM KẾT TỪ TÂM NGHỆ NHÂN</span>
+        <h2 class="cta-heading">Thưởng Thức Tinh Hoa Trà Tân Cương Chuẩn Gốc</h2>
+        <p class="cta-desc">
+          Mỗi hộp trà trao đến tay quý khách là sự kết tinh của mồ hôi, tâm huyết và niềm tự hào gìn giữ di sản danh trà Việt Nam.
+        </p>
+
+        <!-- 3 Commitments Badges -->
+        <div class="cta-badges-row">
+          <span class="cta-badge">✔ 100% Búp Tân Cương Chuẩn Gốc</span>
+          <span class="cta-badge">✔ Tuyệt Đối Không Hương Liệu</span>
+          <span class="cta-badge">✔ Giao Hàng Hỏa Tốc & Bảo Hành</span>
+        </div>
+
+        <div class="cta-actions-row">
+          <a href="products.html" class="btn-story-primary">
+            <span>KHÁM PHÁ BỘ SƯU TẬP TRÀ</span>
+            <span class="arrow">→</span>
+          </a>
+          <a href="contact.html" class="btn-story-secondary">
+            <span>LIÊN HỆ ĐẶT QUÀ BIẾU</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 09. FOOTER ==================== -->
+  <footer class="site-footer" id="footerSection">
+    <div class="footer-container">
+      <div class="footer-col footer-col-company">
+        <h3 class="footer-brand-title">Trà Ngon Thái Nguyên</h3>
+        <div class="company-details">
+          <p class="company-name">CÔNG TY TNHH TrangoThaiNguyen</p>
+          <p class="company-license">Do sở tài chính thành phố Hà Nội cấp ngày: 1/7/2019</p>
+          <p class="company-address">Địa chỉ: Hà Nội</p>
+          <p class="company-phone">Điện thoại: <strong>0903741701</strong></p>
+          <p class="company-email">Email: <strong>trangonthainguyen.vn@gmail.com</strong></p>
+        </div>
+        <div class="payment-badges">
+          <span class="badge-card">VISA</span>
+          <span class="badge-card">PayPal</span>
+          <span class="badge-card">MoMo</span>
+          <span class="badge-card">Chuyển Khoản</span>
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-commitments">
+        <div class="commitment-block">
+          <h4 class="footer-heading">Cam kết của chúng tôi</h4>
+          <ul class="footer-list commitments-list">
+            <li><span class="check-icon">✔</span> Tuyệt đối không chất bảo quản, không hương liệu nhân tạo</li>
+            <li><span class="check-icon">✔</span> 100% búp chè Tân Cương chuẩn nguồn gốc</li>
+            <li><span class="check-icon">✔</span> Đổi trả bồi thường 100% nếu có lỗi vận chuyển</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-icons">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg></a>
+      </div>
+      <div class="copyright-notice">
+        <p>© Bản quyền thuộc về Trà Ngon Thái Nguyên - Tinh Hoa Trà Việt</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

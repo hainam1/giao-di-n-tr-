@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trà Đạo Thái Nguyên - Tinh Hoa Trà Việt</title>
+  <meta name="description" content="Trà Đạo Thái Nguyên - Đệ nhất danh trà Tân Cương. Nghệ thuật thưởng trà đạo truyền thống, trà đinh ngọc, trà nõn tôm và trà cụ ấm tử sa cao cấp.">
+  
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Instant Auth Redirect: Mặc định mở web chuyển thẳng vào giao diện Đăng Nhập nếu chưa đăng nhập -->
+  <script>
+    if (localStorage.getItem('tra_dao_is_logged_in') !== 'true') {
+      window.location.replace('auth.html');
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ==================== 01. SYNCHRONIZED HEADER ==================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="fretwork fretwork-left" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M0 0 H120 V12 H20 V45 H55 V57 H8 V8 H0 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M20 20 H95 V30 H32 V60 H20 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="36" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+    
+    <div class="fretwork fretwork-right" aria-hidden="true">
+      <svg viewBox="0 0 120 70" fill="none">
+        <path d="M120 0 H0 V12 H100 V45 H65 V57 H112 V8 H120 Z" fill="#220f06" stroke="#d4af37" stroke-width="1.2"/>
+        <path d="M100 20 H25 V30 H88 V60 H100 Z" fill="#180a03" stroke="#c59b27" stroke-width="1"/>
+        <rect x="68" y="36" width="16" height="16" stroke="#d4af37" stroke-width="1" fill="none"/>
+        <line x1="0" y1="4" x2="120" y2="4" stroke="#d4af37" stroke-width="0.8"/>
+      </svg>
+    </div>
+
+    <div class="header-container">
+      <!-- Left 3 Buttons -->
+      <nav class="nav-group nav-left" aria-label="Menu chính bên trái">
+        <a href="index.html" class="nav-btn active" id="navHome">TRANG CHỦ</a>
+        <a href="products.html" class="nav-btn" id="navProducts">SẢN PHẨM</a>
+        <a href="teaware.html" class="nav-btn" id="navTeaware">TRÀ CỤ</a>
+      </nav>
+
+      <!-- Center Brand Logo -->
+      <a href="index.html" class="brand-logo" id="brandLogo" aria-label="Trang chủ Trà Đạo Thái Nguyên">
+        <div class="logo-calligraphy">
+          <span class="calligraphy-top">Trà Đạo</span>
+          <span class="calligraphy-bottom">Thái Nguyên</span>
+        </div>
+      </a>
+
+      <!-- Right 3 Buttons -->
+      <nav class="nav-group nav-right" aria-label="Menu chính bên phải">
+        <a href="story.html" class="nav-btn" id="navStory">CÂU CHUYỆN</a>
+        <a href="contact.html" class="nav-btn" id="navContact">LIÊN HỆ</a>
+        
+        <!-- Auth / Login Button -->
+        <a href="auth.html" class="nav-btn auth-nav-btn" id="navAuth" title="Tài khoản">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span id="navAuthText">TÀI KHOẢN</span>
+        </a>
+      </nav>
+
+      <!-- Standalone Top-Right Cart Button -->
+      <div class="cart-wrapper-standalone">
+        <button class="cart-btn" id="cartBtn" aria-label="Giỏ hàng của bạn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cart-icon">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 02. HERO SHOWCASE BANNER ==================== -->
+  <section class="hero-banner" id="heroBanner">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-emblem-badge">
+          <span class="badge-leaf">🍃</span>
+          <span>ĐỆ NHẤT DANH TRÀ XỨ BẮC</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="hero-brand-line">Trà Đạo Thái Nguyên</span>
+          <span class="hero-brand-sub">Tinh Hoa Trà Cổ Truyền Xứ Thái</span>
+        </h1>
+        <p class="hero-intro-text">
+          Chắt lọc tinh túy đất trời Tân Cương qua bàn tay nghệ nhân sao củi truyền thống. Hương thơm cốm non thanh tao, tiền chát dịu êm ái và hậu vị ngọt sâu lắng đọng vô cùng.
+        </p>
+        <div class="hero-action-row">
+          <a href="products.html" class="btn-hero-explore">
+            <span>KHÁM PHÁ DANH TRÀ</span>
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="teaware.html" class="btn-hero-sample">
+            <span>BỘ SƯU TẬP TRÀ CỤ</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Masterpiece Tea Ceremony Still Life -->
+      <div class="hero-visual">
+        <div class="hero-masterpiece-frame">
+          <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=85" alt="Nghệ thuật pha trà Thái Nguyên và ấm chén Tử Sa cao cấp" class="hero-masterpiece-img">
+          
+          <!-- Animated Steam Wisps -->
+          <div class="steam-container">
+            <div class="steam-wisp wisp-1"></div>
+            <div class="steam-wisp wisp-2"></div>
+            <div class="steam-wisp wisp-3"></div>
+          </div>
+
+          <div class="hero-masterpiece-badge">
+            <span class="badge-seal-gold">★</span>
+            <span class="badge-text">100% Tân Cương Chuẩn Gốc</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03. KHU VỰC GIỚI THIỆU THƯƠNG HIỆU (5 KHỐI ASYMMETRICAL EDITORIAL) ==================== -->
+  <section class="brand-intro-section" id="brandIntroSection">
+    <div class="brand-intro-container">
+      
+      <!-- KHỐI 1: GIỚI THIỆU THƯƠNG HIỆU (100% Chiều Rộng) -->
+      <div class="brand-block block-hero-intro">
+        <span class="intro-eyebrow">TINH HOA TỪ ĐẤT TRÀ THÁI NGUYÊN</span>
+        <h2 class="intro-heading">Chúng Tôi Gìn Giữ Hương Vị Trà Việt</h2>
+        <div class="intro-symbol-divider">
+          <span class="divider-line"></span>
+          <span class="leaf-symbol">🍃</span>
+          <span class="divider-line"></span>
+        </div>
+        <p class="intro-desc-lead">
+          Chúng tôi lựa chọn những búp trà tươi từ vùng chè Thái Nguyên, kết hợp kinh nghiệm của người làm trà truyền thống với quy trình chế biến kỹ lưỡng để gìn giữ hương thơm, vị chát dịu và hậu ngọt đặc trưng trong từng phẩm trà.
+        </p>
+        <p class="intro-desc-sub">
+          Mỗi chén trà không chỉ là một thức uống, mà còn là sự kết nối giữa thiên nhiên, con người và nét văn hóa thưởng trà Việt Nam.
+        </p>
+        <div class="intro-cta-wrapper">
+          <a href="story.html" class="editorial-cta-link">
+            <span>Khám phá câu chuyện thương hiệu</span>
+            <span class="cta-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- HÀNG THỨ HAI: KHỐI 2 (35%) & KHỐI 3 (65%) -->
+      <div class="brand-row row-two">
+        
+        <!-- KHỐI 2: SLIDER ẢNH TRÀ (35% Chiều Rộng) -->
+        <div class="brand-block block-tea-slider">
+          <div class="brand-slider-wrapper" id="teaSlider">
+            <div class="slider-slides">
+              <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=85" alt="Cận cảnh búp trà Thái Nguyên tươi đọng sương" class="slider-img">
+                <div class="slide-caption">Búp trà đinh 1 tôm sớm mai</div>
+              </div>
+              <div class="slide">
+                <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=85" alt="Nước trà Thái Nguyên xanh vàng ánh ngọc" class="slider-img">
+                <div class="slide-caption">Nước trà xanh vàng óng ánh</div>
+              </div>
+              <div class="slide">
+                <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=800&q=85" alt="Đồi chè Tân Cương Thái Nguyên" class="slider-img">
+                <div class="slide-caption">Vùng đất di sản Tân Cương</div>
+              </div>
+            </div>
+            
+            <!-- Slider Controls -->
+            <div class="slider-controls">
+              <div class="slider-dots" id="teaSliderDots">
+                <button type="button" class="dot active" data-index="0" aria-label="Slide 1"></button>
+                <button type="button" class="dot" data-index="1" aria-label="Slide 2"></button>
+                <button type="button" class="dot" data-index="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="slider-progress-track">
+                <div class="slider-progress-bar" id="teaProgress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KHỐI 3: GIỚI THIỆU CÁC PHẨM TRÀ (65% Chiều Rộng) -->
+        <div class="brand-block block-tea-categories">
+          <div class="block-eyebrow">PHẨM TRÀ</div>
+          <h3 class="block-title">Mỗi Phẩm Trà — Một Sắc Vị Riêng</h3>
+          <p class="block-desc">
+            Từ những búp trà non tuyển chọn đến những phẩm trà dành cho người thưởng trà lâu năm, mỗi dòng trà mang một hương thơm, sắc nước và hậu vị riêng.
+          </p>
+
+          <div class="editorial-list">
+            
+            <div class="editorial-row">
+              <span class="row-num">01</span>
+              <div class="row-divider-line"></div>
+              <div class="row-info">
+                <h4 class="row-name">Trà Nõn Tôm</h4>
+                <p class="row-sub">Thanh hương • Chát dịu • Hậu ngọt sâu</p>
+              </div>
+            </div>
+
+            <div class="editorial-row">
+              <span class="row-num">02</span>
+              <div class="row-divider-line"></div>
+              <div class="row-info">
+                <h4 class="row-name">Trà Móc Câu</h4>
+                <p class="row-sub">Hương cốm • Vị cân bằng • Dễ thưởng thức</p>
+              </div>
+            </div>
+
+            <div class="editorial-row">
+              <span class="row-num">03</span>
+              <div class="row-divider-line"></div>
+              <div class="row-info">
+                <h4 class="row-name">Trà Đinh</h4>
+                <p class="row-sub">Búp tuyển chọn • Hương đậm • Hậu vị kéo dài</p>
+              </div>
+            </div>
+
+            <div class="editorial-row">
+              <span class="row-num">04</span>
+              <div class="row-divider-line"></div>
+              <div class="row-info">
+                <h4 class="row-name">Trà Quà Biếu</h4>
+                <p class="row-sub">Trang trọng • Tinh tế • Phù hợp làm quà tri ân</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="block-cta-wrapper">
+            <a href="products.html" class="editorial-cta-link">
+              <span>Khám phá các phẩm trà</span>
+              <span class="cta-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HÀNG THỨ BA: KHỐI 4 (72%) & KHỐI 5 (28%) -->
+      <div class="brand-row row-three">
+        
+        <!-- KHỐI 4: GIỚI THIỆU DỤNG CỤ THƯỞNG TRÀ (72% Chiều Rộng) -->
+        <div class="brand-block block-teaware-intro">
+          <div class="block-eyebrow">TRÀ CỤ</div>
+          <h3 class="block-title">Trà Ngon Cần Một Bộ Trà Cụ Xứng Tầm</h3>
+          <p class="block-desc">
+            Từ ấm pha trà, chén thưởng trà đến khay và phụ kiện, mỗi trà cụ góp phần tạo nên một trải nghiệm thưởng trà trọn vẹn, thanh tịnh và chuẩn mực hơn.
+          </p>
+
+          <div class="teaware-editorial-grid">
+            <div class="teaware-item-box">
+              <h4 class="teaware-item-title">Ấm Tử Sa</h4>
+              <p class="teaware-item-desc">Giữ nhiệt tốt, đất nung nguyên khoáng nuôi dưỡng và phù hợp với những dòng trà đậm hương.</p>
+            </div>
+            <div class="teaware-item-box">
+              <h4 class="teaware-item-title">Chén Thưởng Trà</h4>
+              <p class="teaware-item-desc">Thiết kế mỏng thấu quang tinh tế giúp cảm nhận trọn vẹn sắc nước xanh vàng và hương trà.</p>
+            </div>
+            <div class="teaware-item-box">
+              <h4 class="teaware-item-title">Khay Trà Gỗ Quý</h4>
+              <p class="teaware-item-desc">Tạo không gian thưởng trà gọn gàng, trang nhã, điểm tô vẻ sang trọng cho bàn trà tiếp khách.</p>
+            </div>
+            <div class="teaware-item-box">
+              <h4 class="teaware-item-title">Phụ Kiện Trà Đạo</h4>
+              <p class="teaware-item-desc">Bộ dụng cụ gắp chén, thông vòi, cọ dưỡng ấm giúp quá trình pha trà trở nên chuẩn mực hơn.</p>
+            </div>
+          </div>
+
+          <div class="block-cta-wrapper">
+            <a href="teaware.html" class="editorial-cta-link">
+              <span>Khám phá trà cụ</span>
+              <span class="cta-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- KHỐI 5: SLIDER ẢNH TRÀ CỤ (28% Chiều Rộng) -->
+        <div class="brand-block block-teaware-slider">
+          <div class="brand-slider-wrapper" id="teawareSlider">
+            <div class="slider-slides">
+              <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?auto=format&fit=crop&w=800&q=85" alt="Ấm Tử Sa Thạch Biều nghệ nhân Nghi Hưng" class="slider-img">
+                <div class="slide-caption">Ấm Tử Sa đất Tử Nê</div>
+              </div>
+              <div class="slide">
+                <img src="https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&w=800&q=85" alt="Bộ 6 Chén Sứ Bạch Ngọc viền vàng" class="slider-img">
+                <div class="slide-caption">Bộ chén Sứ Bạch Ngọc viền vàng</div>
+              </div>
+              <div class="slide">
+                <img src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=800&q=85" alt="Khay trà gỗ gụ và dụng cụ thưởng trà" class="slider-img">
+                <div class="slide-caption">Khay trà gỗ gụ mây trôi</div>
+              </div>
+            </div>
+            
+            <!-- Slider Controls -->
+            <div class="slider-controls">
+              <div class="slider-dots" id="teawareSliderDots">
+                <button type="button" class="dot active" data-index="0" aria-label="Slide 1"></button>
+                <button type="button" class="dot" data-index="1" aria-label="Slide 2"></button>
+                <button type="button" class="dot" data-index="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="slider-progress-track">
+                <div class="slider-progress-bar" id="teawareProgress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 04. TRIẾT LÝ TRÀ ĐẠO & TỨ ĐẠI TINH HOA ==================== -->
+  <section class="four-virtues-section">
+    <div class="virtues-container">
+      <div class="virtues-header">
+        <span class="virtues-tag">Triết Lý Trà Đạo</span>
+        <h2 class="virtues-title">Tứ Đại Tinh Hoa Của Trà Thái Nguyên</h2>
+        <p class="virtues-desc">Bốn phẩm chất vàng làm say lòng bao thế hệ tao nhân mặc khách và những người sành trà</p>
+      </div>
+
+      <div class="virtues-grid">
+        <div class="virtue-card">
+          <div class="virtue-icon">💧</div>
+          <h3 class="virtue-name">Sắc Nước Xanh Trong</h3>
+          <p class="virtue-text">Nước trà khi pha ánh lên màu xanh vàng óng ánh như ngọc bích, trong vắt không một gợn cặn.</p>
+        </div>
+
+        <div class="virtue-card">
+          <div class="virtue-icon">🌾</div>
+          <h3 class="virtue-name">Hương Cốm Nồng Nàn</h3>
+          <p class="virtue-text">Mùi hương cốm non thoang thoảng ngay từ khi mở hộp, bừng nở ngào ngạt khi chạm làn nước sôi 85°C.</p>
+        </div>
+
+        <div class="virtue-card">
+          <div class="virtue-icon">🍃</div>
+          <h3 class="virtue-name">Tiền Chát Thanh Tao</h3>
+          <p class="virtue-text">Chạm đầu lưỡi là vị chát dịu êm ái, thanh khiết tự nhiên của búp chè non không hề đắng gắt.</p>
+        </div>
+
+        <div class="virtue-card">
+          <div class="virtue-icon">🍯</div>
+          <h3 class="virtue-name">Hậu Ngọt Sâu Lắng</h3>
+          <p class="virtue-text">Sau ngụm trà là vị ngọt bùi đượm sâu lan tỏa khắp khoang họng, dư vị kéo dài bền lâu khó quên.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 05. 4 PHẨM TRÀ ĐƯỢC YÊU THÍCH NHẤT (EDITORIAL SHOWCASE) ==================== -->
+  <section class="showcase-section" id="productsShowcase">
+    <div class="showcase-container">
+      
+      <div class="showcase-header">
+        <span class="showcase-tag">BỘ SƯU TẬP TUYỂN CHỌN</span>
+        <h2 class="showcase-title">4 Phẩm Trà Được Yêu Thích Nhất</h2>
+        <p class="showcase-subtitle">Những phẩm trà được khách hàng yêu trà lựa chọn nhiều nhất nhờ hương thơm đặc trưng, sắc nước đẹp và hậu vị sâu.</p>
+      </div>
+
+      <!-- Asymmetrical Editorial Product Layout -->
+      <div class="editorial-product-layout">
+        
+        <!-- Left: Featured Hero Product (Trà Đinh) -->
+        <article class="featured-product-hero" data-product-id="1">
+          <div class="hero-product-img-wrap">
+            <span class="hero-product-badge">NHẤT PHẨM TRÀ • TOP 1</span>
+            <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=85" alt="Trà Đinh Tân Cương Thượng Hạng" class="hero-product-img">
+          </div>
+          <div class="hero-product-body">
+            <div class="hero-product-meta">
+              <span class="hero-product-num">01</span>
+              <span class="hero-product-origin">Tân Cương • 1 Tôm Non Sớm Mai</span>
+            </div>
+            <h3 class="hero-product-title">Trà Đinh Tân Cương Thượng Hạng</h3>
+            <p class="hero-product-notes">
+              Hương cốm non ngào ngạt • Tiền chát thanh dịu • Hậu ngọt sâu lắng đọng vô cùng
+            </p>
+            <div class="hero-product-footer">
+              <div class="hero-price-box">
+                <span class="price-amount">1.500.000 ₫</span>
+                <span class="price-unit">/ Hộp 500g</span>
+              </div>
+              <a href="product-detail.html?id=1" class="btn-editorial-detail" data-target="1">
+                <span>Xem phẩm trà</span>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Right: 3 Stacked Editorial Products -->
+        <div class="stacked-products-col">
+          
+          <!-- Product 02: Trà Nõn Tôm -->
+          <article class="stacked-product-row" data-product-id="2">
+            <div class="stacked-img-wrap">
+              <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80" alt="Trà Nõn Tôm Thượng Hạng" class="stacked-img">
+            </div>
+            <div class="stacked-body">
+              <div class="stacked-meta">
+                <span class="stacked-num">02</span>
+                <span class="stacked-badge">ĐẶC SẢN NỔI TIẾNG</span>
+              </div>
+              <h4 class="stacked-title">Trà Nõn Tôm Thượng Hạng</h4>
+              <p class="stacked-notes">Hương cốm non • Chát dịu thanh thuần • Hậu ngọt đậm đà</p>
+              <div class="stacked-footer">
+                <span class="stacked-price">850.000 ₫ / 500g</span>
+                <a href="product-detail.html?id=2" class="stacked-link" data-target="2">
+                  <span>Xem chi tiết</span>
+                  <span class="arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 03: Trà Móc Câu -->
+          <article class="stacked-product-row" data-product-id="3">
+            <div class="stacked-img-wrap">
+              <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80" alt="Trà Móc Câu Tân Cương" class="stacked-img">
+            </div>
+            <div class="stacked-body">
+              <div class="stacked-meta">
+                <span class="stacked-num">03</span>
+                <span class="stacked-badge">TRUYỀN THỐNG XỨ BẮC</span>
+              </div>
+              <h4 class="stacked-title">Trà Móc Câu Tân Cương</h4>
+              <p class="stacked-notes">Cánh cong móc câu • Hương mộc dịu ngọt • Vị chát đượm bùi</p>
+              <div class="stacked-footer">
+                <span class="stacked-price">480.000 ₫ / 500g</span>
+                <a href="product-detail.html?id=3" class="stacked-link" data-target="3">
+                  <span>Xem chi tiết</span>
+                  <span class="arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 04: Trà Shan Tuyết -->
+          <article class="stacked-product-row" data-product-id="4">
+            <div class="stacked-img-wrap">
+              <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=600&q=80" alt="Trà Shan Tuyết Cổ Thụ" class="stacked-img">
+            </div>
+            <div class="stacked-body">
+              <div class="stacked-meta">
+                <span class="stacked-num">04</span>
+                <span class="stacked-badge">CỔ THỤ ĐẠI NGÀN</span>
+              </div>
+              <h4 class="stacked-title">Trà Shan Tuyết Cổ Thụ Hà Giang</h4>
+              <p class="stacked-notes">Tây Côn Lĩnh đỉnh 1800m • Lông tuyết trắng • Ngọt mật ong rừng</p>
+              <div class="stacked-footer">
+                <span class="stacked-price">1.200.000 ₫ / 300g</span>
+                <a href="product-detail.html?id=4" class="stacked-link" data-target="4">
+                  <span>Xem chi tiết</span>
+                  <span class="arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 06. CẢM NHẬN TỪ NGƯỜI YÊU TRÀ (EDITORIAL TESTIMONIALS) ==================== -->
+  <section class="reviews-section" id="reviewsSection">
+    <div class="reviews-container">
+      
+      <div class="reviews-header-block">
+        <span class="reviews-eyebrow">CHIA SẺ CHÂN THÀNH</span>
+        <h2 class="section-title">Cảm Nhận Từ Người Yêu Trà</h2>
+        <p class="reviews-sub">Mỗi chén trà là một trải nghiệm riêng. Đây là những chia sẻ chân thành từ khách hàng sau những lần thưởng thức các phẩm trà của chúng tôi.</p>
+      </div>
+
+      <!-- Editorial Testimonial Layout -->
+      <div class="editorial-testimonials-wrap">
+        
+        <!-- Featured Big Quote Card -->
+        <article class="featured-quote-card">
+          <div class="quote-giant-mark">“</div>
+          <blockquote class="featured-quote-text">
+            Tôi uống trà Thái Nguyên đã gần 40 năm nay, dòng Trà Đinh này của quán thực sự đạt chuẩn thượng hạng. Cánh trà nhỏ tăm tắp phủ tuyết trắng, nước trong xanh ánh vàng, hương cốm thơm lừng cả gian phòng khách. Mua biếu tặng bạn bè ai cũng khen ngợi nức nở.
+          </blockquote>
+          <div class="quote-author-row">
+            <div class="author-avatar-badge">NC</div>
+            <div class="author-details">
+              <h3 class="author-name">Bác Nguyễn Văn Cường</h3>
+              <p class="author-location">Ba Đình, TP. Hà Nội</p>
+              <div class="author-product-tag">
+                <span>🍵 Sản phẩm đã thưởng thức:</span>
+                <strong>Trà Đinh Tân Cương Thượng Hạng</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Secondary Testimonial Grid -->
+        <div class="secondary-testimonials-grid" id="testimonialsList">
+          
+          <article class="secondary-quote-card">
+            <div class="sec-quote-mark">“</div>
+            <p class="sec-quote-text">
+              Ấm Tử Sa Thạch Biều và Trà Nõn Tôm kết hợp rất tuyệt vời. Uống ngụm trà vào thấy nhẹ lòng, vị ngọt hậu lưu giữ rất lâu trong cổ họng. Bao bì đóng gói cẩn thận, giao hàng hỏa tốc.
+            </p>
+            <div class="sec-author-box">
+              <h4 class="sec-author-name">Bác Hoàng Minh Tuấn</h4>
+              <span class="sec-author-loc">Lê Chân, TP. Hải Phòng</span>
+              <span class="sec-product-enjoyed">Sản phẩm: Trà Nõn Tôm & Ấm Tử Sa</span>
+            </div>
+          </article>
+
+          <article class="secondary-quote-card">
+            <div class="sec-quote-mark">“</div>
+            <p class="sec-quote-text">
+              Hộp thiếc mạ vàng và lụa vàng lót bên trong rất sang trọng. Tôi đặt làm quà biếu đối tác doanh nghiệp dịp tết vừa rồi, ai nhận được cũng tấm tắc khen vị trà đậm đà thanh khiết.
+            </p>
+            <div class="sec-author-box">
+              <h4 class="sec-author-name">Chị Trần Thị Mai</h4>
+              <span class="sec-author-loc">Hải Châu, TP. Đà Nẵng</span>
+              <span class="sec-product-enjoyed">Sản phẩm: Hộp Quà Biếu Trà Đinh Lót Lụa</span>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+
+      <!-- Add Review Form -->
+      <div class="review-form-container">
+        <h3 class="form-heading">Gửi Cảm Nhận Của Quý Khách</h3>
+        <p class="form-sub-hint">Chúng tôi luôn trân trọng từng góp ý chân thành từ quý khách để không ngừng hoàn thiện phẩm trà.</p>
+        <form class="review-form" id="reviewForm">
+          <div class="form-row">
+            <input type="text" id="reviewerName" class="form-input" placeholder="Họ và tên của quý khách *" required>
+          </div>
+          <div class="form-row">
+            <textarea id="reviewerComment" class="form-input" placeholder="Chia sẻ cảm nhận về hương vị, sắc nước hoặc trải nghiệm thưởng trà..." rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit-review">GỬI CẢM NHẬN</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 07. FOOTER ==================== -->
+  <footer class="site-footer" id="footerSection">
+    <div class="footer-container">
+      <div class="footer-col footer-col-company">
+        <h3 class="footer-brand-title">Trà Ngon Thái Nguyên</h3>
+        <div class="company-details">
+          <p class="company-name">CÔNG TY TNHH TrangoThaiNguyen</p>
+          <p class="company-license">Do sở tài chính thành phố Hà Nội cấp ngày: 1/7/2019</p>
+          <p class="company-address">Địa chỉ: Hà Nội</p>
+          <p class="company-phone">Điện thoại: <strong>0903741701</strong></p>
+          <p class="company-email">Email: <strong>trangonthainguyen.vn@gmail.com</strong></p>
+        </div>
+        <div class="payment-badges">
+          <span class="badge-card">VISA</span>
+          <span class="badge-card">PayPal</span>
+          <span class="badge-card">MoMo</span>
+          <span class="badge-card">Chuyển Khoản</span>
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-commitments">
+        <div class="commitment-block">
+          <h4 class="footer-heading">Cam kết của chúng tôi</h4>
+          <ul class="footer-list commitments-list">
+            <li><span class="check-icon">✔</span> Tuyệt đối không chất bảo quản, không hương liệu</li>
+            <li><span class="check-icon">✔</span> 100% búp chè Tân Cương chuẩn nguồn gốc</li>
+            <li><span class="check-icon">✔</span> Bồi thường 100% nếu có bất kỳ lỗi vận chuyển nào</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-icons">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg></a>
+      </div>
+      <div class="copyright-notice">
+        <p>© Bản quyền thuộc về Trà Ngon Thái Nguyên - Tinh Hoa Trà Việt</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
