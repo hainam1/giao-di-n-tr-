@@ -1,0 +1,53 @@
+/**
+ * DESIGN TOKENS (BIẾN CSS TẬP TRUNG)
+ * Thay đổi toàn bộ Theme, Màu Sắc, Font chữ của toàn bộ website tại đây.
+ */
+
+:root {
+  /* Dynamic Color Palette (Thay đổi màu chủ đạo dự án tại đây) */
+  --primary-color: #2e7d32;
+  --primary-hover: #1b5e20;
+  --primary-light: #e8f5e9;
+  --secondary-color: #d84315;
+  --accent-color: #fbc02d;
+
+  /* Neutral Colors */
+  --bg-main: #fcfdfd;
+  --bg-card: #ffffff;
+  --bg-subtle: #f4f6f8;
+  --text-primary: #1a251e;
+  --text-secondary: #5f6d63;
+  --text-muted: #8e9b91;
+  --border-color: #e0e6e1;
+
+  /* Status Colors */
+  --success: #2e7d32;
+  --warning: #ed6c02;
+  --error: #d32f2f;
+  --info: #0288d1;
+
+  /* Typography */
+  --font-family-base: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-serif: 'Playfair Display', Georgia, serif;
+  
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* Layout & Spacing */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
