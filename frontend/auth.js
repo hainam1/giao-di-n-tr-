@@ -4,6 +4,26 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  const API_BASE = 'http://localhost:5000/api/v1';
+  async function apiRequest(path, options = {}) {
+    const response = await fetch(API_BASE + path, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      body: options.body && typeof options.body !== 'string' ? JSON.stringify(options.body) : options.body,
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.message || 'Yêu cầu thất bại');
+    return payload;
+  }
+  function persistAuth(data) {
+    localStorage.setItem('auth_token', data.token);
+    if (data.refreshToken) localStorage.setItem('refresh_token', data.refreshToken);
+    localStorage.setItem('tra_dao_user_role', data.user.role.toLowerCase());
+    localStorage.setItem('tra_dao_user_name', data.user.name);
+    localStorage.setItem('tra_dao_user_email', data.user.email);
+    if (data.user.phone) localStorage.setItem('tra_dao_user_phone', data.user.phone);
+    localStorage.setItem('tra_dao_is_logged_in', 'true');
+  }
   // Elements
   const tabLogin = document.getElementById('tabLogin');
   const tabRegister = document.getElementById('tabRegister');
@@ -93,32 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 4. Social Login with 2s Demo Loading Spinner & Redirection
+  // 4. Social Login
   // --------------------------------------------------------------------------
   function executeSocialLogin(providerName, btnElement) {
-    btnElement.classList.add('btn-loading');
-    showAuthToast(`Đang kết nối và xác thực tài khoản ${providerName}...`);
-
-    setTimeout(() => {
-      btnElement.classList.remove('btn-loading');
-      const selectedRole = document.querySelector('input[name="loginRole"]:checked')?.value || 'admin';
-      
-      localStorage.setItem('tra_dao_user_role', selectedRole);
-      localStorage.setItem('tra_dao_user_name', providerName === 'Google' ? 'Nguyễn Văn Nam (Google)' : 'Trần Thị Mai (Facebook)');
-      localStorage.setItem('tra_dao_is_logged_in', 'true');
-
-      if (selectedRole === 'admin') {
-        showAuthToast(`Đăng nhập ${providerName} thành công! Đang chuyển hướng vào Admin Dashboard...`);
-        setTimeout(() => {
-          window.location.href = 'admin.html';
-        }, 700);
-      } else {
-        showAuthToast(`Đăng nhập ${providerName} thành công! Kính chào quý khách.`);
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 700);
-      }
-    }, 2000);
+    btnElement?.classList.add('btn-loading');
+    window.location.href = `${API_BASE}/auth/oauth/${providerName.toLowerCase()}`;
   }
 
   if (btnGoogleLogin) {
@@ -128,11 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
     btnFacebookLogin.addEventListener('click', () => executeSocialLogin('Facebook', btnFacebookLogin));
   }
 
+  const oauthResult = new URLSearchParams(window.location.hash.slice(1));
+  const oauthToken = oauthResult.get('oauth_token');
+  const oauthError = oauthResult.get('oauth_error');
+  if (oauthToken || oauthError) history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+  if (oauthError) showAuthToast(oauthError);
+  if (oauthToken) {
+    apiRequest('/auth/profile', { headers: { Authorization: `Bearer ${oauthToken}` } })
+      .then((response) => {
+        persistAuth({ token: oauthToken, user: response.data.user });
+        showAuthToast('Đăng nhập OAuth thành công!');
+        setTimeout(() => {
+          window.location.href = response.data.user.role === 'ADMIN' ? 'admin.html' : 'index.html';
+        }, 500);
+      })
+      .catch((error) => showAuthToast(error.message));
+  }
+
   // --------------------------------------------------------------------------
   // 5. Form Submit Login (2s Demo Loading & Redirection)
   // --------------------------------------------------------------------------
   if (formLogin) {
-    formLogin.addEventListener('submit', (e) => {
+    formLogin.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const email = loginEmail.value.trim();
@@ -144,26 +160,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       btnLoginSubmit.classList.add('btn-loading');
-      const selectedRole = document.querySelector('input[name="loginRole"]:checked')?.value || 'admin';
-
-      setTimeout(() => {
+      try {
+        const response = await apiRequest('/auth/login', { method: 'POST', body: { email, password } });
+        persistAuth(response.data);
         btnLoginSubmit.classList.remove('btn-loading');
-        localStorage.setItem('tra_dao_user_role', selectedRole);
-        localStorage.setItem('tra_dao_user_name', selectedRole === 'admin' ? 'Quản Trị Viên Thái Nguyên' : (email.split('@')[0] || 'Khách Quý'));
-        localStorage.setItem('tra_dao_is_logged_in', 'true');
-
-        if (selectedRole === 'admin') {
+        if (response.data.user.role === 'ADMIN') {
           showAuthToast('Xác thực Quản Trị thành công! Đang chuyển vào Admin Dashboard...');
-          setTimeout(() => {
-            window.location.href = 'admin.html';
-          }, 700);
+          setTimeout(() => { window.location.href = 'admin.html'; }, 500);
         } else {
-          showAuthToast('Đăng nhập thành công! Chúc quý khách một ngày an lạc và thưởng trà ngon.');
-          setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 700);
+          showAuthToast('Đăng nhập thành công!');
+          setTimeout(() => { window.location.href = 'index.html'; }, 500);
         }
-      }, 2000);
+      } catch (error) {
+        btnLoginSubmit.classList.remove('btn-loading');
+        showAuthToast(error.message);
+      }
     });
   }
 
@@ -171,29 +182,46 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. Form Submit Register (2s Demo Loading)
   // --------------------------------------------------------------------------
   if (formRegister) {
-    formRegister.addEventListener('submit', (e) => {
+    formRegister.addEventListener('submit', async (e) => {
       e.preventDefault();
       const fullName = document.getElementById('regFullName').value.trim();
       const email = document.getElementById('regEmail').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const agreed = document.getElementById('agreeTerms')?.checked === true;
 
-      if (!fullName || !email) {
+      if (!fullName || !email || !phone || !password) {
         showAuthToast('Vui lòng nhập đầy đủ thông tin đăng ký.');
+        return;
+      }
+      if (!agreed) {
+        showAuthToast('Vui lòng đồng ý điều khoản dịch vụ và chính sách bảo mật.');
         return;
       }
 
       btnRegisterSubmit.classList.add('btn-loading');
 
-      setTimeout(() => {
+      try {
+        const response = await apiRequest('/auth/register', {
+          method: 'POST',
+          body: {
+            name: fullName,
+            email,
+            phone,
+            password,
+            acceptTerms: agreed,
+            acceptPrivacy: agreed,
+            termsVersion: '2026-08-22',
+          },
+        });
+        persistAuth(response.data);
         btnRegisterSubmit.classList.remove('btn-loading');
-        localStorage.setItem('tra_dao_user_role', 'user');
-        localStorage.setItem('tra_dao_user_name', fullName);
-        localStorage.setItem('tra_dao_is_logged_in', 'true');
-
         showAuthToast(`Chúc mừng quý khách ${fullName}, đăng ký thành công! Đang chuyển vào trang chủ...`);
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 800);
-      }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 500);
+      } catch (error) {
+        btnRegisterSubmit.classList.remove('btn-loading');
+        showAuthToast(error.message);
+      }
     });
   }
 });

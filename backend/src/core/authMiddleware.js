@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/app.config.js';
 import { AppError } from './errorHandler.js';
+import prisma from '../database/prismaClient.js';
 
-export const authenticateJWT = (req, res, next) => {
+export const authenticateJWT = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return next(new AppError('Unauthorized: Token missing', 401));
@@ -11,10 +12,20 @@ export const authenticateJWT = (req, res, next) => {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, config.jwt.secret);
-    req.user = decoded;
-    next();
+    if (decoded.type && decoded.type !== 'access') {
+      return next(new AppError('Unauthorized: Invalid token type', 401));
+    }
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: { id: true, email: true, name: true, role: true, status: true },
+    });
+    if (!user) return next(new AppError('Unauthorized: User not found', 401));
+    if (user.status !== 'ACTIVE') return next(new AppError('Forbidden: User account is blocked', 403));
+    req.user = user;
+    return next();
   } catch (err) {
-    return next(new AppError('Forbidden: Invalid or expired token', 403));
+    if (err instanceof AppError) return next(err);
+    return next(new AppError('Unauthorized: Invalid or expired token', 401));
   }
 };
 

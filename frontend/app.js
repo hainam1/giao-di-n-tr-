@@ -368,6 +368,38 @@ const MASTER_PRODUCTS = {
   }
 };
 
+const API_BASE_URL = 'http://localhost:5000/api/v1';
+async function apiRequest(path, options = {}) {
+  const token = localStorage.getItem('auth_token');
+  const response = await fetch(API_BASE_URL + path, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(options.headers || {}),
+    },
+    body: options.body && typeof options.body !== 'string' ? JSON.stringify(options.body) : options.body,
+  });
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.message || 'Yêu cầu thất bại');
+  return payload;
+}
+
+let apiCatalogPromise;
+function getApiCatalog() {
+  if (!apiCatalogPromise) apiCatalogPromise = apiRequest('/products').then((r) => r.data);
+  return apiCatalogPromise;
+}
+
+async function syncCartToServer(cartItems) {
+  const catalog = await getApiCatalog();
+  const items = cartItems.map((item) => {
+    const product = catalog.find((p) => p.name === item.title);
+    return product?.variants?.[0] ? { variantId: product.variants[0].id, quantity: item.quantity } : null;
+  }).filter(Boolean);
+  return apiRequest('/cart', { method: 'PUT', body: { items } });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 1. AUTH GATEKEEPER & REDIRECTION
@@ -620,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save Changes Handler
     const saveBtn = document.getElementById('btnProfileSave');
     if (saveBtn) {
-      saveBtn.addEventListener('click', () => {
+      saveBtn.addEventListener('click', async () => {
         const activeTab = backdrop.querySelector('.profile-tab-btn.active')?.getAttribute('data-tab');
 
         if (activeTab === 'tabProfileSecurity') {
@@ -662,6 +694,21 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('tra_dao_user_address', addrVal);
         localStorage.setItem('tra_dao_user_note', noteVal);
 
+        try {
+          await apiRequest('/auth/profile', {
+            method: 'PUT',
+            body: {
+              name: nameVal, phone: phoneVal, note: noteVal || null,
+              ...(addrVal && { address: {
+                recipient: nameVal, phone: phoneVal, line1: addrVal, province: 'Chưa cập nhật',
+              } }),
+            },
+          });
+        } catch (error) {
+          window.showToast(error.message);
+          return;
+        }
+
         // Update UI
         document.getElementById('profileDisplayUserName').textContent = nameVal;
         document.getElementById('profileDisplayEmail').textContent = emailVal;
@@ -675,7 +722,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout Handler: Khi click Đăng Xuất sẽ out ngay về giao diện Đăng Nhập (auth.html)
     const logoutBtn = document.getElementById('btnProfileLogout');
     if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
+      logoutBtn.addEventListener('click', async () => {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+          try { await apiRequest('/auth/logout', { method: 'POST', body: { refreshToken } }); } catch (_error) { /* Clear local session even if it already expired. */ }
+        }
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('refresh_token');
         localStorage.removeItem('tra_dao_is_logged_in');
         localStorage.removeItem('tra_dao_user_role');
         localStorage.removeItem('tra_dao_user_name');
@@ -1054,7 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', async (e) => {
     if (e.target && e.target.id === 'cartDrawerCloseBtn') {
       closeCartDrawer();
     }
@@ -1062,10 +1115,22 @@ document.addEventListener('DOMContentLoaded', () => {
       closeCartDrawer();
     }
     if (e.target && e.target.id === 'btnCartCheckout') {
-      showToast('Đơn hàng của quý khách đã được tiếp nhận! Nhân viên sẽ gọi điện xác nhận trong 5 phút.');
-      cartItems = [];
-      saveAndSyncCart();
-      setTimeout(closeCartDrawer, 1200);
+      try {
+        await syncCartToServer(cartItems);
+        const name = localStorage.getItem('tra_dao_user_name') || 'Khách hàng';
+        const phone = localStorage.getItem('tra_dao_user_phone') || '';
+        const address = localStorage.getItem('tra_dao_user_address') || '';
+        if (!phone || !address) throw new Error('Vui lòng cập nhật số điện thoại và địa chỉ trong hồ sơ trước khi đặt hàng.');
+        const result = await apiRequest('/orders', { method: 'POST', body: {
+          customerName: name, customerEmail: localStorage.getItem('tra_dao_user_email'),
+          customerPhone: phone, shippingAddress: address, shippingProvince: 'Chưa cập nhật',
+          shippingFee: 30000, paymentMethod: 'COD',
+        } });
+        showToast(`Đặt hàng thành công! Mã đơn: ${result.data.code}`);
+        cartItems = [];
+        saveAndSyncCart();
+        setTimeout(closeCartDrawer, 1200);
+      } catch (error) { showToast(error.message); }
     }
   });
 
@@ -1327,12 +1392,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Submit New Review Form
     const productReviewForm = document.getElementById('productReviewForm');
     if (productReviewForm) {
-      productReviewForm.addEventListener('submit', (e) => {
+      productReviewForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const author = document.getElementById('reviewAuthorName')?.value.trim();
         const comment = document.getElementById('reviewCommentText')?.value.trim();
 
         if (!author || !comment) return;
+
+        try {
+          const apiProduct = (await getApiCatalog()).find((p) => p.name === productData.title);
+          if (!apiProduct) throw new Error('Không tìm thấy sản phẩm trên máy chủ');
+          await apiRequest(`/products/${apiProduct.id}/reviews`, {
+            method: 'POST', body: { authorName: author, rating: currentDetailRating, content: comment },
+          });
+        } catch (error) {
+          showToast(error.message);
+          return;
+        }
 
         let starsStr = '';
         for (let i = 0; i < currentDetailRating; i++) starsStr += '★';
@@ -1462,33 +1538,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Homepage Review Form
   const reviewForm = document.getElementById('reviewForm');
+  const testimonialsList = document.getElementById('testimonialsList');
+  const createTestimonialCard = (testimonial) => {
+    const newCard = document.createElement('article');
+    newCard.className = 'review-card';
+
+    const main = document.createElement('div');
+    main.className = 'review-main';
+    const author = document.createElement('h3');
+    author.className = 'reviewer-name';
+    author.textContent = testimonial.authorName;
+    const content = document.createElement('p');
+    content.className = 'review-text';
+    content.textContent = testimonial.content;
+    main.append(author, content);
+
+    const stars = document.createElement('div');
+    stars.className = 'review-stars';
+    stars.setAttribute('aria-label', `Đánh giá ${testimonial.rating || 5} sao`);
+    stars.textContent = '★'.repeat(testimonial.rating || 5);
+    newCard.append(main, stars);
+    return newCard;
+  };
+
+  if (testimonialsList) {
+    apiRequest('/testimonials')
+      .then((response) => {
+        testimonialsList.replaceChildren(...response.data.map(createTestimonialCard));
+      })
+      .catch(() => {});
+  }
+
   if (reviewForm) {
-    reviewForm.addEventListener('submit', (e) => {
+    reviewForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('reviewerName')?.value.trim();
       const comment = document.getElementById('reviewerComment')?.value.trim();
-      const testimonialsList = document.getElementById('testimonialsList');
 
       if (!name || !comment) return;
 
-      const newCard = document.createElement('article');
-      newCard.className = 'review-card';
-      newCard.innerHTML = `
-        <div class="review-main">
-          <h3 class="reviewer-name">${name}</h3>
-          <p class="review-text">${comment}</p>
-        </div>
-        <div class="review-stars" aria-label="Đánh giá 5 sao">
-          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-        </div>
-      `;
-
-      if (testimonialsList) {
-        testimonialsList.prepend(newCard);
+      try {
+        await apiRequest('/testimonials', {
+          method: 'POST', body: { authorName: name, content: comment, rating: 5 },
+        });
+        reviewForm.reset();
+        showToast('Cảm ơn quý khách! Cảm nhận đã được gửi và đang chờ duyệt.');
+      } catch (error) {
+        showToast(error.message);
       }
-
-      reviewForm.reset();
-      showToast('Kính cảm ơn quý khách đã gửi cảm nhận thưởng trà!');
     });
   }
 
@@ -1497,19 +1594,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   const contactInquiryForm = document.getElementById('contactInquiryForm');
   if (contactInquiryForm) {
-    contactInquiryForm.addEventListener('submit', (e) => {
+    contactInquiryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const fullName = document.getElementById('contactFullName')?.value.trim();
       const phone = document.getElementById('contactPhone')?.value.trim();
       const need = document.getElementById('contactNeed')?.value.trim() || 'Tư vấn trà';
+      const needType = document.getElementById('contactNeedType')?.value || null;
+      const message = document.getElementById('contactMessage')?.value.trim() || null;
 
       if (!fullName || !phone) {
         showToast('Vui lòng điền họ tên và số điện thoại liên hệ.');
         return;
       }
 
-      showToast(`Kính cảm ơn quý khách ${fullName}! Yêu cầu tư vấn "${need}" đã được gửi. Nghệ nhân sẽ gọi số ${phone} trong 10 phút.`);
-      contactInquiryForm.reset();
+      try {
+        await apiRequest('/inquiries', { method: 'POST', body: {
+          fullName, phone, need, needType, productInterest: need, message,
+        } });
+        showToast(`Kính cảm ơn quý khách ${fullName}! Yêu cầu tư vấn "${need}" đã được gửi.`);
+        contactInquiryForm.reset();
+      } catch (error) { showToast(error.message); }
     });
   }
 });

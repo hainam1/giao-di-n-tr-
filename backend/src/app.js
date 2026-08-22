@@ -9,6 +9,8 @@ import { successResponse } from './core/responseHandler.js';
 // Import Routes Modules
 import authRoutes from './modules/auth/auth.routes.js';
 import sampleRoutes from './modules/sample/sample.routes.js';
+import commerceRoutes from './modules/commerce/commerce.routes.js';
+import adminRoutes from './modules/admin/admin.routes.js';
 
 const app = express();
 
@@ -37,6 +39,8 @@ app.get('/health', (req, res) => {
 // API Routes Mounting
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/samples', sampleRoutes);
+app.use('/api/v1', commerceRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 // 404 Route Handler
 app.use((req, res, next) => {
