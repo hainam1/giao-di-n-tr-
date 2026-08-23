@@ -14,8 +14,8 @@ export const siteConfig = {
     address: 'Số 123, Đường Tân Cương, TP. Thái Nguyên',
   },
   api: {
-    baseUrl: 'http://localhost:5000/api/v1',
-    timeout: 10000,
+    baseUrl: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+    timeout: Number(import.meta.env.VITE_API_TIMEOUT) || 10000,
   },
   social: {
     facebook: 'https://facebook.com/tradaothainguyen',

@@ -133,3 +133,12 @@ docker-compose down
 
 ### Lưu Ý / Tùy Chọn Phát Triển Thêm (Future Recommendations):
 - Trường hợp triển khai DB thật production trên Postgres, chạy `npx prisma migrate dev` trong `backend/` để sinh migrations tự động.
+
+---
+
+## Tài liệu vận hành và kiểm thử
+
+- Hướng dẫn cấu hình, chạy local và Docker: `docs/DEVOPS-RUNBOOK.md`.
+- Checklist kiểm thử tích hợp và PWA: `docs/TEST-CHECKLIST.md`.
+- Postman Collection và môi trường local: `docs/postman/`.
+- Kiểm tra nhanh frontend/backend bằng PowerShell: `scripts/health-check.ps1`.
