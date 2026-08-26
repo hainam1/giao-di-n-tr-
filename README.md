@@ -142,3 +142,4 @@ docker-compose down
 - Checklist kiểm thử tích hợp và PWA: `docs/TEST-CHECKLIST.md`.
 - Postman Collection và môi trường local: `docs/postman/`.
 - Kiểm tra nhanh frontend/backend bằng PowerShell: `scripts/health-check.ps1`.
+- Hướng dẫn setup, kiểm thử và kịch bản demo hoàn chỉnh: `README_BOILERPLATE.md`.

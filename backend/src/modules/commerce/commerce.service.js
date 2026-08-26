@@ -89,9 +89,7 @@ export class CommerceService {
 
   async validateVoucher(code, orderValue = 0) {
     if (!code) throw new AppError('Mã voucher không được để trống', 400);
-    const voucher = await this.repo.client.voucher.findUnique({
-      where: { code: code.toUpperCase() },
-    });
+    const voucher = await this.repo.voucherByCode(code.toUpperCase());
     if (!voucher || !voucher.isActive) {
       throw new AppError('Mã giảm giá không tồn tại hoặc đã bị vô hiệu hóa', 404);
     }
