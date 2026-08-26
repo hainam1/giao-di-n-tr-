@@ -87,6 +87,7 @@ powershell -ExecutionPolicy Bypass -File scripts/api-smoke-test.ps1
 
 cd frontend
 npm run build
+npm run test:e2e
 ```
 
 Kết quả chuẩn ngày 2026-08-26:
@@ -94,6 +95,7 @@ Kết quả chuẩn ngày 2026-08-26:
 - Backend: 20/20 test đạt.
 - API smoke test: 23/23 kiểm tra đạt.
 - Frontend production build: thành công.
+- Frontend Playwright E2E: 2/2 luồng đạt trên Chrome headless.
 
 Import Postman:
 

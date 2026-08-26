@@ -29,6 +29,8 @@
 - [x] Đơn vừa tạo xuất hiện trong lịch sử của khách và trang Admin.
 - [x] Voucher `XATON20` trả kết quả hợp lệ; voucher sai trả HTTP 404.
 - [x] Admin xác nhận đơn và tạo vận đơn thành công.
+- [x] Playwright xác nhận khách đăng nhập và mở Storefront/Products/Teaware/Story/Contact.
+- [x] Playwright xác nhận Admin đăng nhập và mở Desktop/Mobile không có page error.
 - [ ] Giao diện xử lý được API rỗng, mất mạng và lỗi HTTP 500.
 
 ## PWA
@@ -55,4 +57,5 @@
 - Đã phát hiện và sửa lỗi Voucher trả HTTP 500 do CommerceService gọi sai interface repository.
 - Smoke test tạo đơn demo, cập nhật đơn sang `CONFIRMED`, sau đó tạo vận đơn `TEST-CARRIER`.
 - Backend Vitest: 20 passed, 0 failed.
-- Frontend production build: thành công; còn cảnh báo cú pháp CSS và script non-module cần nhóm giao diện xử lý.
+- Frontend production build: thành công; lỗi cú pháp CSS đã được sửa. Vite chỉ còn thông báo các script classic không được bundle.
+- Frontend Playwright E2E: 2 passed, 0 failed trên Chrome headless.
