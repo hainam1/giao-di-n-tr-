@@ -16,7 +16,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    minify: 'terser',
+    minify: 'esbuild',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
@@ -27,6 +27,7 @@ export default defineConfig({
         contact: resolve(__dirname, 'contact.html'),
         auth: resolve(__dirname, 'auth.html'),
         admin: resolve(__dirname, 'admin.html'),
+        mobile: resolve(__dirname, 'mobile.html'),
       },
     },
   },

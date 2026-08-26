@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#059669">
+  <title>Trà Đạo Thái Nguyên - Ứng Dụng Quản Lý Nội Bộ Mobile</title>
+  <meta name="description" content="Ứng dụng Quản lý Vận hành Nội bộ trên di động cho cửa hàng Trà Đạo Thái Nguyên.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="mobile.css">
+</head>
+<body class="mobile-app-body">
+
+  <!-- Header Bar - App Quản Lý Nội Bộ -->
+  <header class="mobile-header">
+    <div class="mobile-brand">
+      <div class="brand-icon-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <circle cx="12" cy="12" r="3" fill="#059669"/>
+        </svg>
+      </div>
+      <span class="brand-title">TRÀ ĐẠO • QUẢN LÝ NỘI BỘ</span>
+    </div>
+    <div style="font-size: 0.75rem; background: #ecfdf5; color: #047857; padding: 4px 8px; border-radius: 12px; font-weight: 700;">
+      📱 Mobile Admin
+    </div>
+  </header>
+
+  <!-- Main Content Container - 100% Dedicated Internal Operations -->
+  <main class="mobile-content">
+
+    <!-- 1. Admin Overview (Bảng Tổng Quan Nội Bộ) -->
+    <section class="mobile-view active" id="mViewAdminOverview">
+      <div class="mobile-banner admin-banner">
+        <h2>Bảng Quản Lý Mobile</h2>
+        <p>Theo dõi chỉ số kinh doanh & duyệt nhanh các tác vụ vận hành.</p>
+        <button class="btn-mobile-hero" style="color: #b45309;" onclick="switchMobileTab('adminApprovedOrders')">Xem Đơn Đã Duyệt</button>
+      </div>
+
+      <div class="quick-stats-grid">
+        <div class="quick-stat-card">
+          <div class="stat-num" id="mAdmRevenue">8.5M</div>
+          <div class="stat-lbl">Doanh Thu Hôm Nay</div>
+        </div>
+        <div class="quick-stat-card">
+          <div class="stat-num" style="color: #d97706;" id="mAdmPending">2</div>
+          <div class="stat-lbl">Đơn Cần Duyệt</div>
+        </div>
+        <div class="quick-stat-card">
+          <div class="stat-num" style="color: #dc2626;" id="mAdmLowStock">3</div>
+          <div class="stat-lbl">Cảnh Báo Kho</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h3>Đơn Hàng Mới Cần Xem Chi Tiết</h3>
+      </div>
+      <div id="mAdminUrgentActionContainer">
+        <!-- Rendered via mobile.js -->
+      </div>
+    </section>
+
+    <!-- 2. Admin Approved Orders ("Đơn Đã Duyệt" - Có Ô Tìm Kiếm Thời Gian Thực) -->
+    <section class="mobile-view" id="mViewAdminApprovedOrders">
+      <div class="section-head">
+        <h3>Danh Sách Đơn Đã Duyệt</h3>
+      </div>
+
+      <!-- Sub-Tabs 2 Trạng Thái Tinh Gọn -->
+      <div class="m-subtab-bar">
+        <button class="m-subtab-btn active" id="btnApprovedSubtabShipping" onclick="switchApprovedSubtab('shipping')">🔵 Đang Giao</button>
+        <button class="m-subtab-btn" id="btnApprovedSubtabCompleted" onclick="switchApprovedSubtab('completed')">🟢 Đã Giao</button>
+      </div>
+
+      <!-- Ô Tìm Kiếm Siêu Tốc Trong Đơn Đã Duyệt -->
+      <div style="margin-bottom: 12px;">
+        <input type="search" id="mSearchApprovedOrders" class="m-form-input" placeholder="🔍 Tìm nhanh theo Mã đơn (#ORD-xxx), Tên khách hoặc SĐT..." oninput="handleApprovedOrdersSearch()">
+      </div>
+
+      <div id="mAdminApprovedOrdersListContainer">
+        <!-- Rendered via mobile.js -->
+      </div>
+    </section>
+
+    <!-- 3. Minimalist Distributor Mobile Inventory Management -->
+    <section class="mobile-view" id="mViewAdminInventory">
+      <div class="section-head">
+        <h3>Quản Lý Kho Nội Bộ</h3>
+      </div>
+
+      <!-- Sub-Tabs gọn nhẹ dành cho Nhà Phân Phối (Tồn Kho & Nhật Ký Phiếu 2 Cấp) -->
+      <div class="m-subtab-bar">
+        <button class="m-subtab-btn active" id="btnSubtabStock" onclick="switchInventorySubtab('stock')">Tồn Kho</button>
+        <button class="m-subtab-btn" id="btnSubtabLogs" onclick="switchInventorySubtab('logs')">Nhật Ký Phiếu</button>
+      </div>
+
+      <!-- Subview 1: Distributor Stock Items Board with Category Filter (Trà vs Trà Cụ) -->
+      <div id="mInvStockContainer">
+        <!-- Filter Chips 2 Mục Chính: Trà & Trà Cụ -->
+        <div class="m-subtab-bar" style="background:#f1f5f9; padding:4px; margin-bottom:10px;">
+          <button class="m-subtab-btn active" id="btnCatFilterAll" style="font-size:0.78rem; padding:5px 8px;" onclick="switchInventoryCategory('ALL')">Tất Cả Kho</button>
+          <button class="m-subtab-btn" id="btnCatFilterTea" style="font-size:0.78rem; padding:5px 8px;" onclick="switchInventoryCategory('TEA')">🍃 Trà Các Loại</button>
+          <button class="m-subtab-btn" id="btnCatFilterTeaware" style="font-size:0.78rem; padding:5px 8px;" onclick="switchInventoryCategory('TEAWARE')">🏺 Trà Cụ / Ấm Chén</button>
+        </div>
+        
+        <div id="mStockItemsListBody">
+          <!-- Rendered via mobile.js -->
+        </div>
+      </div>
+
+      <!-- Subview 2: Inventory 2-Tier Master Vouchers (PN- / PX-) with Quick Time Presets (Tất Cả, Hôm Nay, 1 Tuần, 1 Tháng, 3 Tháng, 6 Tháng) -->
+      <div id="mInvLogsContainer" style="display: none;">
+        <!-- Quick Preset Time Filter Buttons -->
+        <div style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px;">
+          <button class="m-subtab-btn active" id="btnLogPresetAll" style="font-size:0.75rem; padding:4px 8px; white-space:nowrap;" onclick="setLogTimePreset('ALL')">Tất Cả</button>
+          <button class="m-subtab-btn" id="btnLogPresetToday" style="font-size:0.75rem; padding:4px 8px; white-space:nowrap;" onclick="setLogTimePreset('TODAY')">Hôm Nay</button>
+          <button class="m-subtab-btn" id="btnLogPreset1W" style="font-size:0.75rem; padding:4px 8px; white-space:nowrap;" onclick="setLogTimePreset('1W')">1 Tuần</button>
+          <button class="m-subtab-btn" id="btnLogPreset1M" style="font-size:0.75rem; padding:4px 8px; white-space:nowrap;" onclick="setLogTimePreset('1M')">1 Tháng</button>
+          <button class="m-subtab-btn" id="btnLogPreset3M" style="font-size:0.75rem; padding:4px 8px; white-space:nowrap;" onclick="setLogTimePreset('3M')">3 Tháng</button>
+          <button class="m-subtab-btn" id="btnLogPreset6M" style="font-size:0.75rem; padding:4px 8px; white-space:nowrap;" onclick="setLogTimePreset('6M')">6 Tháng</button>
+        </div>
+
+        <div class="m-date-filter-bar">
+          <input type="date" id="mLogStartDate" class="m-date-input">
+          <input type="date" id="mLogEndDate" class="m-date-input">
+          <button class="btn-m-action btn-m-approve" style="padding: 6px 10px;" onclick="applyInventoryLogFilter()">Lọc</button>
+        </div>
+        <div id="mLogsListBody">
+          <!-- Rendered via mobile.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Mobile Web Catalog & Product Publishing Management (Đẩy Hàng Lên Web) -->
+    <section class="mobile-view" id="mViewAdminWebCatalog">
+      <div class="section-head">
+        <h3>Quản Lý Bán Hàng Online (Web)</h3>
+        <button class="btn-m-action btn-m-approve" style="padding: 6px 10px; font-size: 0.78rem;" onclick="openMobilePublishWebModal()">
+          ➕ Đăng Trà Mới Lên Web
+        </button>
+      </div>
+
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 10px; margin-bottom: 12px; font-size: 0.82rem; color: #166534;">
+        🌐 <strong>Quản Lý Hiển Thị Web:</strong> Bấm công tắc bên dưới từng mặt hàng để đẩy lên hoặc ẩn khỏi Website bán hàng của cửa hàng ngay từ di động.
+      </div>
+
+      <div id="mAdminWebProductsListContainer">
+        <!-- Rendered via mobile.js -->
+      </div>
+    </section>
+
+    <!-- 5. Admin Fast Review Moderation -->
+    <section class="mobile-view" id="mViewAdminReviews">
+      <div class="section-head">
+        <h3>Duyệt Nhanh Đánh Giá Khách Hàng</h3>
+      </div>
+      <div id="mAdminReviewsListContainer">
+        <!-- Rendered via mobile.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Action Button (FAB) + Nổi ở Góc Dưới Bên Phải khi ở Màn hình Quản Lý Kho -->
+  <button class="m-fab-btn" id="btnMobileFabImport" style="display: none;" onclick="openMobileQuickImportModal()" title="Tạo Phiếu Nhập Kho mới">+</button>
+
+  <!-- Bottom Sheet Modal for Detailed Web Product Specs & Sold Volume Analytics (Xem Chi Tiết Web & Số Lượng Đã Bán) -->
+  <div class="m-modal-overlay" id="mModalWebProductDetail">
+    <div class="m-bottom-sheet">
+      <div class="m-sheet-header">
+        <span class="m-sheet-title" id="mWebDetailTitle">Chi Tiết Sản Phẩm Bán Web</span>
+        <button style="background: none; border: none; font-size: 1.4rem; cursor: pointer;" onclick="closeMobileWebProductDetailModal()">&times;</button>
+      </div>
+
+      <div id="mWebDetailBody">
+        <!-- Rendered dynamically by mobile.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet Modal for Publishing New Product to Web Storefront -->
+  <div class="m-modal-overlay" id="mModalPublishWebProduct">
+    <div class="m-bottom-sheet">
+      <div class="m-sheet-header">
+        <span class="m-sheet-title">🚀 Đăng Sản Phẩm Mới Lên Website</span>
+        <button style="background: none; border: none; font-size: 1.4rem; cursor: pointer;" onclick="closeMobilePublishWebModal()">&times;</button>
+      </div>
+
+      <form id="mFormPublishWebProduct" onsubmit="handleMobilePublishWebSubmit(event)">
+        <div class="m-form-group">
+          <label class="m-form-label">Tên trà / Sản phẩm bán lẻ</label>
+          <input type="text" id="mWebProdName" class="m-form-input" placeholder="VD: Trà Đinh Tân Cương Thượng Hạng (200g)" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" class="m-form-group">
+          <div>
+            <label class="m-form-label">Mã SKU / Sản phẩm</label>
+            <input type="text" id="mWebProdSku" class="m-form-input" placeholder="VD: TD-TC-200" required>
+          </div>
+          <div>
+            <label class="m-form-label">Quy cách (Trọng lượng)</label>
+            <input type="text" id="mWebProdWeight" class="m-form-input" value="200g" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" class="m-form-group">
+          <div>
+            <label class="m-form-label">Giá bán lẻ Web (VNĐ)</label>
+            <input type="number" id="mWebProdPrice" class="m-form-input" value="350000" min="1000" step="5000" required>
+          </div>
+          <div>
+            <label class="m-form-label">Số lượng sẵn có</label>
+            <input type="number" id="mWebProdStock" class="m-form-input" value="25" min="1" required>
+          </div>
+        </div>
+
+        <!-- 📸 Image Upload / Selection Component -->
+        <div class="m-form-group">
+          <label class="m-form-label">📸 Hình ảnh sản phẩm (Chụp từ điện thoại / Mẫu sẵn)</label>
+          <div style="display: flex; gap: 6px; margin-bottom: 6px; overflow-x: auto; padding-bottom: 4px;">
+            <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=300&q=80" alt="Trà 1" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 2px solid #059669; cursor: pointer;" onclick="selectWebImagePreset(this.src)">
+            <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=300&q=80" alt="Trà 2" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #d1d5db; cursor: pointer;" onclick="selectWebImagePreset(this.src)">
+            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=300&q=80" alt="Ấm Trà" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #d1d5db; cursor: pointer;" onclick="selectWebImagePreset(this.src)">
+            <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=300&q=80" alt="Trà 3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #d1d5db; cursor: pointer;" onclick="selectWebImagePreset(this.src)">
+          </div>
+          <input type="url" id="mWebProdImage" class="m-form-input" value="https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=300&q=80" placeholder="Đường dẫn ảnh / Hoặc chụp ảnh tải lên...">
+        </div>
+
+        <div class="m-form-group">
+          <label class="m-form-label">Mô tả ngắn hiển thị trên Web</label>
+          <input type="text" id="mWebProdDesc" class="m-form-input" placeholder="VD: Thu hái 1 tôm 1 lá chọn lọc thủ công từ Tân Cương">
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 16px;">
+          <button type="button" class="btn-m-action btn-m-detail" onclick="closeMobilePublishWebModal()">Hủy</button>
+          <button type="submit" class="btn-m-action btn-m-approve" style="font-size: 0.85rem; padding: 10px;">🚀 ĐĂNG BÁN LÊN WEBSITE</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet Modal Synchronized for Multi-Line Item 2-Tier Master Voucher Creation (Tạo Phiếu Nhập Kho PN- Có Đầy Đủ Thông Tin Đối Tác & Nút + Thêm Dòng Hàng) -->
+  <div class="m-modal-overlay" id="mModalQuickImport">
+    <div class="m-bottom-sheet">
+      <div class="m-sheet-header">
+        <span class="m-sheet-title">🟢 Lập Phiếu Nhập Kho Mới (PN-)</span>
+        <button style="background: none; border: none; font-size: 1.4rem; cursor: pointer;" onclick="closeMobileQuickImportModal()">&times;</button>
+      </div>
+
+      <form id="mFormQuickImport" onsubmit="handleMobileQuickImportSubmit(event)">
+        <!-- 👤 Thông Tin Đối Tác / Nhà Cung Cấp Đầy Đủ (Tên + SĐT) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" class="m-form-group">
+          <div>
+            <label class="m-form-label">Tên Nhà Cung Cấp / Đối tác</label>
+            <input type="text" id="mImportPartner" class="m-form-input" value="Xưởng Trà Tân Cương Thái Nguyên" placeholder="Nhập tên đối tác..." required>
+          </div>
+          <div>
+            <label class="m-form-label">SĐT Đối Tác (Gọi 1-touch)</label>
+            <input type="tel" id="mImportPartnerPhone" class="m-form-input" value="0912345678" placeholder="Nhập SĐT nhà cung cấp..." required>
+          </div>
+        </div>
+
+        <!-- 📦 Danh Sách Dòng Hàng Nhập (Hỗ trợ nút bấm + Thêm sản phẩm Multi-Line Items) -->
+        <div class="m-form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label class="m-form-label" style="margin-bottom: 0;">Danh sách sản phẩm & quy cách nhập</label>
+            <button type="button" class="btn-m-action btn-m-approve" style="padding: 3px 8px; font-size: 0.75rem;" onclick="addImportLineItem()">
+              ➕ Thêm Sản Phẩm
+            </button>
+          </div>
+          
+          <div id="mImportItemsContainer">
+            <!-- Rendered dynamically by mobile.js -->
+          </div>
+        </div>
+
+        <!-- 💳 Tổng Giá Trị Phiếu Nhập Tính Tự Động -->
+        <div style="background:#ecfdf5; border:1px solid #a7f3d0; padding:10px 12px; border-radius:8px; margin-bottom:12px; font-size:0.85rem; color:#047857; font-weight:700; display:flex; justify-content:space-between; align-items:center;">
+          <span>Tổng Giá Trị Phiếu Nhập:</span>
+          <span id="mImportTotalCostPreview" style="font-size: 1.05rem; font-weight: 800;">0 VNĐ</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" class="m-form-group">
+          <div>
+            <label class="m-form-label">Mã Lô Hàng (Batch)</label>
+            <input type="text" id="mImportBatchCode" class="m-form-input" value="BATCH-2026-08D" required>
+          </div>
+          <div>
+            <label class="m-form-label">Hạn Sử Dụng (HSD)</label>
+            <input type="date" id="mImportExpiryDate" class="m-form-input" required>
+          </div>
+        </div>
+
+        <div class="m-form-group">
+          <label class="m-form-label">Ghi chú đợt nhập kho (Tùy chọn)</label>
+          <input type="text" id="mImportReason" class="m-form-input" placeholder="VD: Nhập đợt chè búp Tân Cương mới sấy khô đợt 2">
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 16px;">
+          <button type="button" class="btn-m-action btn-m-detail" onclick="closeMobileQuickImportModal()">Hủy</button>
+          <button type="submit" class="btn-m-action btn-m-approve" style="font-size: 0.85rem; padding: 10px;">✓ TẠO PHIẾU NHẬP (PN-)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet Modal for 2-Tier Master Voucher Detail (Xem Chi Tiết Phiếu Nhập PN- / Phiếu Xuất PX-) -->
+  <div class="m-modal-overlay" id="mModalVoucherDetail">
+    <div class="m-bottom-sheet">
+      <div class="m-sheet-header">
+        <span class="m-sheet-title" id="mVoucherDetailTitle">Chi Tiết Phiếu Nhập Kho</span>
+        <button style="background: none; border: none; font-size: 1.4rem; cursor: pointer;" onclick="closeMobileVoucherDetailModal()">&times;</button>
+      </div>
+
+      <div id="mVoucherDetailBody">
+        <!-- Rendered dynamically by mobile.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet Modal for Detailed Stock Product Specs (Xem Chi Tiết Sản Phẩm Kho) -->
+  <div class="m-modal-overlay" id="mModalStockDetail">
+    <div class="m-bottom-sheet">
+      <div class="m-sheet-header">
+        <span class="m-sheet-title" id="mStockDetailTitle">Chi Tiết Sản Phẩm Kho</span>
+        <button style="background: none; border: none; font-size: 1.4rem; cursor: pointer;" onclick="closeMobileStockDetailModal()">&times;</button>
+      </div>
+
+      <div id="mStockDetailBody">
+        <!-- Rendered dynamically by mobile.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet Modal for Mobile Order Detail & Direct Action -->
+  <div class="m-modal-overlay" id="mModalOrderDetail">
+    <div class="m-bottom-sheet">
+      <div class="m-sheet-header">
+        <span class="m-sheet-title" id="mOrderDetailCode">Chi Tiết Đơn Hàng</span>
+        <button style="background: none; border: none; font-size: 1.4rem; cursor: pointer;" onclick="closeMobileOrderDetailModal()">&times;</button>
+      </div>
+
+      <div id="mOrderDetailBody">
+        <!-- Rendered dynamically by mobile.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Permanent Bottom Navigation Bar for 100% Internal Operations with Web Catalog Control -->
+  <nav class="mobile-bottom-nav">
+    <button class="nav-tab-btn admin-tab active" data-tab="adminOverview" onclick="switchMobileTab('adminOverview')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Tổng Quan</span>
+    </button>
+    <button class="nav-tab-btn admin-tab" data-tab="adminApprovedOrders" onclick="switchMobileTab('adminApprovedOrders')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 11 12 14 22 4"/></svg>
+      <span>Đơn Đã Duyệt</span>
+    </button>
+    <button class="nav-tab-btn admin-tab" data-tab="adminInventory" onclick="switchMobileTab('adminInventory')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      <span>Quản Lý Kho</span>
+    </button>
+    <button class="nav-tab-btn admin-tab" data-tab="adminWebCatalog" onclick="switchMobileTab('adminWebCatalog')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>Đẩy Hàng Web</span>
+    </button>
+    <button class="nav-tab-btn admin-tab" data-tab="adminReviews" onclick="switchMobileTab('adminReviews')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span>Kiểm Duyệt</span>
+    </button>
+  </nav>
+
+  <!-- Mobile Toast Alert -->
+  <div class="mobile-toast" id="mToast">Thông báo</div>
+
+  <script type="module" src="mobile.js"></script>
+</body>
+</html>

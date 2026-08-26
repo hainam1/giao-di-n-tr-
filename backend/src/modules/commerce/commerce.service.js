@@ -86,6 +86,41 @@ export class CommerceService {
       return order;
     });
   }
+
+  async validateVoucher(code, orderValue = 0) {
+    if (!code) throw new AppError('Mã voucher không được để trống', 400);
+    const voucher = await this.repo.client.voucher.findUnique({
+      where: { code: code.toUpperCase() },
+    });
+    if (!voucher || !voucher.isActive) {
+      throw new AppError('Mã giảm giá không tồn tại hoặc đã bị vô hiệu hóa', 404);
+    }
+    const now = new Date();
+    if (now < voucher.startsAt || now > voucher.expiresAt) {
+      throw new AppError('Mã giảm giá không trong thời gian sử dụng', 400);
+    }
+    const numOrderValue = Number(orderValue);
+    if (voucher.minimumOrderValue && numOrderValue < Number(voucher.minimumOrderValue)) {
+      throw new AppError(`Đơn hàng cần đạt tối thiểu ${Number(voucher.minimumOrderValue).toLocaleString('vi-VN')} ₫ để áp dụng mã này`, 400);
+    }
+    let discount = 0;
+    if (voucher.discountType === 'PERCENTAGE') {
+      discount = (numOrderValue * Number(voucher.discountValue)) / 100;
+      if (voucher.maximumDiscount) {
+        discount = Math.min(discount, Number(voucher.maximumDiscount));
+      }
+    } else {
+      discount = Number(voucher.discountValue);
+    }
+    return {
+      id: voucher.id,
+      code: voucher.code,
+      name: voucher.name,
+      discountAmount: Math.round(discount),
+      finalTotal: Math.max(0, Math.round(numOrderValue - discount)),
+    };
+  }
 }
 
 export const commerceService = new CommerceService();
+

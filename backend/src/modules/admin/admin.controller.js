@@ -172,3 +172,40 @@ export const analytics = async (req, res, next) => {
     } });
   } catch (e) { next(e); }
 };
+
+export const toggleProductWebStatus = async (req, res, next) => {
+  try {
+    const product = await prisma.product.findUnique({ where: { id: req.params.id } });
+    if (!product) throw new AppError('Sản phẩm không tồn tại', 404);
+    const nextStatus = product.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    const updated = await prisma.product.update({
+      where: { id: req.params.id },
+      data: { status: nextStatus },
+    });
+    return successResponse(res, { data: updated, message: `Đã đổi trạng thái sản phẩm sang ${nextStatus}` });
+  } catch (e) { next(e); }
+};
+
+export const publishProduct = async (req, res, next) => {
+  try {
+    return await saveProduct(req, res, next);
+  } catch (e) { next(e); }
+};
+
+export const createOrUpdateShipment = async (req, res, next) => {
+  try {
+    const { carrier, trackingCode, trackingUrl, status = 'SHIPPING', estimatedDelivery } = req.body;
+    const orderId = req.params.id;
+    const shipment = await prisma.shipment.upsert({
+      where: { orderId },
+      update: { carrier, trackingCode, trackingUrl, status, ...(estimatedDelivery && { estimatedDelivery: new Date(estimatedDelivery) }) },
+      create: { orderId, carrier, trackingCode, trackingUrl, status, ...(estimatedDelivery && { estimatedDelivery: new Date(estimatedDelivery) }) },
+    });
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { status: 'SHIPPING' },
+    });
+    return successResponse(res, { data: shipment, message: 'Đã cập nhật vận đơn thành công' });
+  } catch (e) { next(e); }
+};
+

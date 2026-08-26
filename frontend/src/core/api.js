@@ -64,4 +64,8 @@ export class ApiClient {
   static delete(endpoint) {
     return this.request(endpoint, { method: 'DELETE' });
   }
+
+  static patch(endpoint, body) {
+    return this.request(endpoint, { method: 'PATCH', body });
+  }
 }

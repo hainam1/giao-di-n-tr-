@@ -12,7 +12,9 @@ router.post('/products/:productId/reviews', authenticateJWT, c.createReview);
 router.post('/inquiries', c.createInquiry);
 router.get('/cart', authenticateJWT, c.getCart);
 router.put('/cart', authenticateJWT, c.putCart);
+router.post('/vouchers/validate', c.validateVoucher);
 router.post('/orders', authenticateJWT, c.checkout);
+
 router.get('/orders/my', authenticateJWT, c.myOrders);
 router.get('/notifications', authenticateJWT, c.notifications);
 router.patch('/notifications/read-all', authenticateJWT, c.markNotificationsRead);

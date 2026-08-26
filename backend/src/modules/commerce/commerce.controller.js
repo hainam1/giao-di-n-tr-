@@ -71,3 +71,12 @@ export const createTestimonial = async (req, res, next) => {
     return successResponse(res, { statusCode: 201, data: testimonial });
   } catch (e) { next(e); }
 };
+
+export const validateVoucher = async (req, res, next) => {
+  try {
+    const { code, orderValue } = req.body;
+    const result = await commerceService.validateVoucher(code, orderValue);
+    return successResponse(res, { data: result, message: 'Áp dụng mã giảm giá thành công' });
+  } catch (e) { next(e); }
+};
+

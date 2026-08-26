@@ -946,9 +946,16 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="cart-drawer-footer" id="cartDrawerFooter">
-          <div class="cart-total-row">
-            <span class="cart-total-label">Tổng cộng tạm tính:</span>
-            <span class="cart-total-val" id="cartTotalVal">0 ₫</span>
+          <div class="cart-voucher-section" style="padding: 10px 0; border-top: 1px dashed rgba(223, 186, 115, 0.4);">
+            <div style="display: flex; gap: 8px; margin-bottom: 6px;">
+              <input type="text" id="cartVoucherCode" placeholder="Mã giảm giá (VD: XATON20)" style="flex: 1; padding: 8px 12px; border: 1px solid #dfba73; border-radius: 6px; text-transform: uppercase; font-size: 0.85rem; background: rgba(0,0,0,0.2); color: #fff;">
+              <button type="button" id="btnApplyVoucher" style="background: #059669; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Áp dụng</button>
+            </div>
+            <div id="voucherDiscountMsg" style="font-size: 0.8rem; color: #10b981; font-weight: 600; display: none; margin-bottom: 6px;"></div>
+          </div>
+          <div class="cart-total-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; margin-bottom: 12px;">
+            <span class="cart-total-label">Tổng thanh toán:</span>
+            <span class="cart-total-val" id="cartTotalVal" style="color: #dfba73; font-weight: 700;">0 ₫</span>
           </div>
           <button type="button" class="btn-cart-checkout" id="btnCartCheckout">
             <span>TIẾN HÀNH ĐẶT HÀNG</span>
@@ -958,6 +965,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(cartDrawerBackdrop);
   }
+
 
   function formatPriceVND(num) {
     return num.toLocaleString('vi-VN') + ' ₫';
@@ -1115,24 +1123,152 @@ document.addEventListener('DOMContentLoaded', () => {
       closeCartDrawer();
     }
     if (e.target && e.target.id === 'btnCartCheckout') {
-      try {
-        await syncCartToServer(cartItems);
-        const name = localStorage.getItem('tra_dao_user_name') || 'Khách hàng';
-        const phone = localStorage.getItem('tra_dao_user_phone') || '';
-        const address = localStorage.getItem('tra_dao_user_address') || '';
-        if (!phone || !address) throw new Error('Vui lòng cập nhật số điện thoại và địa chỉ trong hồ sơ trước khi đặt hàng.');
-        const result = await apiRequest('/orders', { method: 'POST', body: {
-          customerName: name, customerEmail: localStorage.getItem('tra_dao_user_email'),
-          customerPhone: phone, shippingAddress: address, shippingProvince: 'Chưa cập nhật',
-          shippingFee: 30000, paymentMethod: 'COD',
-        } });
-        showToast(`Đặt hàng thành công! Mã đơn: ${result.data.code}`);
-        cartItems = [];
-        saveAndSyncCart();
-        setTimeout(closeCartDrawer, 1200);
-      } catch (error) { showToast(error.message); }
+      if (cartItems.length === 0) {
+        showToast('Giỏ hàng đang trống!');
+        return;
+      }
+      openCheckoutModal();
     }
   });
+
+  let appliedVoucherDiscount = 0;
+  let appliedVoucherCode = '';
+
+  document.addEventListener('click', async (e) => {
+    if (e.target && e.target.id === 'btnApplyVoucher') {
+      const codeInput = document.getElementById('cartVoucherCode');
+      const msgEl = document.getElementById('voucherDiscountMsg');
+      const code = codeInput ? codeInput.value.trim() : '';
+      if (!code) {
+        showToast('Vui lòng nhập mã giảm giá.');
+        return;
+      }
+      const currentSubtotal = cartItems.reduce((sum, item) => sum + item.priceNum * item.quantity, 0);
+      try {
+        const res = await apiRequest('/vouchers/validate', { method: 'POST', body: { code, orderValue: currentSubtotal } });
+        if (res.data) {
+          appliedVoucherDiscount = res.data.discountAmount;
+          appliedVoucherCode = res.data.code;
+          if (msgEl) {
+            msgEl.style.display = 'block';
+            msgEl.style.color = '#10b981';
+            msgEl.textContent = `✓ Đã áp dụng mã ${res.data.code}: Giảm ${formatPriceVND(res.data.discountAmount)}`;
+          }
+          const cartTotalVal = document.getElementById('cartTotalVal');
+          if (cartTotalVal) cartTotalVal.textContent = formatPriceVND(Math.max(0, currentSubtotal - appliedVoucherDiscount));
+          showToast(`Áp dụng thành công mã ${res.data.code}!`);
+        }
+      } catch (error) {
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#ef4444';
+          msgEl.textContent = `✗ ${error.message}`;
+        }
+        showToast(error.message);
+      }
+    }
+  });
+
+  function openCheckoutModal() {
+    const subtotal = cartItems.reduce((sum, item) => sum + item.priceNum * item.quantity, 0);
+    const finalAmount = Math.max(0, subtotal - appliedVoucherDiscount) + 30000;
+    const name = localStorage.getItem('tra_dao_user_name') || 'Khách Hàng';
+    const phone = localStorage.getItem('tra_dao_user_phone') || '0912345678';
+    const address = localStorage.getItem('tra_dao_user_address') || 'Số 18, Phố Tràng Tiền, Hà Nội';
+
+    const existingModal = document.getElementById('checkoutModalBackdrop');
+    if (existingModal) existingModal.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'checkoutModalBackdrop';
+    modal.className = 'cart-drawer-backdrop active';
+    modal.style.zIndex = '99999';
+    modal.innerHTML = `
+      <div style="background: #1c1917; color: #fff; width: 90%; max-width: 480px; margin: 40px auto; padding: 24px; border-radius: 12px; border: 1px solid #dfba73; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(223, 186, 115, 0.3); padding-bottom: 12px; margin-bottom: 16px;">
+          <h3 style="color: #dfba73; margin: 0; font-size: 1.2rem;">📦 Xác Nhận Đặt Hàng & Thanh Toán</h3>
+          <button id="btnCloseCheckoutModal" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+        <form id="checkoutForm">
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 0.85rem; color: #dfba73; margin-bottom: 4px;">Họ tên người nhận</label>
+            <input type="text" id="chkName" value="${name}" required style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff;">
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 0.85rem; color: #dfba73; margin-bottom: 4px;">Số điện thoại</label>
+            <input type="text" id="chkPhone" value="${phone}" required style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff;">
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 0.85rem; color: #dfba73; margin-bottom: 4px;">Địa chỉ giao hàng</label>
+            <input type="text" id="chkAddress" value="${address}" required style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff;">
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.85rem; color: #dfba73; margin-bottom: 4px;">Phương thức thanh toán</label>
+            <select id="chkPaymentMethod" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff;">
+              <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+              <option value="VIETQR">Chuyển khoản Quét Mã VietQR (Tự động)</option>
+            </select>
+          </div>
+          <div id="vietqrContainer" style="display: none; text-align: center; background: #000; padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed #dfba73;">
+            <p style="font-size: 0.85rem; color: #dfba73; margin-bottom: 8px;">Mã VietQR Thanh Toán Đơn Hàng (${formatPriceVND(finalAmount)}):</p>
+            <img id="vietqrImg" src="https://img.vietqr.io/image/MB-0988123456-compact2.png?amount=${finalAmount}&addInfo=TRADAO%20THANHTOAN&accountName=TRADAO%20THAINUYEN" alt="Mã VietQR" style="max-width: 220px; border-radius: 8px; border: 2px solid #fff;">
+            <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px;">Quét mã bằng app ngân hàng để chuyển khoản chính xác số tiền.</p>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid rgba(223, 186, 115, 0.3); font-weight: 700; margin-bottom: 16px;">
+            <span>Tổng tiền thanh toán:</span>
+            <span style="color: #dfba73; font-size: 1.1rem;">${formatPriceVND(finalAmount)}</span>
+          </div>
+          <button type="submit" style="width: 100%; padding: 12px; background: #059669; color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 1rem;">XÁC NHẬN ĐẶT HÀNG</button>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const paySelect = modal.querySelector('#chkPaymentMethod');
+    const qrContainer = modal.querySelector('#vietqrContainer');
+    paySelect.addEventListener('change', () => {
+      qrContainer.style.display = paySelect.value === 'VIETQR' ? 'block' : 'none';
+    });
+
+    modal.querySelector('#btnCloseCheckoutModal').addEventListener('click', () => {
+      modal.remove();
+    });
+
+    modal.querySelector('#checkoutForm').addEventListener('submit', async (evt) => {
+      evt.preventDefault();
+      const chkName = modal.querySelector('#chkName').value.trim();
+      const chkPhone = modal.querySelector('#chkPhone').value.trim();
+      const chkAddress = modal.querySelector('#chkAddress').value.trim();
+      const chkPayMethod = modal.querySelector('#chkPaymentMethod').value;
+
+      try {
+        await syncCartToServer(cartItems);
+        const result = await apiRequest('/orders', {
+          method: 'POST',
+          body: {
+            customerName: chkName,
+            customerEmail: localStorage.getItem('tra_dao_user_email'),
+            customerPhone: chkPhone,
+            shippingAddress: chkAddress,
+            shippingProvince: 'Thái Nguyên',
+            shippingFee: 30000,
+            paymentMethod: chkPayMethod,
+            discountAmount: appliedVoucherDiscount,
+          }
+        });
+        showToast(`🎉 Đặt hàng thành công! Mã đơn: ${result.data.code}`);
+        cartItems = [];
+        appliedVoucherDiscount = 0;
+        appliedVoucherCode = '';
+        saveAndSyncCart();
+        modal.remove();
+        closeCartDrawer();
+      } catch (err) {
+        showToast(err.message);
+      }
+    });
+  }
+
 
   // Init cart state on load
   updateCartBadge();
