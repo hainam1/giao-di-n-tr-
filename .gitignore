@@ -17,6 +17,8 @@ dist/
 **/dist/
 build/
 **/build/
+**/test-results/
+**/playwright-report/
 
 # IDE & System
 .DS_Store

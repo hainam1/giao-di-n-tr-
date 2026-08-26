@@ -75,6 +75,10 @@ export class CommerceRepository {
     });
   }
 
+  voucherByCode(code) {
+    return this.db.voucher.findUnique({ where: { code } });
+  }
+
   transaction(fn) { return this.db.$transaction(fn); }
 
   userOrders(userId) {

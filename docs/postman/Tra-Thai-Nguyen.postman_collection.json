@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "Tra Thai Nguyen API",
+    "description": "Bộ kiểm thử API local đã đối chiếu với backend và smoke-test sau khi tích hợp.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [{
+        "name": "Health check",
+        "request": { "auth": { "type": "noauth" }, "method": "GET", "url": "{{base_url}}/health" },
+        "event": [{ "listen": "test", "script": { "exec": [
+          "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+          "pm.test('Backend is UP', () => pm.expect(pm.response.json().data.status).to.eql('UP'));"
+        ] } }]
+      }]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": { "type": "noauth" }, "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Khach Hang Test\",\n  \"email\": \"khach.test@example.com\",\n  \"phone\": \"0900000001\",\n  \"password\": \"Test123456\",\n  \"acceptTerms\": true,\n  \"acceptPrivacy\": true,\n  \"termsVersion\": \"2026-08-22\"\n}" },
+            "url": "{{api_url}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": { "type": "noauth" }, "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"khachhang@gmail.com\",\n  \"password\": \"user123\"\n}" },
+            "url": "{{api_url}}/auth/login"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('Login successful', () => pm.response.to.have.status(200));",
+            "const data = pm.response.json().data || {};",
+            "if (data.token) pm.environment.set('access_token', data.token);",
+            "if (data.refreshToken) pm.environment.set('refresh_token', data.refreshToken);"
+          ] } }]
+        },
+        { "name": "Profile", "request": { "method": "GET", "url": "{{api_url}}/auth/profile" } },
+        {
+          "name": "Refresh token",
+          "request": {
+            "auth": { "type": "noauth" }, "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}" },
+            "url": "{{api_url}}/auth/refresh"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": { "type": "noauth" }, "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}" },
+            "url": "{{api_url}}/auth/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        { "name": "List products", "request": { "auth": { "type": "noauth" }, "method": "GET", "url": "{{api_url}}/products" } },
+        { "name": "Product detail", "request": { "auth": { "type": "noauth" }, "method": "GET", "url": "{{api_url}}/products/{{product_id}}" } },
+        {
+          "name": "Validate XATON20",
+          "request": {
+            "auth": { "type": "noauth" }, "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"code\": \"XATON20\",\n  \"orderValue\": 1000000\n}" },
+            "url": "{{api_url}}/vouchers/validate"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart and Orders",
+      "item": [
+        { "name": "Get cart", "request": { "method": "GET", "url": "{{api_url}}/cart" } },
+        {
+          "name": "Update cart",
+          "request": {
+            "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"items\": [\n    { \"variantId\": \"{{variant_id}}\", \"quantity\": 1 }\n  ]\n}" }, "url": "{{api_url}}/cart"
+          }
+        },
+        {
+          "name": "Create order",
+          "request": {
+            "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerName\": \"Khach Hang Test\",\n  \"customerEmail\": \"khachhang@gmail.com\",\n  \"customerPhone\": \"0900000000\",\n  \"shippingAddress\": \"123 Tan Cuong\",\n  \"shippingDistrict\": \"Thanh pho Thai Nguyen\",\n  \"shippingProvince\": \"Thai Nguyen\",\n  \"shippingFee\": 30000,\n  \"paymentMethod\": \"COD\"\n}" },
+            "url": "{{api_url}}/orders"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('Order created', () => pm.response.to.have.status(201));",
+            "const id = pm.response.json().data?.id;",
+            "if (id) pm.environment.set('order_id', id);"
+          ] } }]
+        },
+        { "name": "My orders", "request": { "method": "GET", "url": "{{api_url}}/orders/my" } }
+      ]
+    },
+    {
+      "name": "Admin",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{admin_token}}", "type": "string" }] },
+      "item": [
+        {
+          "name": "Admin login",
+          "request": {
+            "auth": { "type": "noauth" }, "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@tradao.vn\",\n  \"password\": \"admin123\"\n}" },
+            "url": "{{api_url}}/auth/login"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('Admin login successful', () => pm.response.to.have.status(200));",
+            "const token = pm.response.json().data?.token;",
+            "if (token) pm.environment.set('admin_token', token);"
+          ] } }]
+        },
+        { "name": "Dashboard", "request": { "method": "GET", "url": "{{api_url}}/admin/dashboard" } },
+        { "name": "Orders", "request": { "method": "GET", "url": "{{api_url}}/admin/orders" } },
+        {
+          "name": "Confirm order",
+          "request": {
+            "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"CONFIRMED\",\n  \"note\": \"Confirmed from Postman\"\n}" },
+            "url": "{{api_url}}/admin/orders/{{order_id}}/status"
+          }
+        },
+        {
+          "name": "Create shipment",
+          "request": {
+            "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"carrier\": \"TEST-CARRIER\",\n  \"trackingCode\": \"POSTMAN-{{$timestamp}}\",\n  \"status\": \"SHIPPING\"\n}" },
+            "url": "{{api_url}}/admin/orders/{{order_id}}/shipment"
+          }
+        }
+      ]
+    }
+  ]
+}
