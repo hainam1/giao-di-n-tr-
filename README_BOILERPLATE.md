@@ -93,9 +93,9 @@ npm run test:e2e
 Kết quả chuẩn ngày 2026-08-26:
 
 - Backend: 20/20 test đạt.
-- API smoke test: 23/23 kiểm tra đạt.
+- API smoke test: 39/39 kiểm tra đạt.
 - Frontend production build: thành công.
-- Frontend Playwright E2E: 2/2 luồng đạt trên Chrome headless.
+- Frontend Playwright E2E: 7/7 luồng đạt trên Chrome headless.
 
 Import Postman:
 

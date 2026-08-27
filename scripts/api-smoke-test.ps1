@@ -55,9 +55,30 @@ function Assert-Status {
 $health = Invoke-Api GET '/health'
 Assert-Status 'Health check' $health @(200)
 
+$unique = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+$register = Invoke-Api POST '/api/v1/auth/register' @{
+  name = 'Smoke Test User'
+  email = "smoke.$unique@example.com"
+  phone = "09$($unique.ToString().Substring($unique.ToString().Length - 8))"
+  password = 'Smoke123456'
+  acceptTerms = $true
+  acceptPrivacy = $true
+  termsVersion = '2026-08-22'
+}
+Assert-Status 'Register new customer' $register @(201)
+Assert-Status 'Reject invalid registration' (Invoke-Api POST '/api/v1/auth/register' @{
+  name = 'X'; email = 'invalid'; phone = '1'; password = '123'; acceptTerms = $false; acceptPrivacy = $false
+}) @(400)
+
 $customerLogin = Invoke-Api POST '/api/v1/auth/login' @{ email = $CustomerEmail; password = $CustomerPassword }
 Assert-Status 'Customer login' $customerLogin @(200)
 $customerToken = $customerLogin.Json.data.token
+$customerRefreshToken = $customerLogin.Json.data.refreshToken
+
+$refreshed = Invoke-Api POST '/api/v1/auth/refresh' @{ refreshToken = $customerRefreshToken }
+Assert-Status 'Refresh customer token' $refreshed @(200)
+$customerToken = $refreshed.Json.data.token
+$customerRefreshToken = $refreshed.Json.data.refreshToken
 
 $adminLogin = Invoke-Api POST '/api/v1/auth/login' @{ email = $AdminEmail; password = $AdminPassword }
 Assert-Status 'Admin login' $adminLogin @(200)
@@ -107,14 +128,40 @@ Assert-Status 'Customer order history' (Invoke-Api GET '/api/v1/orders/my' $null
 Assert-Status 'Customer forbidden from Admin' (Invoke-Api GET '/api/v1/admin/dashboard' $null $customerToken) @(403)
 Assert-Status 'Admin dashboard' (Invoke-Api GET '/api/v1/admin/dashboard' $null $adminToken) @(200)
 Assert-Status 'Admin order list' (Invoke-Api GET '/api/v1/admin/orders' $null $adminToken) @(200)
+Assert-Status 'Admin product list' (Invoke-Api GET '/api/v1/admin/products' $null $adminToken) @(200)
+Assert-Status 'Admin inventory list' (Invoke-Api GET '/api/v1/admin/inventory' $null $adminToken) @(200)
+Assert-Status 'Admin production batches' (Invoke-Api GET '/api/v1/admin/batches' $null $adminToken) @(200)
+Assert-Status 'Admin inventory logs' (Invoke-Api GET '/api/v1/admin/inventory/logs' $null $adminToken) @(200)
+Assert-Status 'Admin mobile home' (Invoke-Api GET '/api/v1/admin/mobile/home' $null $adminToken) @(200)
 
 if ($orderId) {
+  Assert-Status 'Admin order detail' (Invoke-Api GET "/api/v1/admin/orders/$orderId" $null $adminToken) @(200)
   Assert-Status 'Admin confirms order' (Invoke-Api PATCH "/api/v1/admin/orders/$orderId/status" @{ status = 'CONFIRMED'; note = 'Smoke test confirmation' } $adminToken) @(200)
+  Assert-Status 'Reject invalid order status' (Invoke-Api PATCH "/api/v1/admin/orders/$orderId/status" @{ status = 'NOT_A_STATUS' } $adminToken) @(400)
   $tracking = "SMOKE-$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())"
   Assert-Status 'Admin creates shipment' (Invoke-Api POST "/api/v1/admin/orders/$orderId/shipment" @{
     carrier = 'TEST-CARRIER'; trackingCode = $tracking; status = 'SHIPPING'
   } $adminToken) @(200)
 }
+
+$warehouseVoucher = Invoke-Api POST '/api/v1/admin/vouchers/multi-item' @{
+  partnerName = 'Smoke Test Supplier'
+  partnerPhone = '0912345678'
+  batchCode = "SMOKE-$unique"
+  expiryDate = '2027-12-31'
+  note = 'Automated warehouse receipt'
+  items = @(@{ variantId = $variant.id; quantity = 1; unitPrice = [double]$variant.price })
+} $adminToken
+Assert-Status 'Admin creates warehouse voucher' $warehouseVoucher @(201)
+$warehouseVoucherId = $warehouseVoucher.Json.data.id
+Assert-Status 'Admin warehouse voucher list' (Invoke-Api GET '/api/v1/admin/vouchers' $null $adminToken) @(200)
+if ($warehouseVoucherId) {
+  Assert-Status 'Admin warehouse voucher detail' (Invoke-Api GET "/api/v1/admin/vouchers/$warehouseVoucherId" $null $adminToken) @(200)
+}
+
+Assert-Status 'Clear cart' (Invoke-Api PUT '/api/v1/cart' @{ items = @() } $customerToken) @(200)
+Assert-Status 'Logout customer session' (Invoke-Api POST '/api/v1/auth/logout' @{ refreshToken = $customerRefreshToken }) @(200)
+Assert-Status 'Reject revoked refresh token' (Invoke-Api POST '/api/v1/auth/refresh' @{ refreshToken = $customerRefreshToken }) @(401)
 
 Write-Host "Smoke test complete: $script:Passed passed, $script:Failed failed." -ForegroundColor Cyan
 if ($script:Failed -gt 0) { exit 1 }

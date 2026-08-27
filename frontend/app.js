@@ -1236,6 +1236,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modal.querySelector('#checkoutForm').addEventListener('submit', async (evt) => {
       evt.preventDefault();
+      const submitButton = evt.currentTarget.querySelector('button[type="submit"]');
+      if (submitButton.disabled) return;
+      submitButton.disabled = true;
+      submitButton.setAttribute('aria-busy', 'true');
       const chkName = modal.querySelector('#chkName').value.trim();
       const chkPhone = modal.querySelector('#chkPhone').value.trim();
       const chkAddress = modal.querySelector('#chkAddress').value.trim();
@@ -1265,6 +1269,8 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCartDrawer();
       } catch (err) {
         showToast(err.message);
+        submitButton.disabled = false;
+        submitButton.removeAttribute('aria-busy');
       }
     });
   }

@@ -3,12 +3,113 @@ import { successResponse } from '../../core/responseHandler.js';
 import { AppError } from '../../core/errorHandler.js';
 import { commerceRepository } from '../../repositories/commerce.repository.js';
 
+const productDto = (product) => {
+  const variant = product.variants?.[0];
+  const image = product.images?.find((item) => item.isPrimary) || product.images?.[0];
+  const soldQuantity = (product.variants || []).flatMap((item) => item.orderItems || [])
+    .reduce((sum, item) => sum + item.quantity, 0);
+  return {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    category: product.category?.name || '',
+    categoryId: product.categoryId,
+    type: product.type,
+    status: product.status,
+    isWebOnline: product.status === 'ACTIVE',
+    sku: variant?.sku || '',
+    unit: variant?.unit || '',
+    weight: variant?.weightGrams ? `${variant.weightGrams}g` : (variant?.volumeMl ? `${variant.volumeMl}ml` : variant?.unit || ''),
+    price: Number(variant?.price || 0),
+    stock: variant?.inventory?.quantity || 0,
+    soldQuantity,
+    imageUrl: image?.url || '',
+    description: product.description || '',
+    origin: product.origin || '',
+  };
+};
+
+const inventoryDto = (item) => ({
+  variantId: item.variantId,
+  productId: item.variant.productId,
+  productName: item.variant.product.name,
+  sku: item.variant.sku,
+  category: item.variant.product.type,
+  currentStock: item.quantity,
+  reservedStock: item.reserved,
+  minThreshold: item.variant.lowStockThreshold,
+  unit: item.variant.unit,
+  status: item.quantity <= item.variant.lowStockThreshold
+    ? (item.quantity <= 0 ? 'CRITICAL' : 'LOW_STOCK')
+    : 'NORMAL',
+});
+
+const readVoucherMetadata = (note) => {
+  try { return JSON.parse(note || '{}'); } catch { return { note: note || '' }; }
+};
+
+const voucherDto = (id, rows) => {
+  const metadata = readVoucherMetadata(rows[0]?.note);
+  const lineItems = rows.map((row) => {
+    const detail = readVoucherMetadata(row.note);
+    return {
+      variantId: row.variantId,
+      sku: row.variant.sku,
+      productName: row.variant.product.name,
+      unit: row.variant.unit,
+      quantity: Math.abs(row.quantity),
+      unitPrice: Number(detail.unitPrice || 0),
+      totalAmount: Math.abs(row.quantity) * Number(detail.unitPrice || 0),
+      batchCode: detail.batchCode || '',
+      expiryDate: detail.expiryDate || null,
+      stockAfter: row.balanceAfter,
+    };
+  });
+  return {
+    id,
+    voucherType: rows[0]?.type === 'IMPORT' ? 'IMPORT' : 'EXPORT',
+    partnerName: metadata.partnerName || 'N/A',
+    partnerPhone: metadata.partnerPhone || '',
+    createdAt: rows[0]?.createdAt,
+    status: 'COMPLETED',
+    note: metadata.note || '',
+    totalQuantity: lineItems.reduce((sum, item) => sum + item.quantity, 0),
+    totalAmount: lineItems.reduce((sum, item) => sum + item.totalAmount, 0),
+    lineItems,
+  };
+};
+
 export const orders = async (req, res, next) => {
   try { return successResponse(res, { data: await commerceRepository.allOrders(req.query) }); } catch (e) { next(e); }
 };
 
+export const orderDetail = async (req, res, next) => {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: req.params.id },
+      include: {
+        items: { include: { variant: { include: { inventory: true } } } },
+        payments: true,
+        shipment: true,
+        statusHistory: { orderBy: { createdAt: 'asc' } },
+      },
+    });
+    if (!order) throw new AppError('Không tìm thấy đơn hàng', 404);
+    return successResponse(res, { data: {
+      ...order,
+      itemsWithStock: order.items.map((item) => ({
+        ...item,
+        currentStock: item.variant?.inventory?.quantity || 0,
+        location: 'Kho chính',
+      })),
+    } });
+  } catch (e) { next(e); }
+};
+
 export const updateOrderStatus = async (req, res, next) => {
   try {
+    const allowed = ['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPING', 'COMPLETED', 'CANCELLED', 'REFUNDED'];
+    if (!allowed.includes(req.body.status)) throw new AppError('Trạng thái đơn hàng không hợp lệ', 400);
     const order = await prisma.$transaction(async (tx) => {
       const updated = await tx.order.update({ where: { id: req.params.id }, data: {
         status: req.body.status,
@@ -21,6 +122,26 @@ export const updateOrderStatus = async (req, res, next) => {
       return updated;
     });
     return successResponse(res, { data: order });
+  } catch (e) { next(e); }
+};
+
+export const products = async (req, res, next) => {
+  try {
+    const search = String(req.query.search || '').trim();
+    const rows = await prisma.product.findMany({
+      where: search ? { OR: [
+        { name: { contains: search, mode: 'insensitive' } },
+        { slug: { contains: search, mode: 'insensitive' } },
+        { variants: { some: { sku: { contains: search, mode: 'insensitive' } } } },
+      ] } : {},
+      include: {
+        category: true,
+        images: { orderBy: { sortOrder: 'asc' } },
+        variants: { include: { inventory: true, orderItems: { select: { quantity: true } } } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    return successResponse(res, { data: rows.map(productDto) });
   } catch (e) { next(e); }
 };
 
@@ -65,7 +186,13 @@ export const deleteCategory = async (req, res, next) => {
   } catch (e) { next(e); }
 };
 export const inventory = async (_req, res, next) => {
-  try { return successResponse(res, { data: await prisma.inventory.findMany({ include: { variant: { include: { product: true } } } }) }); } catch (e) { next(e); }
+  try {
+    const rows = await prisma.inventory.findMany({
+      include: { variant: { include: { product: true } } },
+      orderBy: { updatedAt: 'desc' },
+    });
+    return successResponse(res, { data: rows.map(inventoryDto) });
+  } catch (e) { next(e); }
 };
 export const adjustInventory = async (req, res, next) => {
   try {
@@ -93,8 +220,19 @@ export const createBatch = async (req, res, next) => {
     }) });
   } catch (e) { next(e); }
 };
+export const batches = async (_req, res, next) => {
+  try {
+    return successResponse(res, { data: await prisma.productionBatch.findMany({
+      include: { items: { include: { variant: { include: { product: true } } } } },
+      orderBy: { roastedAt: 'desc' },
+    }) });
+  } catch (e) { next(e); }
+};
 export const reviews = async (_req, res, next) => {
-  try { return successResponse(res, { data: await prisma.review.findMany({ include: { product: true, replies: true }, orderBy: { createdAt: 'desc' } }) }); } catch (e) { next(e); }
+  try {
+    const rows = await prisma.review.findMany({ include: { product: true, replies: true }, orderBy: { createdAt: 'desc' } });
+    return successResponse(res, { data: rows.map((row) => ({ ...row, comment: row.content })) });
+  } catch (e) { next(e); }
 };
 export const moderateReview = async (req, res, next) => {
   try { return successResponse(res, { data: await prisma.review.update({ where: { id: req.params.id }, data: {
@@ -124,6 +262,128 @@ export const moderateTestimonial = async (req, res, next) => {
       where: { id: req.params.id },
       data: { status, isPinned: status === 'PINNED' },
     }) });
+  } catch (e) { next(e); }
+};
+
+export const createWarehouseVoucher = async (req, res, next) => {
+  try {
+    const { items, partnerName, partnerPhone, batchCode, expiryDate, note } = req.body;
+    if (!Array.isArray(items) || !items.length) throw new AppError('Phiếu kho phải có ít nhất một sản phẩm', 400);
+    const referenceId = `PN-${Date.now()}`;
+    await prisma.$transaction(async (tx) => {
+      for (const item of items) {
+        const quantity = Number(item.quantity);
+        const unitPrice = Number(item.unitPrice || 0);
+        if (!item.variantId || !Number.isInteger(quantity) || quantity <= 0 || unitPrice < 0) {
+          throw new AppError('Dòng sản phẩm trong phiếu kho không hợp lệ', 400);
+        }
+        const current = await tx.inventory.findUnique({
+          where: { variantId: item.variantId },
+          include: { variant: true },
+        });
+        if (!current) throw new AppError('Không tìm thấy sản phẩm tồn kho', 404);
+        const updated = await tx.inventory.update({
+          where: { variantId: item.variantId },
+          data: { quantity: { increment: quantity } },
+        });
+        await tx.inventoryTransaction.create({ data: {
+          variantId: item.variantId,
+          type: 'IMPORT',
+          quantity,
+          balanceAfter: updated.quantity,
+          referenceType: 'WAREHOUSE_VOUCHER',
+          referenceId,
+          note: JSON.stringify({ partnerName, partnerPhone, batchCode, expiryDate, note, unitPrice }),
+          createdBy: req.user.id,
+        } });
+      }
+    });
+    const rows = await prisma.inventoryTransaction.findMany({
+      where: { referenceType: 'WAREHOUSE_VOUCHER', referenceId },
+      include: { variant: { include: { product: true } } },
+    });
+    return successResponse(res, { statusCode: 201, data: voucherDto(referenceId, rows) });
+  } catch (e) { next(e); }
+};
+
+export const warehouseVouchers = async (req, res, next) => {
+  try {
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const endDate = req.query.endDate ? new Date(`${req.query.endDate}T23:59:59.999Z`) : null;
+    const rows = await prisma.inventoryTransaction.findMany({
+      where: {
+        referenceType: 'WAREHOUSE_VOUCHER',
+        ...(startDate || endDate ? { createdAt: {
+          ...(startDate && { gte: startDate }),
+          ...(endDate && { lte: endDate }),
+        } } : {}),
+      },
+      include: { variant: { include: { product: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+    const grouped = rows.reduce((result, row) => {
+      (result[row.referenceId] ||= []).push(row);
+      return result;
+    }, {});
+    return successResponse(res, { data: Object.entries(grouped).map(([id, items]) => voucherDto(id, items)) });
+  } catch (e) { next(e); }
+};
+
+export const warehouseVoucher = async (req, res, next) => {
+  try {
+    const rows = await prisma.inventoryTransaction.findMany({
+      where: { referenceType: 'WAREHOUSE_VOUCHER', referenceId: req.params.id },
+      include: { variant: { include: { product: true } } },
+      orderBy: { createdAt: 'asc' },
+    });
+    if (!rows.length) throw new AppError('Không tìm thấy phiếu kho', 404);
+    return successResponse(res, { data: voucherDto(req.params.id, rows) });
+  } catch (e) { next(e); }
+};
+
+export const inventoryLogs = async (req, res, next) => {
+  try {
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const endDate = req.query.endDate ? new Date(`${req.query.endDate}T23:59:59.999Z`) : null;
+    const rows = await prisma.inventoryTransaction.findMany({
+      where: startDate || endDate ? { createdAt: {
+        ...(startDate && { gte: startDate }),
+        ...(endDate && { lte: endDate }),
+      } } : {},
+      include: { variant: { include: { product: true } }, createdByUser: { select: { name: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+    return successResponse(res, { data: rows.map((row) => ({
+      id: row.id,
+      voucherId: row.referenceId,
+      productName: row.variant.product.name,
+      sku: row.variant.sku,
+      type: row.type,
+      amount: row.quantity,
+      reason: readVoucherMetadata(row.note).note || row.note || '',
+      operator: row.createdByUser?.name || 'Hệ thống',
+      createdAt: row.createdAt,
+    })) });
+  } catch (e) { next(e); }
+};
+
+export const mobileHome = async (_req, res, next) => {
+  try {
+    const [recentOrders, products, inventoryRows, pendingReviews] = await prisma.$transaction([
+      prisma.order.findMany({ take: 5, orderBy: { createdAt: 'desc' }, include: { items: true, shipment: true } }),
+      prisma.product.findMany({
+        where: { status: 'ACTIVE' }, take: 4,
+        include: { category: true, images: true, variants: { include: { inventory: true, orderItems: { select: { quantity: true } } } } },
+      }),
+      prisma.inventory.findMany({ include: { variant: { include: { product: true } } }, orderBy: { updatedAt: 'desc' } }),
+      prisma.review.findMany({ where: { status: 'PENDING' }, take: 5, include: { product: true } }),
+    ]);
+    return successResponse(res, { data: {
+      recentOrders,
+      featuredProducts: products.map(productDto),
+      inventory: inventoryRows.map(inventoryDto),
+      pendingReviews: pendingReviews.map((row) => ({ ...row, comment: row.content })),
+    } });
   } catch (e) { next(e); }
 };
 
