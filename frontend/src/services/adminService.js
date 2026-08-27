@@ -405,6 +405,6 @@ export const adminService = {
         }
       };
     }
-    return await ApiClient.get('/mobile/home');
+    return await ApiClient.get('/admin/mobile/home');
   }
 };

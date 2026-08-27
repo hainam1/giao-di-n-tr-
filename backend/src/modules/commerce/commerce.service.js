@@ -40,9 +40,20 @@ export class CommerceService {
   }
 
   async checkout(userId, body) {
-    const cart = await this.repo.cart(userId);
-    if (!cart?.items.length) throw new AppError('Giỏ hàng đang trống', 400);
     return this.repo.transaction(async (tx) => {
+      const cart = await tx.cart.findFirst({
+        where: { userId },
+        include: { items: true },
+      });
+      if (!cart?.items.length) throw new AppError('Giỏ hàng đang trống', 400);
+
+      // Delete first so concurrent checkout requests contend for the same rows.
+      // Only the transaction that actually consumes every cart item may continue.
+      const consumed = await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+      if (consumed.count !== cart.items.length) {
+        throw new AppError('Giỏ hàng đã được xử lý bởi một yêu cầu khác', 409);
+      }
+
       const variantIds = cart.items.map((i) => i.variantId);
       const variants = await tx.productVariant.findMany({
         where: { id: { in: variantIds } }, include: { product: true, inventory: true },
@@ -82,7 +93,6 @@ export class CommerceService {
           balanceAfter: inventory.quantity, referenceType: 'ORDER', referenceId: order.id,
         } });
       }
-      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
       return order;
     });
   }
